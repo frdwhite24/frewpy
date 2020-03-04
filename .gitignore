@@ -1,0 +1,4 @@
+/venv/
+venv.bat
+**/__pycache__/
+**/.vscode/
