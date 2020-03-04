@@ -8,6 +8,7 @@ engineering design software.
 """
 
 import win32com.client
+from pprint import pprint
 
 
 class FrewModel():
@@ -62,7 +63,8 @@ class _Wall():
 
     Methods
     -------
-
+    get_num_nodes()
+    get_node_levels()
 
     Attributes
     ----------
@@ -73,8 +75,89 @@ class _Wall():
     def __init__(self, model):
         self.model = model
 
-    def get_num_nodes(self):
-        return self.model.GetNumNodes()
+    def get_num_nodes(self) -> int:
+        """ Function to get the number of nodes in a Frew model.
+
+        Returns
+        -------
+        num_nodes : int
+            The number of nodes in a Frew model.
+
+        """
+        num_nodes = self.model.GetNumNodes()
+        return num_nodes
+
+    def get_num_stages(self) -> int:
+        """ Function to get the number of stages in a Frew model.
+
+        Returns
+        -------
+        num_stages : int
+            The number of stages in a Frew model.
+
+        """
+        num_stages = self.model.GetNumStages()
+        return num_stages
+
+    def get_node_levels(self) -> dict:
+        """ Function to get the levels of the nodes in a Frew model.
+
+        Returns
+        -------
+        node_levels : dict
+            The levels of each node in a Frew model.
+
+        """
+        node_levels = {}
+        for node in range(0, self.get_num_nodes()):
+            node_levels[node+1] = self.model.GetNodeLevel(node)
+        return node_levels
+
+    def get_results(self) -> dict:
+        """ Function to get the shear, bending moment and displacement of the
+        wall for each stage and node.
+
+        Returns
+        -------
+        wall_results : dict
+            The shear, bending and displacement of the wall.
+
+        """
+        wall_results = {}
+        try:
+            for stage in range(0, self.get_num_stages()):
+                wall_results[stage+1] = {}
+                for node in range(0, self.get_num_nodes()):
+                    wall_results[stage+1][node+1] = [
+                        self.model.GetNodeShear(node, stage),
+                        self.model.GetNodeBending(node, stage),
+                        self.model.GetNodeDisp(node, stage)
+                    ]
+        except Exception as e:
+            wall_results = {}
+            print(
+                'Error! No results in model, please analyse the model first.'
+            )
+        return wall_results
+
+    def get_wall_stiffness(self) -> dict:
+        """ Function to get the stiffness of the wall for each stage and node.
+
+        Returns
+        -------
+        wall_stiffness : dict
+            The stiffness of the wall.
+
+        """
+        wall_stiffness = {}
+        for stage in range(0, self.get_num_stages()):
+            wall_stiffness[stage+1] = {}
+            for node in range(0, self.get_num_nodes()):
+                wall_stiffness[stage+1][node+1] = self.model.GetWallEI(
+                    node,
+                    stage
+                )
+        return wall_stiffness
 
 
 class _Struts():
