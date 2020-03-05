@@ -130,13 +130,9 @@
 
 `GetNodePeLeft`
 
-`GetNodePPLeft`
-
 `GetNodeVeRight`
 
 `GetNodePeRight`
-
-`GetNodePPRight`
 
 ### Set information
 `SetUnitWeight`
@@ -171,8 +167,9 @@
 
 `GetWaterLevelRight`
 
+`GetNodePPLeft`
 
-
+`GetNodePPRight`
 
 ### Set information
 `SetPorePressGradLeft`
