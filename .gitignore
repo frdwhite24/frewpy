@@ -2,3 +2,4 @@
 venv.bat
 **/__pycache__/
 **/.vscode/
+/models/*.pdf
