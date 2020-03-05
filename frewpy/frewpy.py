@@ -175,11 +175,11 @@ class _Wall():
         """
 
         wall_results = self.get_results()
+
         envelopes = {
             'maximum': {},
             'minimum': {}
         }
-
         for key in envelopes:
             envelopes[key] = {
                 'shear': [],
@@ -250,27 +250,57 @@ class _Wall():
                 bending.append(val[1])
                 disp.append(val[2])
 
-            # Plot for shear
-            ax1.set_xlabel('Shear (kN/m)')
+            # Plot for displacements
+            ax1.set_xlabel('Displacements (mm/m)')
             ax1.set_ylabel('Level (m)')
             ax1.grid(color='#c5c5c5', linewidth=0.5)
-            ax1.plot(envelopes['maximum']['shear'], levels, 'k--')
-            ax1.plot(envelopes['minimum']['shear'], levels, 'k--')
-            ax1.plot(shear, levels, 'g')
+            ax1.plot(
+                envelopes['maximum']['disp'],
+                levels,
+                'k--',
+                linewidth=1
+            )
+            ax1.plot(
+                envelopes['minimum']['disp'],
+                levels,
+                'k--',
+                linewidth=1
+            )
+            ax1.plot(disp, levels, 'b')
 
             # Plot for bending
             ax2.set_xlabel('Bending Moment (kNm/m)')
             ax2.grid(color='#c5c5c5', linewidth=0.5)
-            ax2.plot(envelopes['maximum']['bending'], levels, 'k--')
-            ax2.plot(envelopes['minimum']['bending'], levels, 'k--')
+            ax2.plot(
+                envelopes['maximum']['bending'],
+                levels,
+                'k--',
+                linewidth=1
+            )
+            ax2.plot(
+                envelopes['minimum']['bending'],
+                levels,
+                'k--',
+                linewidth=1
+            )
             ax2.plot(bending, levels, 'r')
 
-            # Plot for displacements
-            ax3.set_xlabel('Displacements (mm/m)')
+            # Plot for shear
+            ax3.set_xlabel('Shear (kN/m)')
             ax3.grid(color='#c5c5c5', linewidth=0.5)
-            ax3.plot(envelopes['maximum']['disp'], levels, 'k--')
-            ax3.plot(envelopes['minimum']['disp'], levels, 'k--')
-            ax3.plot(disp, levels, 'b')
+            ax3.plot(
+                envelopes['maximum']['shear'],
+                levels,
+                'k--',
+                linewidth=1
+            )
+            ax3.plot(
+                envelopes['minimum']['shear'],
+                levels,
+                'k--',
+                linewidth=1
+            )
+            ax3.plot(shear, levels, 'g')
 
             pdf.savefig(fig)
         pdf.close()
