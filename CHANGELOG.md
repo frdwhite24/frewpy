@@ -9,4 +9,4 @@ Sections include: Added, Changed, Fixed, Removed
 ## [Unreleased]
 ### Added
 - `analyse()` and `close()` methods within main model class.
-- `get_num_nodes()`, `get_num_stages()`, `get_node_levels()`, `get_results()`, `get_wall_stiffness()` within `_Wall` class.
+- `get_num_nodes()`, `get_num_stages()`, `get_node_levels()`, `get_results()`, `get_wall_stiffness()`, `get_envelopes()`, and `plot_results()` within `_Wall` class.

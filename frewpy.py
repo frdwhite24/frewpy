@@ -7,8 +7,12 @@ engineering design software.
 
 """
 
-import win32com.client
 from pprint import pprint
+import os
+
+import win32com.client
+import matplotlib.pyplot as plt
+import matplotlib.backends.backend_pdf as pltexp
 
 
 class FrewModel():
@@ -39,14 +43,15 @@ class FrewModel():
     def __init__(self, file_path):
         self.model = win32com.client.Dispatch("frewLib.FrewComAuto")
         self.file_path = file_path
+        self.folder_path = os.path.dirname(self.file_path)
         self.model.Open(self.file_path)
         self.model.DeleteResults()
 
         # Initialise sub-classes as attributes of main model object
-        self.wall = _Wall(self.model)
-        self.struts = _Struts(self.model)
-        self.soil = _Soil(self.model)
-        self.water = _Water(self.model)
+        self.wall = _Wall(self.model, self.file_path, self.folder_path)
+        self.struts = _Struts(self.model, self.file_path, self.folder_path)
+        self.soil = _Soil(self.model, self.file_path, self.folder_path)
+        self.water = _Water(self.model, self.file_path, self.folder_path)
 
     def analyse(self):
         self.model.GetNumStages()
@@ -72,8 +77,12 @@ class _Wall():
 
     """
 
-    def __init__(self, model):
+    def __init__(self, model, file_path, folder_path):
         self.model = model
+        self.file_path = file_path
+        self.folder_path = folder_path
+        self.num_nodes = self.get_num_nodes()
+        self.num_stages = self.get_num_stages()
 
     def get_num_nodes(self) -> int:
         """ Function to get the number of nodes in a Frew model.
@@ -125,9 +134,9 @@ class _Wall():
         """
         wall_results = {}
         try:
-            for stage in range(0, self.get_num_stages()):
+            for stage in range(0, self.num_stages):
                 wall_results[stage+1] = {}
-                for node in range(0, self.get_num_nodes()):
+                for node in range(0, self.num_nodes):
                     wall_results[stage+1][node+1] = [
                         self.model.GetNodeShear(node, stage),
                         self.model.GetNodeBending(node, stage),
@@ -150,14 +159,121 @@ class _Wall():
 
         """
         wall_stiffness = {}
-        for stage in range(0, self.get_num_stages()):
+        for stage in range(0, self.num_stages):
             wall_stiffness[stage+1] = {}
-            for node in range(0, self.get_num_nodes()):
+            for node in range(0, self.num_nodes):
                 wall_stiffness[stage+1][node+1] = self.model.GetWallEI(
                     node,
                     stage
                 )
         return wall_stiffness
+
+    def get_envelopes(self) -> dict:
+        """ Function to return the envelopes of max and min shear, bending and
+        displacements. 
+
+        """
+
+        wall_results = self.get_results()
+        envelopes = {
+            'maximum': {},
+            'minimum': {}
+        }
+
+        for key in envelopes:
+            envelopes[key] = {
+                'shear': [],
+                'bending': [],
+                'disp': []
+            }
+
+        for node in range(0, self.num_nodes):
+            shear = []
+            bending = []
+            disp = []
+
+            for stage in range(0, self.num_stages):
+                shear.append(wall_results[stage+1][node+1][0])
+                bending.append(wall_results[stage+1][node+1][1])
+                disp.append(wall_results[stage+1][node+1][2])
+
+            envelopes['maximum']['shear'].append(max(shear))
+            envelopes['maximum']['bending'].append(max(bending))
+            envelopes['maximum']['disp'].append(max(disp))
+            envelopes['minimum']['shear'].append(min(shear))
+            envelopes['minimum']['bending'].append(min(bending))
+            envelopes['minimum']['disp'].append(min(disp))
+
+        return envelopes
+
+    def plot_results(self) -> None:
+        """ Function to plot the shear, bending moment and displacement of the
+        wall for each stage.
+
+        """
+
+        file_name = os.path.basename(self.file_path.rsplit('.', 1)[0])
+        wall_results = self.get_results()
+        node_levels = self.get_node_levels()
+        envelopes = self.get_envelopes()
+
+        # Set defaults for plot styling
+        plt.rcParams.update({'axes.titlesize': 10})
+        plt.rcParams.update({'axes.labelsize': 7})
+        plt.rcParams.update({'xtick.labelsize': 7})
+        plt.rcParams.update({'ytick.labelsize': 7})
+
+        pdf = pltexp.PdfPages(
+            f'{os.path.join(self.folder_path, file_name)}_results.pdf'
+        )
+        for stage in range(0, self.num_stages):
+            figure_title = f'{file_name} - Stage {stage+1}'
+
+            plt.close('all')
+            fig, (ax1, ax2, ax3) = plt.subplots(
+                1,
+                3,
+                sharey=True)
+
+            # Figure information
+            fig.suptitle(figure_title)
+
+            # Data to plot
+            levels = []
+            shear = []
+            bending = []
+            disp = []
+            for level in node_levels.values():
+                levels.append(level)
+            for val in wall_results[stage+1].values():
+                shear.append(val[0])
+                bending.append(val[1])
+                disp.append(val[2])
+
+            # Plot for shear
+            ax1.set_xlabel('Shear (kN/m)')
+            ax1.set_ylabel('Level (m)')
+            ax1.grid(color='#c5c5c5', linewidth=0.5)
+            ax1.plot(envelopes['maximum']['shear'], levels, 'k--')
+            ax1.plot(envelopes['minimum']['shear'], levels, 'k--')
+            ax1.plot(shear, levels, 'g')
+
+            # Plot for bending
+            ax2.set_xlabel('Bending Moment (kNm/m)')
+            ax2.grid(color='#c5c5c5', linewidth=0.5)
+            ax2.plot(envelopes['maximum']['bending'], levels, 'k--')
+            ax2.plot(envelopes['minimum']['bending'], levels, 'k--')
+            ax2.plot(bending, levels, 'r')
+
+            # Plot for displacements
+            ax3.set_xlabel('Displacements (mm/m)')
+            ax3.grid(color='#c5c5c5', linewidth=0.5)
+            ax3.plot(envelopes['maximum']['disp'], levels, 'k--')
+            ax3.plot(envelopes['minimum']['disp'], levels, 'k--')
+            ax3.plot(disp, levels, 'b')
+
+            pdf.savefig(fig)
+        pdf.close()
 
 
 class _Struts():
@@ -174,8 +290,10 @@ class _Struts():
 
     """
 
-    def __init__(self, model):
+    def __init__(self, model, file_path, folder_path):
         self.model = model
+        self.file_path = file_path
+        self.folder_path = folder_path
 
 
 class _Soil():
@@ -192,8 +310,10 @@ class _Soil():
 
     """
 
-    def __init__(self, model):
+    def __init__(self, model, file_path, folder_path):
         self.model = model
+        self.file_path = file_path
+        self.folder_path = folder_path
 
 
 class _Water():
@@ -210,5 +330,7 @@ class _Water():
 
     """
 
-    def __init__(self, model):
+    def __init__(self, model, file_path, folder_path):
         self.model = model
+        self.file_path = file_path
+        self.folder_path = folder_path
