@@ -543,5 +543,3 @@ class _Calculations(_Wall, _Soil, _Water):
                     - total_pressures['right'][stage][node+1]
                 )
         return net_total_pressures
-
-
