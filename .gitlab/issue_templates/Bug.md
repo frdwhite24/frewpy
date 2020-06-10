@@ -4,7 +4,7 @@
 
 ## Steps to reproduce
 
-(How one can reproduce the issue - this is very important)
+(How one can reproduce the issue and what frewpy version to use to do this - this is very important)
 
 ## What is the current bug behavior?
 
