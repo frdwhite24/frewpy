@@ -4,7 +4,7 @@ A library to wrap the Oasys Frew COM interface with pythonic terms and object or
 
 ## Installation
 
-To install frewpy into your chosen virtual environment, use one of the commands below. If you have knowingly set up an SSH key for your laptop on your GitLab account, then use those commands over the HTTPS ones.
+To install frewpy into your chosen virtual environment, use one of the commands below. If you have knowingly set up an SSH key for your laptop on your GitLab account, then use those commands over the HTTPS ones. If you haven't set up an SSH key, it is recommended you set up an ED25519 type SSH key by following [the Gitlab Docs on this topic](https://docs.gitlab.com/ee/ssh/).
 
 If you are not sure which command to go with, use the one marked _default_.
 
