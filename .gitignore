@@ -1,5 +1,6 @@
-/venv/
-venv.bat
 **/__pycache__/
 **/.vscode/
+/venv/
+venv.bat
 /models/*.pdf
+newcert.pem.txt
