@@ -1,4 +1,3 @@
-from .exceptions import FrewError
 from .wall import _Wall
 from .struts import _Struts
 from .soil import _Soil
