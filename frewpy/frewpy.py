@@ -68,9 +68,15 @@ class FrewModel():
         self.folder_path = os.path.dirname(self.file_path)
 
         # Get key information from json file
+        self.titles = self._get_titles()
+        self.file_history = self._get_file_history()
+        self.file_version = self._get_file_version()
+        self.version = self._get_model_version()
+        self.materials = self._get_materials()
         self.num_stages = self._get_num_stages()
         self.stage_names = self._get_stage_names()
         self.num_nodes = self._get_num_nodes()
+
 
         # Initialise sub-classes as attributes of main model object
         # self.wall = _Wall(
@@ -103,11 +109,13 @@ class FrewModel():
         #     self.num_stages
         # )
 
-    def _check_path(self):
+
+
+    def _check_path(self) -> None:
         if not os.path.exists(self.file_path):
             raise FileNotFoundError
 
-    def _check_extension(self):
+    def _check_extension(self) -> str:
         file_extension = os.path.basename(
             self.file_path
         ).rsplit('.', 1)[1].lower()
@@ -118,10 +126,7 @@ class FrewModel():
         else:
             return file_extension
 
-    def _model_to_json(self):
-        """ Function to convert an fwd Frew Model into a json file.
-
-        """
+    def _model_to_json(self) -> str:
         self.file_extension = 'json'
         file_path_without_extension = self.file_path.rsplit('.', 1)[0]
 
@@ -141,14 +146,60 @@ class FrewModel():
             self.model.Close()
             return new_file_path
 
-    def _load_data(self):
+    def _load_data(self) -> dict:
         with open(self.file_path) as file:
             json_data = json.loads(file.read())
         return json_data
 
-    def _clear_results(self):
+    def _clear_results(self) -> None:
         if self.json_data.get('Frew Results', False):
             del self.json_data['Frew Results']
+
+    def _get_titles(self) -> dict:
+        try:
+            titles = self.json_data['OasysHeader'][0]['Titles'][0]
+        except KeyError:
+            raise FrewError('Unable to retreive title information.')
+        except IndexError:
+            raise FrewError('Unable to retreive title information.')
+        return titles
+
+    def _get_file_history(self) -> list:
+        try:
+            file_history = self.json_data['File history']
+        except KeyError:
+            raise FrewError('Unable to retreive file history.')
+        return file_history
+
+    def _get_file_version(self) -> str:
+        try:
+            file_version = self.json_data['OasysHeader'][0]['Program title'][0][
+                'FileVersion'
+            ]
+        except KeyError:
+            raise FrewError('Unable to retreive file version.')
+        except IndexError:
+            raise FrewError('Unable to retreive file version.')
+        return file_version
+
+    def _get_model_version(self) -> str:
+        try:
+            model_version = self.json_data[
+                'OasysHeader'
+            ][0]['Program title'][0]['Version']
+        except KeyError:
+            raise FrewError('Unable to retreive Frew model version.')
+        except IndexError:
+            raise FrewError('Unable to retreive Frew model version.')
+        return model_version
+
+    def _get_materials(self) -> list:
+        materials = []
+        if not self.json_data.get('Materials', False):
+            raise FrewError('No materials defined in the model')
+        for material_dict in self.json_data['Materials']:
+            materials.append(material_dict['Name'])
+        return materials
 
     def _get_num_stages(self) -> int:
         num_stages = len(self.json_data['Stages'])
@@ -174,7 +225,19 @@ class FrewModel():
                 'Number of nodes is not unique for every stage.'
             )
 
-    def analyse(self):
+    def get_material_properties(self, material: str) -> dict:
+        if not self.json_data.get('Materials', False):
+            raise FrewError('No materials defined in the model')
+        material_properties = False
+        for material_dict in self.json_data['Materials']:
+            if material_dict['Name'] == material:
+                flag = True
+                material_properties = material_dict
+        if not material_properties:
+            raise FrewError(f'No material called {material} in the model.')
+        return material_properties
+
+    def analyse(self) -> None:
         """ Function to open the COM object, analyse it, save it, and close the
         object.
 
