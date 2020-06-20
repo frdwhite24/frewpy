@@ -2,6 +2,8 @@
 
 A library to wrap the Oasys Frew COM interface with pythonic terms and object oriented programming. The aim of frewpy is to make the COM interface accessible to engineers using python. This allows designs to be automated and will play a part in larger automation efforts down the line. Frewpy requires Oasys Frew 19.4 Build 24 as this is the first build that has JSON input/output functionality.
 
+[Click here](http://www.frewpy-docs.s3-website-eu-west-1.amazonaws.com/) to read the Documentation for Frewpy.
+
 ## Installation
 
 To install frewpy into your chosen virtual environment, use one of the commands below. If you have knowingly set up an SSH key for your laptop on your GitLab account, then use those commands over the HTTPS ones. If you haven't set up an SSH key, it is recommended you set up an ED25519 type SSH key by following [the Gitlab Docs on this topic](https://docs.gitlab.com/ee/ssh/).
