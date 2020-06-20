@@ -151,7 +151,7 @@ def get_file_version(json_data: dict) -> str:
     """
     try:
         file_version = (
-            self.json_data['OasysHeader'][0]['Program title'][0][
+            json_data['OasysHeader'][0]['Program title'][0][
                 'FileVersion'
             ])
     except KeyError:
@@ -159,6 +159,18 @@ def get_file_version(json_data: dict) -> str:
     except IndexError:
         raise FrewError('Unable to retreive file version.')
     return file_version
+
+
+def get_frew_version(json_data: dict) -> str:
+    try:
+        model_version = json_data[
+            'OasysHeader'
+        ][0]['Program title'][0]['Version']
+    except KeyError:
+        raise FrewError('Unable to retreive Frew model version.')
+    except IndexError:
+        raise FrewError('Unable to retreive Frew model version.')
+    return model_version
 
 
 def get_num_stages(json_data: dict) -> int:
@@ -175,8 +187,7 @@ def get_num_stages(json_data: dict) -> int:
         The number of stages in the Frew model.
 
     """
-    num_stages = len(json_data['Stages'])
-    return num_stages
+    return len(json_data['Stages'])
 
 
 def get_stage_names(json_data: dict, num_stages: int) -> list:
@@ -195,10 +206,7 @@ def get_stage_names(json_data: dict, num_stages: int) -> list:
         A list of the names of stages within the Frew model.
 
     """
-    stage_names = []
-    for stage in range(0, num_stages):
-        stage_names.append(json_data['Stages'][stage]['Name'])
-    return stage_names
+    return [json_data['Stages'][stage]['Name'] for stage in range(num_stages)]
 
 
 def get_num_nodes(json_data: dict, num_stages: int) -> int:
@@ -220,7 +228,7 @@ def get_num_nodes(json_data: dict, num_stages: int) -> int:
 
     """
     num_nodes = []
-    for stage in range(0, num_stages):
+    for stage in range(num_stages):
         if not json_data['Stages'][stage].get('GeoFrewNodes', False):
             return 0
         num_nodes.append(

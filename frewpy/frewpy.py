@@ -54,9 +54,9 @@ class FrewModel():
         self.file_path = file_path
 
         # Run checks, convert model to json file, remove results
-        self.path_exists = check_path(self.file_path)
-        self.file_extension = check_extension(self.file_path)
-        self.json_data = load_data(self.file_path)
+        self.path_exists = core.check_path(self.file_path)
+        self.file_extension = core.check_extension(self.file_path)
+        self.json_data = core.load_data(self.file_path)
         # if self.file_extension == 'fwd':
         #     self.file_path = self._model_to_json()
 
@@ -64,30 +64,19 @@ class FrewModel():
         # self.folder_path = os.path.dirname(self.file_path)
 
         # # Get key information from json file
-        self.titles = get_titles(self.json_data)
-        self.file_history = get_file_history(self.json_data)
-        self.file_version = get_file_version(self.json_data)
-        self.frew_version = get_frew_version(self.json_data)
-        self.num_stages = get_num_stages(self.json_data)
-        self.stage_names = get_stage_names(
+        self.titles = core.get_titles(self.json_data)
+        self.file_history = core.get_file_history(self.json_data)
+        self.file_version = core.get_file_version(self.json_data)
+        self.frew_version = core.get_frew_version(self.json_data)
+        self.num_stages = core.get_num_stages(self.json_data)
+        self.stage_names = core.get_stage_names(
             self.json_data,
             self.num_stages
         )
-        self.num_nodes = get_num_nodes(
+        self.num_nodes = core.get_num_nodes(
             self.json_data,
             self.num_stages
         )
-
-    def _get_model_version(self) -> str:
-        try:
-            model_version = self.json_data[
-                'OasysHeader'
-            ][0]['Program title'][0]['Version']
-        except KeyError:
-            raise FrewError('Unable to retreive Frew model version.')
-        except IndexError:
-            raise FrewError('Unable to retreive Frew model version.')
-        return model_version
 
     def get_materials(self) -> list:
         return soil.get_materials(self.json_data)

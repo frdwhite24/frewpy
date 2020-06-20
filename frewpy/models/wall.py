@@ -28,16 +28,13 @@ def get_node_levels(json_data: dict, num_nodes: int) -> list:
     except IndexError:
         raise FrewError('Unable to retreive node information.')
 
-    if not len(node_information) == num_nodes:
+    if len(node_information) != num_nodes:
         raise FrewError('''
             Number of nodes does not equal the length of the node
             information
         ''')
 
-    node_levels = []
-    for node in range(0, num_nodes):
-        node_levels.append(node_information[node]['Level'])
-    return node_levels
+    return [node_information[node]['Level'] for node in range(num_nodes)]
 
 
 def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
@@ -64,7 +61,7 @@ def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
             No results in the model, please analyse the model first.
         ''')
     wall_results = {}
-    for stage in range(0, num_stages):
+    for stage in range(num_stages):
         wall_results[stage] = {}
         for result_set in json_data['Frew Results']:
             result_set_name = result_set['GeoPartialFactorSet']['Name']
@@ -73,7 +70,7 @@ def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
                 'bending': [],
                 'displacement': [],
             }
-            for node in range(0, num_nodes):
+            for node in range(num_nodes):
                 stage_results = (
                     result_set['Stageresults'][stage]['Noderesults']
                 )
@@ -130,7 +127,7 @@ def results_to_excel(
             'Shear': [],
             'Displacement': [],
         }
-        for stage in range(0, num_stages):
+        for stage in range(num_stages):
             stage_array = [stage] * num_nodes
             bending_results = wall_results[stage][design_case]['bending']
             shear_results = wall_results[stage][design_case]['shear']

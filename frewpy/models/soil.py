@@ -15,12 +15,9 @@ def get_materials(json_data: dict) -> list:
         A list of the materials in the Frew model.
 
     """
-    materials = []
     if not json_data.get('Materials', False):
         raise FrewError('No materials defined in the model')
-    for material_dict in json_data['Materials']:
-        materials.append(material_dict['Name'])
-    return materials
+    return [material_dict['Name'] for material_dict in json_data['Materials']]
 
 
 def get_material_properties():
