@@ -5,7 +5,7 @@ import numpy as np
 from .exceptions import FrewpyFileExtensionNotRecognised, FrewError
 
 
-def core_check_path(file_path: str) -> bool:
+def check_path(file_path: str) -> bool:
     """ Checks the file path exists.
 
     Parameters
@@ -25,7 +25,7 @@ def core_check_path(file_path: str) -> bool:
         return True
 
 
-def core_check_extension(file_path: str) -> str:
+def check_extension(file_path: str) -> str:
     """ Checks whether the file extension is in the list of accepted file
     extensions.
 
@@ -51,7 +51,7 @@ def core_check_extension(file_path: str) -> str:
         return file_extension
 
 
-def core_load_data(file_path: str) -> dict:
+def load_data(file_path: str) -> dict:
     """ Loads the json file in as a Python dictionary.
 
     Parameters
@@ -70,7 +70,7 @@ def core_load_data(file_path: str) -> dict:
     return json_data
 
 
-def core_clear_results(json_data: dict) -> dict:
+def clear_results(json_data: dict) -> dict:
     """ Clears the results in the json file so that it can be analysed using
     the COM interface.
 
@@ -91,7 +91,7 @@ def core_clear_results(json_data: dict) -> dict:
     return json_data
 
 
-def core_get_titles(json_data: dict) -> dict:
+def get_titles(json_data: dict) -> dict:
     """ Returns the titles within the json model.
 
     Parameters
@@ -114,7 +114,54 @@ def core_get_titles(json_data: dict) -> dict:
     return titles
 
 
-def core_get_num_stages(json_data: dict) -> int:
+def get_file_history(json_data: dict) -> list:
+    """ Returns the file history of the Frew model.
+
+    Parameters
+    ----------
+    json_data : dict
+        A Python dictionary of the data held within the json model file.
+
+    Returns
+    -------
+    file_history : list
+        The file history of the Frew model.
+
+    """
+    try:
+        file_history = json_data['File history']
+    except KeyError:
+        raise FrewError('Unable to retreive file history.')
+    return file_history
+
+
+def get_file_version(json_data: dict) -> str:
+    """ Returns the file version of the Frew model.
+
+    Parameters
+    ----------
+    json_data : dict
+        A Python dictionary of the data held within the json model file.
+
+    Returns
+    -------
+    file_version : list
+        The file version of the Frew model.
+
+    """
+    try:
+        file_version = (
+            self.json_data['OasysHeader'][0]['Program title'][0][
+                'FileVersion'
+            ])
+    except KeyError:
+        raise FrewError('Unable to retreive file version.')
+    except IndexError:
+        raise FrewError('Unable to retreive file version.')
+    return file_version
+
+
+def get_num_stages(json_data: dict) -> int:
     """ Returns the number of stages in the model.
 
     Parameters
@@ -132,7 +179,7 @@ def core_get_num_stages(json_data: dict) -> int:
     return num_stages
 
 
-def core_get_stage_names(json_data: dict, num_stages: int) -> list:
+def get_stage_names(json_data: dict, num_stages: int) -> list:
     """ Returns the names of the stages within the Frew model.
 
     Parameters
@@ -154,7 +201,7 @@ def core_get_stage_names(json_data: dict, num_stages: int) -> list:
     return stage_names
 
 
-def core_get_num_nodes(json_data: dict, num_stages: int) -> int:
+def get_num_nodes(json_data: dict, num_stages: int) -> int:
     """ Returns the number of nodes in the Frew model.
 
     Parameters

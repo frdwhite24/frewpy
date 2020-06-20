@@ -1,7 +1,7 @@
 from .exceptions import FrewError
 
 
-def soil_get_materials(json_data: dict) -> list:
+def get_materials(json_data: dict) -> list:
     """ Gets a list of materials present in the Frew model.
 
     Parameters
@@ -23,10 +23,10 @@ def soil_get_materials(json_data: dict) -> list:
     return materials
 
 
-def soil_get_material_properties():
+def get_material_properties():
     pass
 
-# def soil_get_material_properties(json_data: dict, material: str) -> dict:
+# def get_material_properties(json_data: dict, material: str) -> dict:
 #     """ Method to return all the properties of a specific material.
 
 #     Parameters

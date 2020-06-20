@@ -5,7 +5,7 @@ import pandas as pd
 from .exceptions import FrewError
 
 
-def wall_get_node_levels(json_data: dict, num_nodes: int) -> list:
+def get_node_levels(json_data: dict, num_nodes: int) -> list:
     """ Function to get the levels of the nodes in a Frew model.
 
     Parameters
@@ -40,7 +40,7 @@ def wall_get_node_levels(json_data: dict, num_nodes: int) -> list:
     return node_levels
 
 
-def wall_get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
+def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
     """ Function to get the shear, bending moment and displacement of the
     wall for each stage and node.
 
@@ -89,7 +89,7 @@ def wall_get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
     return wall_results
 
 
-def wall_results_to_excel(
+def results_to_excel(
     file_path: str,
     node_levels: list,
     wall_results: dict,
@@ -155,8 +155,7 @@ def wall_results_to_excel(
 #     """ Function to get the stiffness of the wall for each stage and node.
 
 #     Returns
-#     -------
-#     wall_stiffness : dict
+#     -------#     wall_stiffness : dict
 #         The stiffness of the wall.
 
 #     """

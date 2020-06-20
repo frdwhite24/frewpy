@@ -13,24 +13,15 @@ import json
 import win32com.client
 import numpy as np
 
-from frewpy.models.core import (
-    core_check_path,
-    core_check_extension,
-    core_load_data,
-    core_clear_results,
-    core_get_titles,
-    core_get_num_stages,
-    core_get_num_nodes,
-    core_get_stage_names,
-)
-from frewpy.models.soil import (
-    soil_get_materials,
-    soil_get_material_properties
+from frewpy.models import (
+    soil,
+    core,
+    wall,
 )
 from frewpy.models.exceptions import (
-    FrewpyFileExtensionNotRecognised,
     FrewError,
     NodeError,
+    FrewpyFileExtensionNotRecognised,
 )
 
 
@@ -63,9 +54,9 @@ class FrewModel():
         self.file_path = file_path
 
         # Run checks, convert model to json file, remove results
-        self.path_exists = core_check_path(self.file_path)
-        self.file_extension = core_check_extension(self.file_path)
-        self.json_data = core_load_data(self.file_path)
+        self.path_exists = check_path(self.file_path)
+        self.file_extension = check_extension(self.file_path)
+        self.json_data = load_data(self.file_path)
         # if self.file_extension == 'fwd':
         #     self.file_path = self._model_to_json()
 
@@ -73,38 +64,19 @@ class FrewModel():
         # self.folder_path = os.path.dirname(self.file_path)
 
         # # Get key information from json file
-        self.titles = core_get_titles(self.json_data)
-        # self.file_history = self._get_file_history()
-        # self.file_version = self._get_file_version()
-        # self.version = self._get_model_version()
-        self.num_stages = core_get_num_stages(self.json_data)
-        self.stage_names = core_get_stage_names(
+        self.titles = get_titles(self.json_data)
+        self.file_history = get_file_history(self.json_data)
+        self.file_version = get_file_version(self.json_data)
+        self.frew_version = get_frew_version(self.json_data)
+        self.num_stages = get_num_stages(self.json_data)
+        self.stage_names = get_stage_names(
             self.json_data,
             self.num_stages
         )
-        self.num_nodes = core_get_num_nodes(
+        self.num_nodes = get_num_nodes(
             self.json_data,
             self.num_stages
         )
-
-    def _get_file_history(self) -> list:
-        try:
-            file_history = self.json_data['File history']
-        except KeyError:
-            raise FrewError('Unable to retreive file history.')
-        return file_history
-
-    def _get_file_version(self) -> str:
-        try:
-            file_version = (
-                self.json_data['OasysHeader'][0]['Program title'][0][
-                    'FileVersion'
-                ])
-        except KeyError:
-            raise FrewError('Unable to retreive file version.')
-        except IndexError:
-            raise FrewError('Unable to retreive file version.')
-        return file_version
 
     def _get_model_version(self) -> str:
         try:
@@ -118,7 +90,7 @@ class FrewModel():
         return model_version
 
     def get_materials(self) -> list:
-        return soil_get_materials(self.json_data)
+        return soil.get_materials(self.json_data)
 
     # def _model_to_json(self) -> str:
     #     self.file_extension = 'json'
@@ -146,7 +118,7 @@ class FrewModel():
     #     object.
 
     #     """
-    #     self.json_data = core_clear_results(self.json_data)
+    #     self.json_data = clear_results(self.json_data)
     #     self.save()
     #     model = win32com.client.Dispatch("frewLib.FrewComAuto")
     #     model.Open(self.file_path)
