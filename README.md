@@ -30,20 +30,24 @@ file_path = r'C:\Users\fred.white\Documents\windows-work\frewpy\models\SLS B4 So
 model = FrewModel(file_path)
 ```
 
-With the model object instantiated, you now have access to all of the methods and attributes. If you wish to get the results, for example, type the following code:
+With the model object instantiated, you now have access to all of the methods and attributes within that Class. If you wish to get the results or export the results to excel, for example, type one of the following lines of code:
 
 ```python
 wall_results = model.get_results()
+model.results_to_excel()
 ```
 
-Currently if you try to return the results of a model without any results in, you will be asked to analyse the model first.
-{: .alert .alert-warning}
+> Currently if you try to return the results of a model without any results in, you will be asked to analyse the model first.
 
-If you wish to see a working example based on these principles, open up `example.py` in the repository files.
+The `examples` directory held within the repository will provide you more examples of how you may use `frewpy`. You may also [visit the documentation](http://www.frewpy-docs.s3-website-eu-west-1.amazonaws.com/) or read the source code to understand what is possible with the library.
 
 ## Support and contributing
 
-If you require support when using frewpy, would like to get involved in the project, or have any features or bugs please either log an issue on this repository using the appropriate template, or contact the development team and we will do our best to respond. If you have a project which requires something additional to what frewpy currently offers, it could be beneficial to collaborate and expand our offering using project funds. We have a frewpy users MS Teams chat for the core users, and hopefully most discussion will take place on the repository using issues and the appropriate labels.
+If you just want to learn to code in Python then help contribute, as described in [this article](https://rubygarage.org/blog/how-contribute-to-open-source-projects), contributing to open source projects is one of the best ways to learn to code.
+
+If you have a project which requires something additional to what frewpy currently offers, it could be beneficial to collaborate and expand our offering using project funds. Frewpy is built with a structure like lego blocks and is easy to extend if it doesn't currently do what you need it to do. **Don't be afraid to get in contact to see how you can contribute**, and if you do extend the functionality please get in contact to show us the cool stuff you've done!
+
+If you require support when using frewpy, would like to get involved in the project, or have any features or bugs please either log an issue on this repository using the appropriate template, or contact the development team and we will do our best to respond.
 
 ## Authors and achnowledgement
 
@@ -51,7 +55,7 @@ All development has currently come from Fred White in the Infrastructure London 
 
 ## Technologies
 
-This platform was developed in a Windows environment with `python 3.6`. The dependencies of the library are very limited and so support for other `python 3` versions is assumed possible.
+This platform was developed in a Windows environment with `python 3.6`. Support for other `python 3` versions is assumed possible but has not been tested.
 
 ## License
 
