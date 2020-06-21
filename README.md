@@ -6,18 +6,17 @@ A library to wrap the Oasys Frew COM interface with pythonic terms and object or
 
 ## Installation
 
-To install frewpy into your chosen virtual environment, use one of the commands below. If you have knowingly set up an SSH key for your laptop on your GitLab account, then use those commands over the HTTPS ones. If you haven't set up an SSH key, it is recommended you set up an ED25519 type SSH key by following [the Gitlab Docs on this topic](https://docs.gitlab.com/ee/ssh/).
+To install frewpy into your chosen virtual environment, use one of the commands below. If you are not sure which command to go with, use the one marked _default_.
 
-If you are not sure which command to go with, use the one marked _default_.
+If you'd like the latest unreleased features, you can install the development version. Note that features may not be covered by tests and strong checking. You'll require Git to be installed on your computer, if you haven't done so you can [download it here](https://gitforwindows.org/). If you have knowingly set up an SSH key for your laptop on your GitLab account, then use that command over the HTTPS one. If you haven't set up an SSH key, it is recommended you set up an ED25519 type SSH key by following [the Gitlab Docs on this topic](https://docs.gitlab.com/ee/ssh/).
 
 If you receive an SSL error, contact the development team as this is a known issue for people pip installing any packages on Arup laptops and there is a work around provided by Arup IT. Alternatively you can follow [this Yammer discussion.](https://www.yammer.com/arup.com/threads/660618752778240)
 
-| Type                                           | Command                                                              |
-| ---------------------------------------------- | -------------------------------------------------------------------- |
-| _(Default)_ Latest Stable Build v0.0.0 (HTTPS) | `pip install git+https://git@gitlab.arup.com/ait/frewpy.git@v0.0.0`  |
-| Latest Stable Build v0.0.0 (SSH)               | `pip install git+ssh://git@gitlab.arup.com/ait/frewpy.git@v0.0.0`    |
-| Development version (SSH)                      | `pip install git+ssh://git@gitlab.arup.com/ait/frewpy.git@develop`   |
-| Development version (HTTPS)                    | `pip install git+https://git@gitlab.arup.com/ait/frewpy.git@develop` |
+| Type                                   | Command                                                                                |
+| -------------------------------------- | -------------------------------------------------------------------------------------- |
+| _(Default)_ Latest Stable Build v0.0.0 | `pip install https://gitlab.arup.com/ait/frewpy/-/archive/v0.0.0/frewpy-v0.0.0.tar.gz` |
+| Development version (SSH)              | `pip install git+ssh://git@gitlab.arup.com/ait/frewpy.git@develop`                     |
+| Development version (HTTPS)            | `pip install git+https://git@gitlab.arup.com/ait/frewpy.git@develop`                   |
 
 ## Getting Started
 
