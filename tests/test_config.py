@@ -1,4 +1,5 @@
 import os
 
-TEST_CURR_DATA = os.getcwd()
-TEST_DATA = os.path.join(TEST_CURR_DATA, data)
+ROOT_DIR = os.getcwd()
+TEST_DIR = os.path.join(ROOT_DIR, 'tests')
+TEST_DATA = os.path.join(TEST_DIR, 'data')
