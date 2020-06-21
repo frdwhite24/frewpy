@@ -16,7 +16,7 @@ def check_path(file_path: str) -> bool:
 
     Returns
     -------
-    bool
+    path_exists : bool
         Returns True if the file path exists.
 
     """
@@ -160,14 +160,13 @@ def get_file_version(json_data: Dict[str, list]) -> str:
 
 def get_frew_version(json_data: dict) -> str:
     try:
-        model_version = json_data[
+        return json_data[
             'OasysHeader'
         ][0]['Program title'][0]['Version']
     except KeyError:
         raise FrewError('Unable to retreive Frew model version.')
     except IndexError:
         raise FrewError('Unable to retreive Frew model version.')
-    return model_version
 
 
 def get_num_stages(json_data: dict) -> int:
@@ -187,7 +186,7 @@ def get_num_stages(json_data: dict) -> int:
     return len(json_data['Stages'])
 
 
-def get_stage_names(json_data: dict, num_stages: int) -> list:
+def get_stage_names(json_data: dict, num_stages: int) -> List[str]:
     """ Returns the names of the stages within the Frew model.
 
     Parameters
@@ -199,7 +198,7 @@ def get_stage_names(json_data: dict, num_stages: int) -> list:
 
     Returns
     -------
-    stage_names : list
+    stage_names : List[str]
         A list of the names of stages within the Frew model.
 
     """
@@ -238,3 +237,73 @@ def get_num_nodes(json_data: dict, num_stages: int) -> int:
         raise NodeError(
             'Number of nodes is not unique for every stage.'
         )
+
+
+# def _model_to_json(self) -> str:
+#     self.file_extension = 'json'
+#     file_path_without_extension = self.file_path.rsplit('.', 1)[0]
+#     model = win32com.client.Dispatch("frewLib.FrewComAuto")
+#     if model.Open(self.file_path) == -1:
+#         raise FrewError(
+#             'Frew model failed to open.'
+#         )
+#     else:
+#     model.Open(self.file_path)
+#     new_file_path = (
+#         f'{file_path_without_extension}.{self.file_extension}'
+#     )
+#     try:
+#         model.SaveAs(new_file_path)
+#     except Exception as e:
+#         pass
+#     model.Close()
+#     return new_file_path
+
+
+# def analyse(self) -> None:
+#     """ Function to open the COM object, analyse it, save it, and close
+# the
+#     object.
+
+#     """
+#     self.json_data = clear_results(self.json_data)
+#     self.save()
+#     model = win32com.client.Dispatch("frewLib.FrewComAuto")
+#     model.Open(self.file_path)
+#     if model.Open(self.file_path) == -1:
+#         raise FrewError(
+#             'Frew model failed to open.'
+#         )
+#     model.Analyse(self.num_stages-1)
+#     model.Save()
+#     model.Close()
+#     self.json_data = self._load_data()
+
+
+# def save(self, save_path: str = None) -> None:
+#     """ A method to save the current json data.
+
+#     Parameters
+#     ----------
+#     save_path : str, optional
+#         The path including file name (.json) for the data to be saved to.
+#         If this is not provided, the model at the original file path will
+#         be overwritten.
+
+#     """
+#     if save_path:
+#         if not type(save_path) == str or not save_path.endswith('.json'):
+#             raise FrewError('''
+#                 Unable to save the model. File path must be a valid string
+#                 and end with ".json".
+#             ''')
+#         try:
+#             with open(save_path, 'w') as f:
+#                 f.write(json.dumps(self.json_data))
+#         except FileNotFoundError:
+#             raise FileNotFoundError('''
+#                 Unable to save the model. File path is invalid.
+#             ''')
+#     else:
+#         with open(self.file_path, 'w') as f:
+#             f.write(json.dumps(self.json_data))

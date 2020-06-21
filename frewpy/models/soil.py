@@ -1,7 +1,9 @@
+from typing import List
+
 from .exceptions import FrewError
 
 
-def get_materials(json_data: dict) -> list:
+def get_materials(json_data: dict) -> List[str]:
     """ Gets a list of materials present in the Frew model.
 
     Parameters
@@ -11,7 +13,7 @@ def get_materials(json_data: dict) -> list:
 
     Returns
     -------
-    materials : list
+    materials : List[str]
         A list of the materials in the Frew model.
 
     """
@@ -22,6 +24,7 @@ def get_materials(json_data: dict) -> list:
 
 def get_material_properties():
     pass
+
 
 # def get_material_properties(json_data: dict, material: str) -> dict:
 #     """ Method to return all the properties of a specific material.
