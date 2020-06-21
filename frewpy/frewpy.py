@@ -10,14 +10,12 @@ engineering design software.
 import os
 import json
 
-import win32com.client
-import numpy as np
+import win32com.client  # type: ignore
+import numpy as np  # type: ignore
+from typing import Dict, List
 
-from frewpy.models import (
-    soil,
-    core,
-    wall,
-)
+from frewpy.models import soil, core, wall
+
 from frewpy.models.exceptions import (
     FrewError,
     NodeError,
@@ -25,7 +23,7 @@ from frewpy.models.exceptions import (
 )
 
 
-class FrewModel():
+class FrewModel:
     """ A class used to establish a connection to any Frew model and to
     manipulate it as required using pythonic terminology.
 
@@ -50,23 +48,25 @@ class FrewModel():
         All water related methods.
 
     """
-    def __init__(self, file_path):
-        self.file_path = file_path
+    def __init__(self, file_path: str) -> None:
+        self.file_path: str = file_path
 
         # Run checks, convert model to json file, remove results
-        self.path_exists = core.check_path(self.file_path)
-        self.file_extension = core.check_extension(self.file_path)
-        self.json_data = core.load_data(self.file_path)
+        self.path_exists: bool = core.check_path(self.file_path)
+        self.file_extension: str = core.check_extension(self.file_path)
+        self.json_data: Dict[str, list] = core.load_data(self.file_path)
         # if self.file_extension == 'fwd':
         #     self.file_path = self._model_to_json()
 
-        # self.file_name = os.path.basename(self.file_path)
-        # self.folder_path = os.path.dirname(self.file_path)
+        self.file_name: str = os.path.basename(self.file_path)
+        self.folder_path: str = os.path.dirname(self.file_path)
 
         # # Get key information from json file
-        self.titles = core.get_titles(self.json_data)
-        self.file_history = core.get_file_history(self.json_data)
-        self.file_version = core.get_file_version(self.json_data)
+        self.titles: Dict[str, str] = core.get_titles(self.json_data)
+        self.file_history: List[Dict[str, str]] = core.get_file_history(
+            self.json_data
+        )
+        self.file_version: str = core.get_file_version(self.json_data)
         self.frew_version = core.get_frew_version(self.json_data)
         self.num_stages = core.get_num_stages(self.json_data)
         self.stage_names = core.get_stage_names(

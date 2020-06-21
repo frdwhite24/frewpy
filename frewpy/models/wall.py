@@ -1,6 +1,7 @@
-import matplotlib.pyplot as plt
-import matplotlib.backends.backend_pdf as pltexp
-import pandas as pd
+import matplotlib.pyplot as plt  # type: ignore
+import matplotlib.backends.backend_pdf as pltexp  # type: ignore
+import pandas as pd  # type: ignore
+from typing import Dict, List
 
 from .exceptions import FrewError
 
@@ -60,7 +61,7 @@ def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
         raise FrewError('''
             No results in the model, please analyse the model first.
         ''')
-    wall_results = {}
+    wall_results: Dict[int, dict] = {}
     for stage in range(num_stages):
         wall_results[stage] = {}
         for result_set in json_data['Frew Results']:
@@ -115,8 +116,8 @@ def results_to_excel(
     None
 
     """
-    export_data = {}
-    design_cases = wall_results[0].keys()
+    export_data: Dict[str, dict] = {}
+    design_cases: List[str] = wall_results[0].keys()
     excel_path = f'{file_path.rsplit(".", 1)[0]}_results.xlsx'
 
     for design_case in design_cases:

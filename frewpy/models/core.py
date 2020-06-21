@@ -1,8 +1,9 @@
 import json
 import os
-import numpy as np
+import numpy as np  # type: ignore
+from typing import Dict, List
 
-from .exceptions import FrewpyFileExtensionNotRecognised, FrewError
+from .exceptions import FrewpyFileExtensionNotRecognised, FrewError, NodeError
 
 
 def check_path(file_path: str) -> bool:
@@ -40,7 +41,7 @@ def check_extension(file_path: str) -> str:
         The file extension of the file path passed into the function.
 
     """
-    file_extension = os.path.basename(
+    file_extension: str = os.path.basename(
         file_path
     ).rsplit('.', 1)[1].lower()
     if file_extension not in ['json']:
@@ -66,8 +67,7 @@ def load_data(file_path: str) -> dict:
 
     """
     with open(file_path) as file:
-        json_data = json.loads(file.read())
-    return json_data
+        return json.loads(file.read())
 
 
 def clear_results(json_data: dict) -> dict:
@@ -91,7 +91,7 @@ def clear_results(json_data: dict) -> dict:
     return json_data
 
 
-def get_titles(json_data: dict) -> dict:
+def get_titles(json_data: dict) -> Dict[str, str]:
     """ Returns the titles within the json model.
 
     Parameters
@@ -106,15 +106,14 @@ def get_titles(json_data: dict) -> dict:
 
     """
     try:
-        titles = json_data['OasysHeader'][0]['Titles'][0]
+        return json_data['OasysHeader'][0]['Titles'][0]
     except KeyError:
         raise FrewError('Unable to retreive title information.')
     except IndexError:
         raise FrewError('Unable to retreive title information.')
-    return titles
 
 
-def get_file_history(json_data: dict) -> list:
+def get_file_history(json_data: dict) -> List[Dict[str, str]]:
     """ Returns the file history of the Frew model.
 
     Parameters
@@ -129,13 +128,12 @@ def get_file_history(json_data: dict) -> list:
 
     """
     try:
-        file_history = json_data['File history']
+        return json_data['File history']
     except KeyError:
         raise FrewError('Unable to retreive file history.')
-    return file_history
 
 
-def get_file_version(json_data: dict) -> str:
+def get_file_version(json_data: Dict[str, list]) -> str:
     """ Returns the file version of the Frew model.
 
     Parameters
@@ -150,7 +148,7 @@ def get_file_version(json_data: dict) -> str:
 
     """
     try:
-        file_version = (
+        return (
             json_data['OasysHeader'][0]['Program title'][0][
                 'FileVersion'
             ])
@@ -158,7 +156,6 @@ def get_file_version(json_data: dict) -> str:
         raise FrewError('Unable to retreive file version.')
     except IndexError:
         raise FrewError('Unable to retreive file version.')
-    return file_version
 
 
 def get_frew_version(json_data: dict) -> str:
