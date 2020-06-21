@@ -7,5 +7,6 @@ venv.bat
 /models/*.pdf
 /docs/build/*
 !/docs/build/.gitkeep
+/development_kit/models/*.xlsx
 newcert.pem.txt
 banana.py
