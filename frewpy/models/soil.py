@@ -1,10 +1,10 @@
-from typing import List
+from typing import List, Dict, Union
 
 from .exceptions import FrewError
 
 
 def get_materials(json_data: dict) -> List[str]:
-    """ Gets a list of materials present in the Frew model.
+    """ Get names of all the materials used within the Frew model.
 
     Parameters
     ----------
@@ -22,36 +22,33 @@ def get_materials(json_data: dict) -> List[str]:
     return [material_dict['Name'] for material_dict in json_data['Materials']]
 
 
-def get_material_properties():
-    pass
+def get_material_properties(
+    json_data: dict, material: str
+) -> Dict[str, Union[float, int, dict, bool]]:
+    """ Get all the properties of a specific material.
 
+    Parameters
+    ----------
+    json_data : dict
+        A Python dictionary of the data held within the json model file.
+    material : str
+        The name of the material to return the properties for.
 
-# def get_material_properties(json_data: dict, material: str) -> dict:
-#     """ Method to return all the properties of a specific material.
+    Returns
+    -------
+    material_properties : Dict[str, Union[float, int, dict, bool]]
+        The properties of the input material.
 
-#     Parameters
-#     ----------
-#     material : str
-#         The name of the material to return the properties for.
+    """
 
-#     Returns
-#     -------
-#     material_properties : dict
-#         A sentence explaining what the variable is.
-
-#     """
-
-#     if not type(material) == str:
-#         raise FrewError('Input material must be a string.')
-#     if not json_data.get('Materials', False):
-#         raise FrewError('No materials defined in the model')
-#     material_properties = False
-#     for material_dict in json_data['Materials']:
-#         if material_dict['Name'] == material:
-#             material_properties = material_dict
-#     if not material_properties:
-#         raise FrewError(f'No material called {material} in the model.')
-#     return material_properties
+    if type(material) != str:
+        raise FrewError('Input material must be a string.')
+    if not json_data.get('Materials', False):
+        raise FrewError('No materials defined in the model')
+    for material_dict in json_data['Materials']:
+        if material_dict['Name'] == material:
+            return material_dict
+    raise FrewError(f'No material called {material} in the model.')
 
 
 # def get_soil_pressures(self) -> dict:

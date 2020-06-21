@@ -10,7 +10,7 @@ engineering design software.
 import os
 import json
 
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from frewpy.models import soil, core, wall
 from frewpy.models.exceptions import (
@@ -26,40 +26,51 @@ class FrewModel:
 
     ...
 
-    Methods
-    -------
-    get_materials()
-        Get a list of materials used within the Frew model.
-
     Attributes
     ----------
-    file_path : str
-        The absolute file path to the Frew model.
     file_extension : str
         The file extension of the Frew model.
-    json_data : Dict[str, list]
-        The Frew model data loaded in as a Python dictionary.
+    file_history : List[Dict[str, str]]
+        Records of when the file has been opened in Frew and by which user.
     file_name : str
         The file name of the Frew model including extension.
+    file_path : str
+        The absolute file path to the Frew model.
+    file_version : str
+        The version of the model file showing the exact build of Frew.
     folder_path : str
         The absolute folder path to the Frew model, not including the file
         name.
-    titles : Dict[str, str]
-        The project titles including Job Number, Job Title, Sub Title,
-        Calculation Heading, Initials, and Notes.
-    file_history : List[Dict[str, str]]
-        Records of when the file has been opened in Frew and by which user.
-    file_version : str
-        The version of the model file showing the exact build of Frew.
     frew_version : str
         The overall Frew version in which the model was created.
+    json_data : Dict[str, list]
+        The Frew model data loaded in as a Python dictionary.
+    num_nodes : int
+        The number of nodes in the Frew model. This is common across all stages
+        of the Frew model.
     num_stages : int
         The number of stages in the Frew model.
     stage_names : List[str]
         The names of all the stages in the Frew model.
-    num_nodes : int
-        The number of nodes in the Frew model. This is common across all stages
-        of the Frew model.
+    titles : Dict[str, str]
+        The project titles including Job Number, Job Title, Sub Title,
+        Calculation Heading, Initials, and Notes.
+
+    Methods
+    -------
+    get_materials() -> List[str]
+        Get names of all the materials used within the Frew model.
+    get_material_properties(material: str) -> Dict[str, Union[float, int, dict, bool]]
+        Get the properties of a material in the Frew model.
+    get_node_levels() -> List[float]
+        Get the levels of each node in the Frew model.
+    get_results() -> Dict[int, dict]
+        Get the shear, bending moment and displacement of the wall for each
+        stage, node and design case.
+    results_to_excel() -> None
+        Export the wall results to an excel file where each worksheet is a
+        design case. The spreadsheet will be output to the same folder as the
+        models with the suffix '_results'.
 
     """
     def __init__(self, file_path: str) -> None:
@@ -93,15 +104,28 @@ class FrewModel:
 
     # Soil based methods
     def get_materials(self) -> List[str]:
-        """ Get the materials in the Frew model.
+        """ Get names of all the materials used within the Frew model.
 
         Returns
         -------
         materials : List[str]
-            A names of the materials in the Frew model.
+            The names of the materials in the Frew model.
 
         """
         return soil.get_materials(self.json_data)
+
+    def get_material_properties(
+        self, material: str
+    ) -> Dict[str, Union[float, int, dict, bool]]:
+        """ Get the properties of a material in the Frew model.
+
+        Returns
+        -------
+        material_properties : Dict[str, Union[float, int, dict, bool]]
+            The properties of the input material.
+
+        """
+        return soil.get_material_properties(self.json_data, material)
 
     # Wall based methods
     def get_node_levels(self) -> List[float]:
