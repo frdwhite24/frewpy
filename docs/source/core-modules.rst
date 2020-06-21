@@ -9,7 +9,7 @@ The frewpy library is made up of multiple core modules. These core modules are b
 Core
 ====
 
-.. automodule:: frewpy.models.core
+.. autoclass:: frewpy.models.core
    :members:
 
 ---------

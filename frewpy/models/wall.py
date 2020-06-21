@@ -6,7 +6,7 @@ from typing import Dict, List
 from .exceptions import FrewError
 
 
-def get_node_levels(json_data: dict, num_nodes: int) -> list:
+def get_node_levels(json_data: dict, num_nodes: int) -> List[float]:
     """ Function to get the levels of the nodes in a Frew model.
 
     Parameters
@@ -18,7 +18,7 @@ def get_node_levels(json_data: dict, num_nodes: int) -> list:
 
     Returns
     -------
-    node_levels : list
+    node_levels : List[float]
         The levels of each node in a Frew model.
 
     """
@@ -38,9 +38,13 @@ def get_node_levels(json_data: dict, num_nodes: int) -> list:
     return [node_information[node]['Level'] for node in range(num_nodes)]
 
 
-def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
+def get_results(
+    json_data: dict,
+    num_nodes: int,
+    num_stages: int
+) -> Dict[int, dict]:
     """ Function to get the shear, bending moment and displacement of the
-    wall for each stage and node.
+    wall for each stage, node, and design case.
 
     Parameters
     ----------
@@ -53,7 +57,7 @@ def get_results(json_data: dict, num_nodes: int, num_stages: int) -> dict:
 
     Returns
     -------
-    wall_results : dict
+    wall_results : Dict[int, dict]
         The shear, bending and displacement of the wall.
 
     """
@@ -122,6 +126,7 @@ def results_to_excel(
 
     for design_case in design_cases:
         export_data[design_case] = {
+            'Node #': [],
             'Node levels': [],
             'Stage': [],
             'Bending': [],
@@ -129,13 +134,15 @@ def results_to_excel(
             'Displacement': [],
         }
         for stage in range(num_stages):
+            node_array = [node for node in range(1, num_nodes+1)]
             stage_array = [stage] * num_nodes
             bending_results = wall_results[stage][design_case]['bending']
             shear_results = wall_results[stage][design_case]['shear']
             displacement_results = (
                 wall_results[stage][design_case]['displacement']
             )
-
+            
+            export_data[design_case]['Node #'].extend(node_array)
             export_data[design_case]['Node levels'].extend(node_levels)
             export_data[design_case]['Stage'].extend(stage_array)
             export_data[design_case]['Bending'].extend(bending_results)
@@ -143,11 +150,20 @@ def results_to_excel(
             export_data[design_case]['Displacement'].extend(
                 displacement_results
             )
+    try:
+        with pd.ExcelWriter(excel_path) as writer:
+            for design_case in design_cases:
+                export_data_df = pd.DataFrame(export_data[design_case])
+                export_data_df.to_excel(
+                    writer,
+                    sheet_name=design_case,
+                    index=False,
+                )
+    except PermissionError:
+        raise FrewError('''
+            Please make sure you have closed the results spreadsheet.
+        ''')
 
-    with pd.ExcelWriter(excel_path) as writer:
-        for design_case in design_cases:
-            export_data_df = pd.DataFrame(export_data[design_case])
-            export_data_df.to_excel(writer, sheet_name=design_case)
 
 # def get_wall_stiffness() -> dict:
 #     """ Function to get the stiffness of the wall for each stage and node.

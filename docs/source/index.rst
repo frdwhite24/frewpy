@@ -8,6 +8,7 @@ A library to wrap the Oasys Frew COM interface with pythonic terms and object or
    :caption: Table of Contents
 
    getting-started
+   FrewModel <frewmodel>
    core-modules
    contributing
    changelog
