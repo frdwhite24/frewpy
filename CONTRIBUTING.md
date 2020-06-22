@@ -1,32 +1,12 @@
 ## Introduction
 
-### Write something nice here!
+Firstly, thank you for considering to contribute towards frewpy, it is greatly appreciated and will definitely benefit both the wider community and also your own technical development. Please take your time when reading this contribution guide as it will make the overall experience much easier, and explain why things the way they are. It will also make it much more straight forward for the core developers to coordinate all the contributions to keep the project on the right tracks. In return, the core developers should reciprocate the care when addressing your issue, assessing changes and helping you finalize your merge requests.
 
-> First off, thank you for considering contributing to Active Admin. It's people like you that make Active Admin such a great tool.
+There are many ways to contribute, from submitting a feature request on the GitLab repository, to extending the core functionality of the library so that it comfortably enables engineers to do everything they require with Frew. This core functionality could be as simple as retrieving information from a Frew model, or as complex as enabling quicker design iterations or integration with other Oasys software. Other possible contributions could be providing examples of the library being used, and detailed reporting of any bugs to ensure it is a clean, reliable library for anyone to use.
 
-[source: [Active Admin](https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md)] **Need more inspiration?** [1][read the docs](http://read-the-docs.readthedocs.org/en/latest/contribute.html) [2][mustache.js](https://github.com/janl/mustache.js/#contributing)
+Please don't submit issues for non-frewpy related problems. This is to ensure the issues are clear and helpful for the community to browse and for developers to use to progress the project. Feature requests where frewpy is suggested to be used to carry out the whole design process will be closed and asked to be broken down into smaller, feature-specific requests. The intention of frewpy is to enable engineers to carry out their design work as a tool in their arsenal, not simply output a finished detailed design (at the moment anyway!).
 
-### Tell them why they should read your guidelines.
-
-> Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue, assessing changes, and helping you finalize your pull requests.
-
-[source: [Hoodie](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md)]
-
-### Explain what kinds of contributions you are looking for.
-
-Keep an open mind! Improving documentation, bug triaging, or writing tutorials are all examples of helpful contributions that mean less work for you.
-
-> Elasticsearch is an open source project and we love to receive contributions from our community — you! There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code which can be incorporated into Elasticsearch itself.
-
-[source: [Elasticsearch](https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md)] **Need more inspiration?** [1][devise](https://github.com/plataformatec/devise/wiki/Contributing) [2][geocoder](https://github.com/alexreisner/geocoder#known-issues) (“known issues”)
-
-### Explain contributions you are NOT looking for (if any).
-
-Again, defining this up front means less work for you. If someone ignores your guide and submits something you don’t want, you can simply close it and point to your policy.
-
-> Please, don't use the issue tracker for [support questions]. Check whether the #pocoo IRC channel on Freenode can help with your issue. If your problem is not strictly Werkzeug or Flask specific, #python is generally more active. Stack Overflow is also worth considering.
-
-[source: [Flask](https://github.com/pallets/flask/blob/master/CONTRIBUTING.rst)] **Need more inspiration?** [1][cucumber-ruby](https://github.com/cucumber/cucumber-ruby/blob/master/CONTRIBUTING.md#about-to-create-a-new-github-issue) [2][read the docs](http://read-the-docs.readthedocs.org/en/latest/open-source-philosophy.html#unsupported)
+TEMPLATE FROM HERE
 
 ## Ground Rules
 
@@ -199,3 +179,5 @@ These sections are not necessary, but can help streamline the contributions you 
 ### Explain if you use any labeling conventions for issues.
 
 **Need inspiration?** [1][standardissuelabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2][atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
+
+[Source for the template of the contributions guide](https://github.com/nayafia/contributing-template)
