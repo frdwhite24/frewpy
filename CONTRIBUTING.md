@@ -10,7 +10,7 @@ TEMPLATE FROM HERE
 
 ## Ground Rules
 
-### Set expectations for behavior (yours, and theirs).
+### Set expectations for behavior (yours, and theirs)
 
 This includes not just how to communicate with others (being respectful, considerate, etc) but also technical responsibilities (importance of testing, project dependencies, etc). Mention and link to your code of conduct, if you have one.
 
