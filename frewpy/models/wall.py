@@ -129,9 +129,9 @@ def results_to_excel(
             'Node #': [],
             'Node levels': [],
             'Stage': [],
-            'Bending': [],
-            'Shear': [],
-            'Displacement': [],
+            'Bending (kNm/m)': [],
+            'Shear (kN/m)': [],
+            'Displacement (mm)': [],
         }
         for stage in range(num_stages):
             node_array = [node for node in range(1, num_nodes+1)]
@@ -141,7 +141,7 @@ def results_to_excel(
             displacement_results = (
                 wall_results[stage][design_case]['displacement']
             )
-            
+
             export_data[design_case]['Node #'].extend(node_array)
             export_data[design_case]['Node levels'].extend(node_levels)
             export_data[design_case]['Stage'].extend(stage_array)

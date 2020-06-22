@@ -143,7 +143,7 @@ def get_file_version(json_data: Dict[str, list]) -> str:
 
     Returns
     -------
-    file_version : list
+    file_version : str
         The file version of the Frew model.
 
     """
@@ -159,6 +159,19 @@ def get_file_version(json_data: Dict[str, list]) -> str:
 
 
 def get_frew_version(json_data: dict) -> str:
+    """ Returns the frew version required for the Frew model.
+
+    Parameters
+    ----------
+    json_data : dict
+        A Python dictionary of the data held within the json model file.
+
+    Returns
+    -------
+    frew_version : str
+        The file version of the Frew model.
+
+    """
     try:
         return json_data[
             'OasysHeader'
@@ -223,7 +236,7 @@ def get_num_nodes(json_data: dict, num_stages: int) -> int:
         the same for every stage.
 
     """
-    num_nodes = []
+    num_nodes: List[int] = []
     for stage in range(num_stages):
         if not json_data['Stages'][stage].get('GeoFrewNodes', False):
             return 0
