@@ -2,7 +2,7 @@ import json
 import os
 from typing import Dict, List, Union
 
-from .exceptions import FrewpyFileExtensionNotRecognised, FrewError, NodeError
+from .exceptions import FrewError
 
 
 def _check_json_data(json_data: dict):

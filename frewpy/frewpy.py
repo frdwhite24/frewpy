@@ -12,7 +12,7 @@ import json
 
 from typing import Dict, List, Union
 
-from frewpy.models import soil, core, wall
+from frewpy.models import soil, core, wall, struts
 from frewpy.models.exceptions import (
     FrewError,
     NodeError,
@@ -73,6 +73,7 @@ class FrewModel:
         models with the suffix '_results'.
 
     """
+
     def __init__(self, file_path: str) -> None:
         self.file_path: str = file_path
 
@@ -94,12 +95,10 @@ class FrewModel:
         self.frew_version: str = core.get_frew_version(self.json_data)
         self.num_stages: int = core.get_num_stages(self.json_data)
         self.stage_names: List[str] = core.get_stage_names(
-            self.json_data,
-            self.num_stages,
+            self.json_data, self.num_stages,
         )
         self.num_nodes: int = core.get_num_nodes(
-            self.json_data,
-            self.num_stages,
+            self.json_data, self.num_stages,
         )
 
     # Soil based methods
@@ -137,10 +136,7 @@ class FrewModel:
             The levels of each node in the Frew model.
 
         """
-        return wall.get_node_levels(
-            self.json_data,
-            self.num_nodes,
-        )
+        return wall.get_node_levels(self.json_data, self.num_nodes,)
 
     def get_results(self) -> Dict[int, dict]:
         """ Get the shear, bending moment and displacement of the wall for each
@@ -153,9 +149,7 @@ class FrewModel:
 
         """
         return wall.get_results(
-            self.json_data,
-            self.num_nodes,
-            self.num_stages,
+            self.json_data, self.num_nodes, self.num_stages,
         )
 
     def results_to_excel(self) -> None:
@@ -169,14 +163,9 @@ class FrewModel:
 
         """
         wall_results = wall.get_results(
-            self.json_data,
-            self.num_nodes,
-            self.num_stages,
+            self.json_data, self.num_nodes, self.num_stages,
         )
-        node_levels = wall.get_node_levels(
-            self.json_data,
-            self.num_nodes,
-        )
+        node_levels = wall.get_node_levels(self.json_data, self.num_nodes,)
         return wall.results_to_excel(
             self.file_path,
             node_levels,
@@ -184,3 +173,54 @@ class FrewModel:
             self.num_nodes,
             self.num_stages,
         )
+
+    # Strut based methods
+    def get_struts(self) -> List[dict]:
+        """ Get a list of all the strut objects within the Frew model.
+
+        Returns
+        -------
+        struts : List[dict]
+            A list of struts in the Frew model.
+
+        """
+        return struts.get_struts(self.json_data)
+
+    def get_strut_by_node(
+        self, node: int
+    ) -> Dict[str, Union[float, int, bool]]:
+        """ Get a strut object at the specified node location within the Frew
+        model. If more than one strut is found, the first strut occurence is
+        returned.
+
+        Parameters
+        ----------
+        node : int
+            The node number of the strut
+
+        Returns
+        -------
+        strut : Dict[str, Union[float, int, bool]]
+            A strut object represented as a dictionary in the Frew model
+            matching the input node number.
+
+        """
+        return struts.get_strut_by_node(self.json_data, node)
+
+    def get_struts_by_node(self, node: int) -> List[dict]:
+        """ Get a list of strut objects at the specified node location within
+        the Frew model.
+
+        Parameters
+        ----------
+        node : int
+            The node number of the strut
+
+        Returns
+        -------
+        struts : Dict[str, Union[float, int, bool]]
+            A list of struts in the Frew model that match the input node
+            number.
+
+        """
+        return struts.get_struts_by_node(self.json_data, node)
