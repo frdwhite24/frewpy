@@ -6,26 +6,21 @@ There are many ways to contribute, from submitting a feature request on the GitL
 
 Please don't submit issues for non-frewpy related problems. This is to ensure the issues are clear and helpful for the community to browse and for developers to use to progress the project. Feature requests where frewpy is suggested to be used to carry out the whole design process will be closed and asked to be broken down into smaller, feature-specific requests. The intention of frewpy is to enable engineers to carry out their design work as a tool in their arsenal, not simply output a finished detailed design (at the moment anyway!).
 
-TEMPLATE FROM HERE
+## Responsibilities
 
-## Ground Rules
-
-### Set expectations for behavior (yours, and theirs)
-
-This includes not just how to communicate with others (being respectful, considerate, etc) but also technical responsibilities (importance of testing, project dependencies, etc). Mention and link to your code of conduct, if you have one.
-
-> Responsibilities
->
-> - Ensure cross-platform compatibility for every change that's accepted. Windows, Mac, Debian & Ubuntu Linux.
-> - Ensure that code that goes into core meets all requirements in this checklist: https://gist.github.com/audreyr/4feef90445b9680475f2
-> - Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get community feedback.
-> - Don't add any classes to the codebase unless absolutely needed. Err on the side of using functions.
-> - Keep feature versions as small as possible, preferably one new feature per version.
-> - Be welcoming to newcomers and encourage diverse new contributors from all backgrounds. See the [Python Community Code of Conduct](https://www.python.org/psf/codeofconduct/).
-
-[source: [cookiecutter](https://github.com/audreyr/cookiecutter/blob/master/CONTRIBUTING.rst)] **Need more inspiration?** [1][celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#community-code-of-conduct) [2][geocoder](https://github.com/alexreisner/geocoder#contributing)
+1. Ensure all code is fully tested and passing with `pytest` before merging in the branch.
+2. Ensure all code is without linting issues (using `pycodestyle`) and is fully statically typed and checked with `mypy`.
+3. Ensure that where functionality is changed or extended, the documentation is changed to reflect the work that was done.
+4. Keep the development going in the right direction by following the roadmap and associated issues.
+5. Where possible, use existing functions to extend the functionality before writing new functions.
+6. Report bugs when found using the bug template so that all important information is logged.
+7. Create issues for any major changes and enhancements that you wish to make so that it can be discussed transparently and receive appropriate community feedback before being implemented.
+8. Keep feature-specific development small and incremental, preferably not one whole workflow but pieces of that workflow.
+9. Encourage others to contribute and benefit from frewpy to help expand the user base and community.
 
 ## Your First Contribution
+
+Unsure where to begin with contributing to frewpy? You'll probably want to pick up one of the issues marked _"good first commit"_. Issues aren't necessarily just problems with the library, issues are GitLab's approach to an all encompassing item list, where labels define the nature of the item.
 
 Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
 
