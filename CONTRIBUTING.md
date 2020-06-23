@@ -22,6 +22,8 @@ Please don't submit issues for non-frewpy related problems. This is to ensure th
 
 Unsure where to begin with contributing to frewpy? You'll probably want to pick up one of the issues marked _"good first commit"_. Issues aren't necessarily just problems with the library, issues are GitLab's approach to an all encompassing item list, where labels define the nature of the item.
 
+TEMPLATE FROM HERE
+
 Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
 
 > Unsure where to begin contributing to Atom? You can start by looking through these beginner and help-wanted issues:
