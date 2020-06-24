@@ -1,13 +1,39 @@
+import os
+
 import matplotlib.pyplot as plt  # type: ignore
 import matplotlib.backends.backend_pdf as pltexp  # type: ignore
 import pandas as pd  # type: ignore
 from typing import Dict, List
 
 from .exceptions import FrewError
-from frewpy.utils import get_num_nodes, get_num_stages
+from frewpy.utils import (
+    get_num_nodes,
+    get_num_stages,
+    get_titles,
+)
 
 
 class Wall:
+    """ A class used to contain any wall related functionality of frewpy.
+
+    ...
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_node_levels() -> List[float]
+        Get the levels of each node in the Frew model.
+    get_results() -> Dict[int, dict]
+        Get the shear, bending moment and displacement of the wall for each
+        stage, node and design case.
+    results_to_excel(out_folder: str) -> None
+        Export the wall results to an excel file where each worksheet is a
+        design case. The spreadsheet will be output to the folder given.
+
+    """
     def __init__(self, json_data):
         self.json_data = json_data
 
@@ -79,29 +105,35 @@ class Wall:
                     )
         return wall_results
 
-    def results_to_excel(self, out_file_path: str) -> None:
+    def results_to_excel(self, out_folder: str) -> None:
         """ Method to exports the wall results to an excel file where each
         sheet in the spreadsheet is a design case.
 
         Parameters
         ----------
-        out_file_path : str
-            The path to save the results at. Must include file name.
+        out_folder : str
+            The folder path to save the results at.
 
         Returns
         -------
         None
 
         """
-        num_nodes = get_num_nodes(self.json_data)
-        num_stages = get_num_stages(self.json_data)
-        node_levels = self.get_node_levels()
-        wall_results = self.get_results()
+        if not os.path.exists(out_folder):
+            raise FrewError(f'Path {out_folder} does not exist.')
+
+        num_nodes: int = get_num_nodes(self.json_data)
+        num_stages: int = get_num_stages(self.json_data)
+        node_levels: List[float] = self.get_node_levels()
+        wall_results: Dict[int, dict] = self.get_results()
+        titles: Dict[str, str] = get_titles(self.json_data)
+
+        job_title: str = titles['JobTitle']
+        sub_title: str = titles['Subtitle'][:20]
+        file_name: str = f'{job_title}_{sub_title}_results.xlsx'
 
         export_data: Dict[str, dict] = {}
         design_cases: List[str] = wall_results[0].keys()
-
-        # input function to check out file path validity
 
         for design_case in design_cases:
             export_data[design_case] = {
@@ -132,7 +164,7 @@ class Wall:
                     displacement_results
                 )
         try:
-            with pd.ExcelWriter(out_file_path) as writer:
+            with pd.ExcelWriter(os.path.join(out_folder, file_name)) as writer:
                 for design_case in design_cases:
                     export_data_df = pd.DataFrame(export_data[design_case])
                     export_data_df.to_excel(

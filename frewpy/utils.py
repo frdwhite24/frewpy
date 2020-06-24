@@ -10,26 +10,6 @@ from frewpy.models.exceptions import (
 )
 
 
-def check_path(file_path: str) -> bool:
-    """ Checks the file path exists.
-
-    Parameters
-    ----------
-    file_path : str
-        Absolute file path to the Frew model.
-
-    Returns
-    -------
-    path_exists : bool
-        Returns True if the file path exists.
-
-    """
-    if not os.path.exists(file_path):
-        raise FileNotFoundError
-    else:
-        return True
-
-
 def check_extension(file_path: str) -> str:
     """ Checks whether the file extension is in the list of accepted file
     extensions.

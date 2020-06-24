@@ -4,6 +4,22 @@ from .exceptions import FrewError
 
 
 class Soil:
+    """ A class used to contain any soil related functionality of frewpy.
+
+    ...
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_materials() -> List[str]
+        Get names of all the materials used within the Frew model.
+    get_material_properties(material: str) -> Dict[str, Union[float, int, dict, bool]]
+        Get the properties of a material in the Frew model.
+
+    """
     def __init__(self, json_data):
         self.json_data = json_data
 

@@ -14,7 +14,6 @@ from typing import Dict, List, Union
 
 from frewpy.models import Wall, Soil, Water, Calculation, Strut
 from frewpy.utils import (
-    check_path,
     check_extension,
     load_data
 )
@@ -65,7 +64,8 @@ class FrewModel:
     def __init__(self, file_path: str) -> None:
         self.file_path: str = file_path
 
-        path_exists: bool = check_path(self.file_path)
+        if not os.path.exists(self.file_path):
+            raise FrewError('Frew model file path does not exists.')
         self.file_extension: str = check_extension(self.file_path)
         self.json_data: Dict[str, list] = load_data(self.file_path)
         self.wall = Wall(self.json_data)
