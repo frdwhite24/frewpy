@@ -4,7 +4,7 @@ import pandas as pd  # type: ignore
 from typing import Dict, List
 
 from .exceptions import FrewError
-from .utils import get_num_nodes, get_num_stages
+from frewpy.utils import get_num_nodes, get_num_stages
 
 
 class Wall:
@@ -80,8 +80,8 @@ class Wall:
         return wall_results
 
     def results_to_excel(self, out_file_path: str) -> None:
-        """ Exports the wall results to an excel file where each sheet in the
-        spreadsheet is a design case.
+        """ Method to exports the wall results to an excel file where each
+        sheet in the spreadsheet is a design case.
 
         Parameters
         ----------

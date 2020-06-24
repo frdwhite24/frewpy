@@ -3,52 +3,53 @@ from typing import List, Dict, Union
 from .exceptions import FrewError
 
 
-def get_materials(json_data: dict) -> List[str]:
-    """ Get names of all the materials used within the Frew model.
+class Soil:
+    def __init__(self, json_data):
+        self.json_data = json_data
 
-    Parameters
-    ----------
-    json_data : dict
-        A Python dictionary of the data held within the json model file.
+    def get_materials(self) -> List[str]:
+        """ Method to get names of all the materials used within the Frew
+        model.
 
-    Returns
-    -------
-    materials : List[str]
-        A list of the materials in the Frew model.
+        Returns
+        -------
+        materials : List[str]
+            A list of the materials in the Frew model.
 
-    """
-    if not json_data.get('Materials', False):
-        raise FrewError('No materials defined in the model')
-    return [material_dict['Name'] for material_dict in json_data['Materials']]
+        """
+        if not self.json_data.get('Materials', False):
+            raise FrewError('No materials defined in the model')
+        return [
+            material_dict['Name'] for material_dict in self.json_data[
+                'Materials'
+            ]
+        ]
 
+    def get_material_properties(
+        self, material: str
+    ) -> Dict[str, Union[float, int, dict, bool]]:
+        """ Method to get all the properties of a specific material.
 
-def get_material_properties(
-    json_data: dict, material: str
-) -> Dict[str, Union[float, int, dict, bool]]:
-    """ Get all the properties of a specific material.
+        Parameters
+        ----------
+        material : str
+            The name of the material to return the properties for.
 
-    Parameters
-    ----------
-    json_data : dict
-        A Python dictionary of the data held within the json model file.
-    material : str
-        The name of the material to return the properties for.
+        Returns
+        -------
+        material_properties : Dict[str, Union[float, int, dict, bool]]
+            The properties of the input material.
 
-    Returns
-    -------
-    material_properties : Dict[str, Union[float, int, dict, bool]]
-        The properties of the input material.
+        """
 
-    """
-
-    if type(material) != str:
-        raise FrewError('Input material must be a string.')
-    if not json_data.get('Materials', False):
-        raise FrewError('No materials defined in the model')
-    for material_dict in json_data['Materials']:
-        if material_dict['Name'] == material:
-            return material_dict
-    raise FrewError(f'No material called {material} in the model.')
+        if type(material) != str:
+            raise FrewError('Input material must be a string.')
+        if not self.json_data.get('Materials', False):
+            raise FrewError('No materials defined in the model')
+        for material_dict in self.json_data['Materials']:
+            if material_dict['Name'] == material:
+                return material_dict
+        raise FrewError(f'No material called {material} in the model.')
 
 
 # def get_soil_pressures(self) -> dict:
