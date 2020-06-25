@@ -24,7 +24,10 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'sphinx_rtd_theme',
+    'm2r',
 ]
+
+source_suffix = ['.rst', '.md']
 version = '0.0.0'
 author = 'Fred White'
 

@@ -1,168 +1,181 @@
+import os
+
 import matplotlib.pyplot as plt  # type: ignore
 import matplotlib.backends.backend_pdf as pltexp  # type: ignore
 import pandas as pd  # type: ignore
 from typing import Dict, List
 
 from .exceptions import FrewError
+from frewpy.utils import (
+    get_num_nodes,
+    get_num_stages,
+    get_titles,
+)
 
 
-def get_node_levels(json_data: dict, num_nodes: int) -> List[float]:
-    """ Function to get the levels of the nodes in a Frew model.
+class Wall:
+    """ A class used to contain any wall related functionality of frewpy.
 
-    Parameters
+    ...
+
+    Attributes
     ----------
-    json_data : dict
-        A Python dictionary of the data held within the json model file.
-    num_nodes : int
-        The number of nodes in the Frew model.
-
-    Returns
-    -------
-    node_levels : List[float]
-        The levels of each node in a Frew model.
-
-    """
-    try:
-        node_information = json_data['Stages'][0]['GeoFrewNodes']
-    except KeyError:
-        raise FrewError('Unable to retreive node information.')
-    except IndexError:
-        raise FrewError('Unable to retreive node information.')
-
-    if len(node_information) != num_nodes:
-        raise FrewError('''
-            Number of nodes does not equal the length of the node
-            information
-        ''')
-
-    return [node_information[node]['Level'] for node in range(num_nodes)]
-
-
-def get_results(
-    json_data: dict,
-    num_nodes: int,
-    num_stages: int
-) -> Dict[int, dict]:
-    """ Function to get the shear, bending moment and displacement of the
-    wall for each stage, node, and design case.
-
-    Parameters
-    ----------
-    json_data : dict
-        A Python dictionary of the data held within the json model file.
-    num_nodes : int
-        The number of nodes in the Frew model.
-    num_stages : int
-        The number of stages in the Frew model.
-
-    Returns
-    -------
-    wall_results : Dict[int, dict]
-        The shear, bending and displacement of the wall.
-
-    """
-    if not json_data.get('Frew Results', False):
-        raise FrewError('''
-            No results in the model, please analyse the model first.
-        ''')
-    wall_results: Dict[int, dict] = {}
-    for stage in range(num_stages):
-        wall_results[stage] = {}
-        for result_set in json_data['Frew Results']:
-            result_set_name = result_set['GeoPartialFactorSet']['Name']
-            wall_results[stage][result_set_name] = {
-                'shear': [],
-                'bending': [],
-                'displacement': [],
-            }
-            for node in range(num_nodes):
-                stage_results = (
-                    result_set['Stageresults'][stage]['Noderesults']
-                )
-                wall_results[stage][result_set_name]['shear'].append(
-                    stage_results[node]['Shear']
-                )
-                wall_results[stage][result_set_name]['bending'].append(
-                    stage_results[node]['Bending']
-                )
-                wall_results[stage][result_set_name]['displacement'].append(
-                    stage_results[node]['Displacement']*1000
-                )
-    return wall_results
-
-
-def results_to_excel(
-    file_path: str,
-    node_levels: list,
-    wall_results: dict,
-    num_nodes: int,
-    num_stages: int,
-) -> None:
-    """ Exports the wall results to an excel file where each sheet in the
-    spreadsheet is a design case.
-
-    Parameters
-    ----------
-    file_path : str
-        The file path of the model. This will be used to export the spreadsheet
-        to, and to name the spreadsheet.
-    node_levels : list
-        The levels of each node in a Frew model.
-    wall_results : dict
-        The shear, bending and displacement of the wall.
-    num_nodes : int
-        The number of nodes in the Frew model.
-    num_stages : int
-        The number of stages in the Frew model.
-
-    Returns
-    -------
     None
 
+    Methods
+    -------
+    get_node_levels() -> List[float]
+        Get the levels of each node in the Frew model.
+    get_results() -> Dict[int, dict]
+        Get the shear, bending moment and displacement of the wall for each
+        stage, node and design case.
+    results_to_excel(out_folder: str) -> None
+        Export the wall results to an excel file where each worksheet is a
+        design case. The spreadsheet will be output to the folder given.
+
     """
-    export_data: Dict[str, dict] = {}
-    design_cases: List[str] = wall_results[0].keys()
-    excel_path = f'{file_path.rsplit(".", 1)[0]}_results.xlsx'
+    def __init__(self, json_data):
+        self.json_data = json_data
 
-    for design_case in design_cases:
-        export_data[design_case] = {
-            'Node #': [],
-            'Node levels': [],
-            'Stage': [],
-            'Bending (kNm/m)': [],
-            'Shear (kN/m)': [],
-            'Displacement (mm)': [],
-        }
+    def get_node_levels(self):
+        """ Method to get the levels of the nodes in a Frew model.
+
+        Returns
+        -------
+        node_levels : List[float]
+            The levels of each node in a Frew model.
+
+        """
+        num_nodes = get_num_nodes(self.json_data)
+        try:
+            node_information = self.json_data['Stages'][0]['GeoFrewNodes']
+        except KeyError:
+            raise FrewError('Unable to retreive node information.')
+        except IndexError:
+            raise FrewError('Unable to retreive node information.')
+
+        if len(node_information) != num_nodes:
+            raise FrewError('''
+                Number of nodes does not equal the length of the node
+                information
+            ''')
+        return [node_information[node]['Level'] for node in range(num_nodes)]
+
+    def get_results(self) -> Dict[int, dict]:
+        """ Method to get the shear, bending moment and displacement of the
+        wall for each stage, node, and design case.
+
+        Returns
+        -------
+        wall_results : Dict[int, dict]
+            The shear, bending and displacement of the wall.
+
+        """
+        num_nodes = get_num_nodes(self.json_data)
+        num_stages = get_num_stages(self.json_data)
+
+        if not self.json_data.get('Frew Results', False):
+            raise FrewError('''
+                No results in the model, please analyse the model first.
+            ''')
+        wall_results: Dict[int, dict] = {}
         for stage in range(num_stages):
-            node_array = [node for node in range(1, num_nodes+1)]
-            stage_array = [stage] * num_nodes
-            bending_results = wall_results[stage][design_case]['bending']
-            shear_results = wall_results[stage][design_case]['shear']
-            displacement_results = (
-                wall_results[stage][design_case]['displacement']
-            )
+            wall_results[stage] = {}
+            for result_set in self.json_data['Frew Results']:
+                result_set_name = result_set['GeoPartialFactorSet']['Name']
+                wall_results[stage][result_set_name] = {
+                    'shear': [],
+                    'bending': [],
+                    'displacement': [],
+                }
+                for node in range(num_nodes):
+                    stage_results = (
+                        result_set['Stageresults'][stage]['Noderesults']
+                    )
+                    wall_results[stage][result_set_name]['shear'].append(
+                        stage_results[node]['Shear']
+                    )
+                    wall_results[stage][result_set_name]['bending'].append(
+                        stage_results[node]['Bending']
+                    )
+                    wall_results[stage][result_set_name][
+                        'displacement'
+                    ].append(
+                        stage_results[node]['Displacement']*1000
+                    )
+        return wall_results
 
-            export_data[design_case]['Node #'].extend(node_array)
-            export_data[design_case]['Node levels'].extend(node_levels)
-            export_data[design_case]['Stage'].extend(stage_array)
-            export_data[design_case]['Bending'].extend(bending_results)
-            export_data[design_case]['Shear'].extend(shear_results)
-            export_data[design_case]['Displacement'].extend(
-                displacement_results
-            )
-    try:
-        with pd.ExcelWriter(excel_path) as writer:
-            for design_case in design_cases:
-                export_data_df = pd.DataFrame(export_data[design_case])
-                export_data_df.to_excel(
-                    writer,
-                    sheet_name=design_case,
-                    index=False,
+    def results_to_excel(self, out_folder: str) -> None:
+        """ Method to exports the wall results to an excel file where each
+        sheet in the spreadsheet is a design case.
+
+        Parameters
+        ----------
+        out_folder : str
+            The folder path to save the results at.
+
+        Returns
+        -------
+        None
+
+        """
+        if not os.path.exists(out_folder):
+            raise FrewError(f'Path {out_folder} does not exist.')
+
+        num_nodes: int = get_num_nodes(self.json_data)
+        num_stages: int = get_num_stages(self.json_data)
+        node_levels: List[float] = self.get_node_levels()
+        wall_results: Dict[int, dict] = self.get_results()
+        titles: Dict[str, str] = get_titles(self.json_data)
+
+        job_title: str = titles['JobTitle']
+        sub_title: str = titles['Subtitle'][:20]
+        file_name: str = f'{job_title}_{sub_title}_results.xlsx'
+
+        export_data: Dict[str, dict] = {}
+        design_cases: List[str] = wall_results[0].keys()
+
+        for design_case in design_cases:
+            export_data[design_case] = {
+                'Node #': [],
+                'Node levels': [],
+                'Stage': [],
+                'Bending (kNm/m)': [],
+                'Shear (kN/m)': [],
+                'Displacement (mm)': [],
+            }
+            for stage in range(num_stages):
+                node_array = [node for node in range(1, num_nodes+1)]
+                stage_array = [stage] * num_nodes
+                bending_results = wall_results[stage][design_case]['bending']
+                shear_results = wall_results[stage][design_case]['shear']
+                displacement_results = (
+                    wall_results[stage][design_case]['displacement']
                 )
-    except PermissionError:
-        raise FrewError('''
-            Please make sure you have closed the results spreadsheet.
-        ''')
+
+                export_data[design_case]['Node #'].extend(node_array)
+                export_data[design_case]['Node levels'].extend(node_levels)
+                export_data[design_case]['Stage'].extend(stage_array)
+                export_data[design_case]['Bending (kNm/m)'].extend(
+                    bending_results
+                )
+                export_data[design_case]['Shear (kN/m)'].extend(shear_results)
+                export_data[design_case]['Displacement (mm)'].extend(
+                    displacement_results
+                )
+        try:
+            with pd.ExcelWriter(os.path.join(out_folder, file_name)) as writer:
+                for design_case in design_cases:
+                    export_data_df = pd.DataFrame(export_data[design_case])
+                    export_data_df.to_excel(
+                        writer,
+                        sheet_name=design_case,
+                        index=False,
+                    )
+        except PermissionError:
+            raise FrewError('''
+                Please make sure you have closed the results spreadsheet.
+            ''')
 
 
 # def get_wall_stiffness() -> dict:
