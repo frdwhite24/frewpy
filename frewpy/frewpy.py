@@ -9,13 +9,17 @@ engineering design software.
 
 import os
 import json
-
 from typing import Dict, List, Union
+from uuid import uuid4
+
+from comtypes.client import CreateObject
+from _ctypes import COMError
 
 from frewpy.models import Wall, Soil, Water, Calculation, Strut
 from frewpy.utils import (
     check_extension,
-    load_data
+    load_data,
+    get_num_stages,
 )
 from frewpy.models.exceptions import (
     FrewError,
@@ -63,6 +67,7 @@ class FrewModel:
     """
     def __init__(self, file_path: str) -> None:
         self.file_path: str = file_path
+        self.folder_path: str = os.path.dirname(self.file_path)
 
         if not os.path.exists(self.file_path):
             raise FrewError('Frew model file path does not exists.')
@@ -78,7 +83,6 @@ class FrewModel:
     #         self.file_path = self._model_to_json()
 
     #     self.file_name: str = os.path.basename(self.file_path)
-    #     self.folder_path: str = os.path.dirname(self.file_path)
 
     #     # Get key information from json file
     #     self.titles: Dict[str, str] = core.get_titles(self.json_data)
@@ -117,49 +121,65 @@ class FrewModel:
     # model.Close()
     # return new_file_path
 
-    # def analyse(self) -> None:
-    #     """ Function to open the COM object, analyse it, save it, and close
-    # the
-    #     object.
+    def analyse(self) -> None:
+        """ Function to open the COM object, analyse it, save it, and close
+        the object.
 
-    #     """
-    #     self.json_data = clear_results(self.json_data)
-    #     self.save()
-    #     model = win32com.client.Dispatch("frewLib.FrewComAuto")
-    #     model.Open(self.file_path)
-    #     if model.Open(self.file_path) == -1:
-    #         raise FrewError(
-    #             'Frew model failed to open.'
-    #         )
-    #     model.Analyse(self.num_stages-1)
-    #     model.Save()
-    #     model.Close()
-    #     self.json_data = self._load_data()
+        """
+        num_stages = get_num_stages(self.json_data)
+        temp_file_path = os.path.join(self.folder_path, f'{uuid4()}.json')
+        self.save(temp_file_path)
+        try:
+            model = CreateObject('frewLib.FrewComAuto')
+        except OSError:
+            os.remove(temp_file_path)
+            raise FrewError('Failed to create a COM object.')
+        try:
+            model.Open(temp_file_path)
+        except COMError:
+            os.remove(temp_file_path)
+            raise FrewError('Failed to open the Frew model.')
+        model.DeleteResults()
+        model.Analyse(num_stages)
+        model.SaveAs(temp_file_path)
+        new_data = load_data(temp_file_path)
+        os.remove(temp_file_path)
+        self._clear_json_data()
+        self._refill_json_data(new_data)
 
-    # def save(self, save_path: str = None) -> None:
-    #     """ A method to save the current json data.
+    def _clear_json_data(self):
+        keys = list(self.json_data.keys())
+        for key in keys:
+            del self.json_data[key]
 
-    #     Parameters
-    #     ----------
-    #     save_path : str, optional
-    #         The path including file name (.json) for the data to be saved to.
-    #         If this is not provided, the model at the original file path will
-    #         be overwritten.
+    def _refill_json_data(self, new_data):
+        for key in new_data.keys():
+            self.json_data[key] = new_data[key]
 
-    #     """
-    #     if save_path:
-    #         if not type(save_path) == str or not save_path.endswith('.json'):
-    #             raise FrewError('''
-    #                 Unable to save the model. File path must be a valid string
-    #                 and end with ".json".
-    #             ''')
-    #         try:
-    #             with open(save_path, 'w') as f:
-    #                 f.write(json.dumps(self.json_data))
-    #         except FileNotFoundError:
-    #             raise FileNotFoundError('''
-    #                 Unable to save the model. File path is invalid.
-    #             ''')
-    #     else:
-    #         with open(self.file_path, 'w') as f:
-    #             f.write(json.dumps(self.json_data))
+    def save(self, save_path: str = None) -> None:
+        """ A method to save the current json data.
+
+        Parameters
+        ----------
+        save_path : str, optional
+            The path including file name (.json) for the data to be saved to.
+            If this is not provided, the model at the original file path will
+            be overwritten.
+
+        """
+        if save_path:
+            if type(save_path) != str or not save_path.endswith('.json'):
+                raise FrewError('''
+                    Unable to save the model. File path must be a valid string
+                    and end with ".json".
+                ''')
+            try:
+                with open(save_path, 'w') as f:
+                    f.write(json.dumps(self.json_data))
+            except FileNotFoundError:
+                raise FileNotFoundError('''
+                    Unable to save the model. File path is invalid.
+                ''')
+        else:
+            with open(self.file_path, 'w') as f:
+                f.write(json.dumps(self.json_data))
