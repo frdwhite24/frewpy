@@ -40,6 +40,7 @@ class StrutObj():
 class Strut:
     def __init__(self, json_data: dict):
         self.json_data = json_data
+        self._check_json_data()
         self.strut_dicts = self.json_data["Struts"]
 
     def _check_json_data(self) -> None:
@@ -141,8 +142,13 @@ class Strut:
             strut_dict = self.strut_dicts[struts.id - 1]
             self._set_strut_vals(struts, strut_dict)
 
-    def remove(self, struts: Union[StrutObj, List[StrutObj]]):
-        pass
+    # def remove(self, struts: Union[StrutObj, List[StrutObj]]):
+    #     if type(struts) == list:
+    #         for strut in struts:
+    #             self.strut_dicts.remove(self.strut_dicts[struts.id - 1])
+
+    #     if type(struts) == StrutObj:
+    #         self.strut_dicts.remove(self.strut_dicts[struts.id - 1])
 
     def add(self, struts: Union[StrutObj, List[StrutObj]]):
         pass
