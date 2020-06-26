@@ -10,6 +10,8 @@ from frewpy.utils import (
     get_num_nodes,
     get_num_stages,
     get_titles,
+    get_num_design_cases,
+    get_design_case_names,
 )
 
 
@@ -29,6 +31,7 @@ class Wall:
     get_results() -> Dict[int, dict]
         Get the shear, bending moment and displacement of the wall for each
         stage, node and design case.
+    get_envelopes() -> Dict[]
     results_to_excel(out_folder: str) -> None
         Export the wall results to an excel file where each worksheet is a
         design case. The spreadsheet will be output to the folder given.
@@ -73,11 +76,8 @@ class Wall:
         """
         num_nodes = get_num_nodes(self.json_data)
         num_stages = get_num_stages(self.json_data)
+        self._check_results_present()
 
-        if not self.json_data.get('Frew Results', False):
-            raise FrewError('''
-                No results in the model, please analyse the model first.
-            ''')
         wall_results: Dict[int, dict] = {}
         for stage in range(num_stages):
             wall_results[stage] = {}
@@ -101,9 +101,76 @@ class Wall:
                     wall_results[stage][result_set_name][
                         'displacement'
                     ].append(
-                        stage_results[node]['Displacement']*1000
+                        stage_results[node]['Displacement'] * 1000
                     )
         return wall_results
+
+    def get_envelopes(self) -> Dict[str, dict]:
+        """ Method to return the envelopes of max and min shear, bending and
+        displacements for each design case.
+
+        Returns
+        -------
+        envelopes : Dict[str, dict]
+            The maximum and minimum shear, bending and displacement for each
+            design case for all stages.
+
+        """
+        self._check_results_present()
+        num_stages = get_num_stages(self.json_data)
+        num_nodes = get_num_nodes(self.json_data)
+        design_cases = get_design_case_names(self.json_data)
+        wall_results = self.get_results()
+
+        envelopes = {design_case: {
+                'maximum': {
+                    'shear': [],
+                    'bending': [],
+                    'disp': []
+                },
+                'minimum': {
+                    'shear': [],
+                    'bending': [],
+                    'disp': []
+                }
+            } for design_case in design_cases}
+
+        for design_case in design_cases:
+            for node in range(num_nodes):
+                shear = []
+                bending = []
+                disp = []
+
+                for stage in range(num_stages):
+                    shear.append(
+                        wall_results[stage][design_case]['shear'][node]
+                    )
+                    bending.append(
+                        wall_results[stage][design_case]['bending'][node]
+                    )
+                    disp.append(
+                        wall_results[stage][design_case]['displacement'][node]
+                    )
+
+                envelopes[design_case]['maximum']['shear'].append(
+                    max(shear)
+                )
+                envelopes[design_case]['maximum']['bending'].append(
+                    max(bending)
+                )
+                envelopes[design_case]['maximum']['disp'].append(
+                    max(disp)
+                )
+                envelopes[design_case]['minimum']['shear'].append(
+                    min(shear)
+                )
+                envelopes[design_case]['minimum']['bending'].append(
+                    min(bending)
+                )
+                envelopes[design_case]['minimum']['disp'].append(
+                    min(disp)
+                )
+        return envelopes
 
     def results_to_excel(self, out_folder: str) -> None:
         """ Method to exports the wall results to an excel file where each
@@ -177,6 +244,12 @@ class Wall:
                 Please make sure you have closed the results spreadsheet.
             ''')
 
+    def _check_results_present(self):
+        if not self.json_data.get('Frew Results', False):
+            raise FrewError('''
+                No results in the model, please analyse the model first.
+            ''')
+
 
 # def get_wall_stiffness() -> dict:
 #     """ Function to get the stiffness of the wall for each stage and node.
@@ -197,45 +270,6 @@ class Wall:
 #     return wall_stiffness
 
 
-# def get_envelopes() -> dict:
-#     """ Function to return the envelopes of max and min shear, bending and
-#     displacements.
-
-#     """
-
-#     wall_results = get_results()
-
-#     envelopes = {
-#         'maximum': {},
-#         'minimum': {}
-#     }
-#     for key in envelopes:
-#         envelopes[key] = {
-#             # change these lists into dictionaries with node numbers so
-#             # they are the same format as others
-#             'shear': [],
-#             'bending': [],
-#             'disp': []
-#         }
-
-#     for node in range(0, num_nodes):
-#         shear = []
-#         bending = []
-#         disp = []
-
-#         for stage in range(0, num_stages):
-#             shear.append(wall_results[stage][node+1][0])
-#             bending.append(wall_results[stage][node+1][1])
-#             disp.append(wall_results[stage][node+1][2])
-
-#         envelopes['maximum']['shear'].append(max(shear))
-#         envelopes['maximum']['bending'].append(max(bending))
-#         envelopes['maximum']['disp'].append(max(disp))
-#         envelopes['minimum']['shear'].append(min(shear))
-#         envelopes['minimum']['bending'].append(min(bending))
-#         envelopes['minimum']['disp'].append(min(disp))
-
-#     return envelopes
 
 
 # def plot_results() -> None:
