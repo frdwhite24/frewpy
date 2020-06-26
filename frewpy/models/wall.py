@@ -238,25 +238,28 @@ class Wall:
 
 #     return envelopes
 
-    def plot_wall_results(self, file_path: str):
+    def plot_wall_results(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
         wall for each stage.
 
         Parameters
         ----------
-        file_path : str
-            The file path of the Frew model.
+        out_folder : str
+            The folder path to save the results at.
 
         Returns
         -------
         None
 
         """
-
-        file_name = os.path.basename(file_path.rsplit('.', 1)[0])
+        titles: Dict[str, str] = get_titles(self.json_data)
+        title_name = titles["JobTitle"]
+        
+        if titles.get("Subtitle", False):
+            title_name += f" , {titles['Subtitle']}"
         wall_results = self.get_results()
         node_levels = self.get_node_levels()
         # envelopes = self.get_envelopes()
         envelopes = []
 
-        fp = FrewMPL(file_name, 2, wall_results, node_levels, envelopes)
+        fp = FrewMPL(title_name, 2, wall_results, node_levels, envelopes)

@@ -32,14 +32,14 @@ class FrewPlot():
 class FrewMPL(FrewPlot):
     def __init__(
         self,
-        file_name: str,
+        title: str,
         stage: int,
         wall_results: list,
         node_levels: list,
         envelopes: list
     ):
         super().__init__()
-        self.file_name = file_name
+        self.title = title
         self.stage = stage
         self.wall_results = wall_results
         self.node_levels = node_levels
@@ -48,17 +48,16 @@ class FrewMPL(FrewPlot):
         self.fig, (self.ax1, self.ax2, self.ax3) = plt.subplots(
             1, 3, sharey=True
         )
-        self.fig_title = f'{file_name} - Stage {stage}'
-        self.fig.suptitle(self.fig_title)
+        self.fig_title = f'{title} - Stage {stage}'
+        self.fig.suptitle(self.fig_title, fontsize=self.title_size)
 
         axes = [self.ax1, self.ax2, self.ax3]
         for x_label, y_label, axis in zip(self.x_labels, self.y_labels, axes):
+            axis.tick_params(labelsize=self.label_size)
             if y_label:
-                axis.set_ylabel(y_label)
-                axis.set_yticklabels(fontsize=self.label_size)
+                axis.set_ylabel(y_label, fontsize=self.label_size)
             if x_label:
-                axis.set_xlabel(x_label)
-                axis.set_xticklabels(fontsize=self.label_size)
+                axis.set_xlabel(x_label, fontsize=self.label_size)
 
         plt.show()
 
