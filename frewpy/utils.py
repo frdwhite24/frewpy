@@ -67,7 +67,7 @@ def check_json_path(file_path: str) -> str:
     file_extension: str = os.path.basename(
         file_path
     ).rsplit('.', 1)[1].lower()
-    if file_extension != '.json':
+    if file_extension != 'json':
         raise FrewError('''
             File extension must be a .json. Please use model_to_json to
             convert it. Import this function from frewpy.utils.
