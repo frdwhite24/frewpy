@@ -249,8 +249,6 @@ def get_num_nodes(json_data: dict) -> int:
     ----------
     json_data : dict
         A Python dictionary of the data held within the json model file.
-    num_stages : int
-        The number of stages in the Frew model.
 
     Returns
     -------
@@ -275,3 +273,41 @@ def get_num_nodes(json_data: dict) -> int:
         raise NodeError(
             'Number of nodes is not unique for every stage.'
         )
+
+
+def get_num_design_cases(json_data: dict) -> int:
+    """ Returns the number of design cases present in the model.
+
+    Parameters
+    ----------
+    json_data : dict
+        A Python dictionary of the data held within the json model file.
+
+    Returns
+    -------
+    num_design_cases : int
+        The number of design cases in the Frew model.
+
+    """
+    return len(json_data['Frew Results'])
+
+
+def get_design_case_names(json_data: dict) -> int:
+    """ Returns the names of the design cases present in the model.
+
+    Parameters
+    ----------
+    json_data : dict
+        A Python dictionary of the data held within the json model file.
+
+    Returns
+    -------
+    design_case_names : List[str]
+        The names of the design cases in the Frew model.
+
+    """
+    return [
+        design_case[
+            'GeoPartialFactorSet'
+        ]['Name'] for design_case in json_data['Frew Results']
+    ]
