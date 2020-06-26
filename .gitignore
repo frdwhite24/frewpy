@@ -8,6 +8,8 @@ venv.bat
 /docs/build/*
 !/docs/build/.gitkeep
 /development_kit/models/*.xlsx
+.coverage
+cov.xml
 newcert.pem.txt
 banana.py
 TODO.md

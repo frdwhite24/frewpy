@@ -1,0 +1,10 @@
+sphinx~=2.4
+sphinx-autobuild~=0.7
+sphinx-rtd-theme~=0.5
+m2r~=0.2
+mypy
+rstcheck~=3.3
+pycodestyle~=2.6
+pytest~=5.4
+pytest-randomly~=3.4
+pytest-cov~=2.10
