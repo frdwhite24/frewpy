@@ -11,6 +11,7 @@ from frewpy.utils import (
     get_num_stages,
     get_titles,
 )
+from .plot import FrewMPL
 
 
 class Wall:
@@ -237,102 +238,25 @@ class Wall:
 
 #     return envelopes
 
+    def plot_wall_results(self, file_path: str):
+        """ Method to plot the shear, bending moment and displacement of the
+        wall for each stage.
 
-# def plot_results() -> None:
-#     """ Function to plot the shear, bending moment and displacement of the
-#     wall for each stage.
+        Parameters
+        ----------
+        file_path : str
+            The file path of the Frew model.
 
-#     """
+        Returns
+        -------
+        None
 
-#     file_name = os.path.basename(file_path.rsplit('.', 1)[0])
-#     wall_results = get_results()
-#     node_levels = get_node_levels()
-#     envelopes = get_envelopes()
+        """
 
-#     # Set defaults for plot styling
-#     plt.rcParams.update({'axes.titlesize': 10})
-#     plt.rcParams.update({'axes.labelsize': 7})
-#     plt.rcParams.update({'xtick.labelsize': 7})
-#     plt.rcParams.update({'ytick.labelsize': 7})
+        file_name = os.path.basename(file_path.rsplit('.', 1)[0])
+        wall_results = self.get_results()
+        node_levels = self.get_node_levels()
+        # envelopes = self.get_envelopes()
+        envelopes = []
 
-#     pdf = pltexp.PdfPages(
-#         f'{os.path.join(folder_path, file_name)}_results.pdf'
-#     )
-#     for stage in range(0, num_stages):
-#         figure_title = f'{file_name} - Stage {stage}'
-
-#         plt.close('all')
-#         fig, (ax1, ax2, ax3) = plt.subplots(
-#             1,
-#             3,
-#             sharey=True)
-
-#         # Figure information
-#         fig.suptitle(figure_title)
-
-#         # Data to plot
-#         levels = []
-#         shear = []
-#         bending = []
-#         disp = []
-#         for level in node_levels.values():
-#             levels.append(level)
-#         for val in wall_results[stage].values():
-#             shear.append(val[0])
-#             bending.append(val[1])
-#             disp.append(val[2])
-
-#         # Plot for displacements
-#         ax1.set_xlabel('Displacements (mm/m)')
-#         ax1.set_ylabel('Level (m)')
-#         ax1.grid(color='#c5c5c5', linewidth=0.5)
-#         ax1.plot(
-#             envelopes['maximum']['disp'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax1.plot(
-#             envelopes['minimum']['disp'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax1.plot(disp, levels, 'b')
-
-#         # Plot for bending
-#         ax2.set_xlabel('Bending Moment (kNm/m)')
-#         ax2.grid(color='#c5c5c5', linewidth=0.5)
-#         ax2.plot(
-#             envelopes['maximum']['bending'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax2.plot(
-#             envelopes['minimum']['bending'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax2.plot(bending, levels, 'r')
-
-#         # Plot for shear
-#         ax3.set_xlabel('Shear (kN/m)')
-#         ax3.grid(color='#c5c5c5', linewidth=0.5)
-#         ax3.plot(
-#             envelopes['maximum']['shear'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax3.plot(
-#             envelopes['minimum']['shear'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax3.plot(shear, levels, 'g')
-
-#         pdf.savefig(fig)
-#     pdf.close()
+        fp = FrewMPL(file_name, 2, wall_results, node_levels, envelopes)
