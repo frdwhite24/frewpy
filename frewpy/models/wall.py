@@ -1,7 +1,6 @@
 import os
 
-import matplotlib.pyplot as plt  # type: ignore
-import matplotlib.backends.backend_pdf as pltexp  # type: ignore
+from matplotlib.backends.backend_pdf import PdfPages  # type: ignore
 import pandas as pd  # type: ignore
 from typing import Dict, List
 
@@ -271,8 +270,6 @@ class Wall:
 #             )
 #     return wall_stiffness
 
-
-
     def plot_wall_results(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
         wall for each stage.
@@ -292,19 +289,19 @@ class Wall:
         stage_names: List[str] = get_stage_names(self.json_data)
         node_levels: List[float] = self.get_node_levels()
         wall_results: Dict[int, dict] = self.get_results()
-        # envelopes = self.get_envelopes()
+        envelopes: Dict[str, dict] = self.get_envelopes()
 
-        envelopes = []
-        fp = FrewMPL(
-            titles,
-            1,
-            stage_names[1],
-            wall_results,
-            node_levels,
-            envelopes
+        pp = PdfPages(
+            f'{os.path.join(out_folder, titles["JobTitle"])}_results.pdf'
         )
-
-        # pdf = pltexp.PdfPages(
-        #     f'{os.path.join(folder_path, file_name)}_results.pdf'
-        # )
-        # for stage in range(0, num_stages):
+        for stage in range(0, num_stages):
+            frew_mpl = FrewMPL(
+                titles,
+                stage,
+                stage_names[stage],
+                wall_results,
+                node_levels,
+                envelopes
+            )
+            pp.savefig(frew_mpl.fig)
+        pp.close()

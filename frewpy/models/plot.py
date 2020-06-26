@@ -11,12 +11,15 @@ from typing import Dict, List
 
 import matplotlib.pyplot as plt  # type: ignore
 import matplotlib.backends.backend_pdf as pltexp  # type: ignore
-import colorcet as cc # type: ignore
+import matplotlib.lines as mlines  # type: ignore
+import colorcet as cc  # type: ignore
 
 
 class FrewPlot():
     def __init__(self, titles: dict):
+        self.fig_size = (11.69, 8.27)
         self.titles = titles
+
         self.title_size = 10
         self.label_size = 7
         self.x_labels = [
@@ -28,9 +31,7 @@ class FrewPlot():
 
         self.grid_colour = "#c5c5c5"
         self.grid_wid = 0.5
-
         self.line_wid = 1
-        self.line_style = "k--"
 
     def get_title(self, stage: int, stage_name: str):
         fig_title = self.titles["JobTitle"]
@@ -67,6 +68,11 @@ class FrewMPL(FrewPlot):
         self.node_levels = node_levels
         self.envelopes = envelopes
 
+        self.cases = list(self.envelopes.keys())
+        self.labels = ["Nodes", "Max Env", "Min Env"]
+        self.labels.extend(self.cases)
+        self.handles = []
+
         # Get data to plot
         shear = []
         bending = []
@@ -75,16 +81,15 @@ class FrewMPL(FrewPlot):
             shear.append(val["shear"])
             bending.append(val["bending"])
             disp.append(val["displacement"])
-
-        num_cases = len(shear)
         plot_lists = [bending, shear, disp]
-        labels = self.wall_results[self.stage].keys()
+        plot_types = ["bending", "shear", "disp"]
 
+        num_cases = len(self.cases)
         colors = cc.glasbey[0:num_cases]
 
         # Create figure with subplots
         self.fig, (self.ax1, self.ax2, self.ax3) = plt.subplots(
-            1, 3, sharey=True
+            1, 3, sharey=True, figsize=self.fig_size
         )
         axes = [self.ax1, self.ax2, self.ax3]
 
@@ -95,17 +100,43 @@ class FrewMPL(FrewPlot):
         # Set up the plot properties
         for x_label, y_label, axis in zip(self.x_labels, self.y_labels, axes):
             axis.tick_params(labelsize=self.label_size)
+            axis.grid(color=self.grid_colour, linewidth=self.grid_wid)
             if y_label:
                 axis.set_ylabel(y_label, fontsize=self.label_size)
             if x_label:
                 axis.set_xlabel(x_label, fontsize=self.label_size)
-            axis.grid(color=self.grid_colour, linewidth=self.grid_wid)
 
         # Plot values
-        for axis, plot_list, color in zip(axes, plot_lists, colors):
-            for case_data in plot_list:
-                axis.plot(case_data, self.node_levels, color)
+        for axis, plot_list, plot_type in zip(axes, plot_lists, plot_types):
+            result_handles = []
+            for i, (case_data, color) in enumerate(zip(plot_list, colors)):
+                # Plot results
+                (res_handle,) = axis.plot(
+                    case_data,
+                    self.node_levels,
+                    color=color
+                )
+
+                # Plot max envelope
                 axis.plot(
+                    envelopes[self.cases[i]]['maximum'][plot_type],
+                    self.node_levels,
+                    color=color,
+                    linestyle='--',
+                    linewidth=1,
+                )
+
+                # Plot min envelope
+                axis.plot(
+                    envelopes[self.cases[i]]['minimum'][plot_type],
+                    self.node_levels,
+                    color=color,
+                    linestyle=':',
+                    linewidth=1,
+                )
+
+                # Plot node geometry
+                (node_handle,) = axis.plot(
                     [0] * len(self.node_levels),
                     self.node_levels,
                     marker=".",
@@ -113,49 +144,24 @@ class FrewMPL(FrewPlot):
                     alpha=0.1,
                     color="0.5",
                     rasterized=True,
-                    )
+                )
+                result_handles.append(res_handle)
 
-        plt.show()
+        # Construct handle for legend.
+        self.handles = [node_handle]
+        self.handles.append(
+            mlines.Line2D([], [], color='gray', linestyle='--')
+        )
+        self.handles.append(
+            mlines.Line2D([], [], color='gray', linestyle=':')
+        )
+        self.handles.extend(result_handles)
 
-# def plot_results() -> None:
-#     for stage in range(0, num_stages):
-#         ax1.plot(
-#             envelopes[case]['maximum']['disp'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax1.plot(
-#             envelopes[case]['minimum']['disp'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         # Plot for bending
-#         ax2.plot(
-#             envelopes[case]['maximum']['bending'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax2.plot(
-#             envelopes[case]['minimum']['bending'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         # Plot for shear
-#         ax3.plot(
-#             envelopes[case]['maximum']['shear'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax3.plot(
-#             envelopes[case]['minimum']['shear'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         pdf.savefig(fig)
-#     pdf.close()
+        self.fig.legend(
+            self.handles,
+            self.labels,
+            loc="lower center",
+            bbox_to_anchor=(0.5, 0.02),
+            ncol=10,
+            fontsize=self.label_size,
+        )
