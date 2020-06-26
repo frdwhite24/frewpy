@@ -3,16 +3,56 @@ import os
 import numpy as np  # type: ignore
 from typing import Dict, List
 
+from comtypes.client import CreateObject
+from _ctypes import COMError
+
 from frewpy.models.exceptions import (
-    FrewpyFileExtensionNotRecognised,
     FrewError,
     NodeError
 )
 
 
-def check_extension(file_path: str) -> str:
-    """ Checks whether the file extension is in the list of accepted file
-    extensions.
+def _check_frew_path(file_path) -> str:
+    if type(file_path) != str:
+        raise FrewError('The path must be a string.')
+    if not os.path.exists(file_path):
+        raise FrewError('Path to Frew model does not exist.')
+    if not file_path.lower().endswith('.fwd'):
+        raise FrewError('Path must be to a valid Frew model.')
+
+
+def model_to_json(file_path) -> str:
+    """ Converts a `.fwd` Frew model to a `.json` Frew model.
+
+    Parameters
+    ----------
+    file_path : str
+        Absolute file path to the '.fwd' Frew model.
+
+    Returns
+    -------
+    json_path : str
+        The new file path of the json file.
+
+    """
+    _check_frew_path(file_path)
+    json_path: str = f'{file_path.rsplit(".", 1)[0]}.json'
+    try:
+        model = CreateObject('frewLib.FrewComAuto')
+    except OSError:
+        os.remove(file_path)
+        raise FrewError('Failed to create a COM object.')
+    try:
+        model.Open(file_path)
+    except COMError:
+        raise FrewError('Failed to open the Frew model.')
+    model.SaveAs(json_path)
+    model.Close()
+    return json_path
+
+
+def check_json_path(file_path: str) -> str:
+    """ Checks whether the file extension is a json.
 
     Parameters
     ----------
@@ -21,17 +61,17 @@ def check_extension(file_path: str) -> str:
 
     Returns
     -------
-    file_extension : str
-        The file extension of the file path passed into the function.
+    None
 
     """
     file_extension: str = os.path.basename(
         file_path
     ).rsplit('.', 1)[1].lower()
-    if file_extension not in ['json']:
-        raise FrewpyFileExtensionNotRecognised(
-            'File extension must be a .json'
-        )
+    if file_extension != '.json':
+        raise FrewError('''
+            File extension must be a .json. Please use model_to_json to
+            convert it. Import this function from frewpy.utils.
+        ''')
     else:
         return file_extension
 
@@ -85,8 +125,9 @@ def get_titles(json_data: dict) -> Dict[str, str]:
 
     Returns
     -------
-    titles : dict
-        A dictionary containing all the titles information for the model.
+    titles : Dict[str, str]
+        The project titles including Job Number, Job Title, Sub Title,
+        Calculation Heading, Initials, and Notes.
 
     """
     try:
@@ -107,8 +148,8 @@ def get_file_history(json_data: dict) -> List[Dict[str, str]]:
 
     Returns
     -------
-    file_history : list
-        The file history of the Frew model.
+    file_history : List[Dict[str, str]]
+        Records of when the file has been opened in Frew and by which user.
 
     """
     try:
@@ -128,7 +169,7 @@ def get_file_version(json_data: Dict[str, list]) -> str:
     Returns
     -------
     file_version : str
-        The file version of the Frew model.
+        The version of the model file showing the exact build of Frew.
 
     """
     try:
@@ -153,7 +194,7 @@ def get_frew_version(json_data: dict) -> str:
     Returns
     -------
     frew_version : str
-        The file version of the Frew model.
+        The overall Frew version in which the model was created.
 
     """
     try:
@@ -213,7 +254,7 @@ def get_num_nodes(json_data: dict) -> int:
 
     Returns
     -------
-    unique_num_nodes : int
+    num_nodes : int
         The number of nodes which are present in each stage. This will always
         just be 1 integer, and the function will raise an error if it is not
         the same for every stage.
