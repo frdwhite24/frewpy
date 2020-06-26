@@ -9,6 +9,7 @@ from .exceptions import FrewError
 from frewpy.utils import (
     get_num_nodes,
     get_num_stages,
+    get_stage_names,
     get_titles,
 )
 from .plot import FrewMPL
@@ -253,13 +254,23 @@ class Wall:
 
         """
         titles: Dict[str, str] = get_titles(self.json_data)
-        title_name = titles["JobTitle"]
-        
-        if titles.get("Subtitle", False):
-            title_name += f" , {titles['Subtitle']}"
-        wall_results = self.get_results()
-        node_levels = self.get_node_levels()
+        num_stages: int = get_num_stages(self.json_data)
+        stage_names: List[str] = get_stage_names(self.json_data)
+        node_levels: List[float] = self.get_node_levels()
+        wall_results: Dict[int, dict] = self.get_results()
         # envelopes = self.get_envelopes()
-        envelopes = []
 
-        fp = FrewMPL(title_name, 2, wall_results, node_levels, envelopes)
+        envelopes = []
+        fp = FrewMPL(
+            titles,
+            1,
+            stage_names[1],
+            wall_results,
+            node_levels,
+            envelopes
+        )
+
+        # pdf = pltexp.PdfPages(
+        #     f'{os.path.join(folder_path, file_name)}_results.pdf'
+        # )
+        # for stage in range(0, num_stages):
