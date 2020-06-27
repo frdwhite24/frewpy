@@ -1,13 +1,3 @@
-test:pages:
-  stage: test
-  tags:
-    - docs
-  script:
-    - echo makewebsite
-  artifacts:
-    paths:
-      - docs/build/html
-
 test:pylint:
   image: python:3.6
   tags:

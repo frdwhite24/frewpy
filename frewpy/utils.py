@@ -3,8 +3,8 @@ import os
 import numpy as np  # type: ignore
 from typing import Dict, List
 
-from comtypes.client import CreateObject  # type: ignore
-from _ctypes import COMError  # type: ignore
+# from comtypes.client import CreateObject  # type: ignore
+# from _ctypes import COMError  # type: ignore
 
 from frewpy.models.exceptions import (
     FrewError,
