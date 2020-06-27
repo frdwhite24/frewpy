@@ -8,7 +8,7 @@ pages:
     paths:
       - docs/build/html
   only:
-    - develop
+    - master
 
 test:pylint:
   image: python:3.6
@@ -24,4 +24,4 @@ test:pytest:
     - frewpy
   script:
     - pip install pytest --quiet
-    - pytest
+    - python -m pytest
