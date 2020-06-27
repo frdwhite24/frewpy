@@ -78,7 +78,7 @@ def check_json_path(file_path: str):
         ''')
 
 
-def load_data(file_path: str) -> dict:
+def load_data(file_path: str) -> Dict[str, list]:
     """ Loads the json file in as a Python dictionary.
 
     Parameters
@@ -88,7 +88,7 @@ def load_data(file_path: str) -> dict:
 
     Returns
     -------
-    json_data : dict
+    json_data : Dict[str, list]
         A Python dictionary of the data held within the json model file.
 
     """
