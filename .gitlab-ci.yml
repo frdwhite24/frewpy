@@ -1,7 +1,7 @@
 pages:
   stage: deploy
   tags:
-    - frewpy
+    - docs
   script:
     - echo makewebsite
   artifacts:
