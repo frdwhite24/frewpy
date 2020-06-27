@@ -23,9 +23,9 @@ class FrewPlot():
         self.title_size = 10
         self.label_size = 7
         self.x_labels = [
-            "Displacements (mm)",
             "Bending Moment (kNm/m)",
-            "Shear (kN/m)"
+            "Shear (kN/m)",
+            "Displacements (mm)",
         ]
         self.y_labels = ["Level (m)", None, None]
 
@@ -69,8 +69,7 @@ class FrewMPL(FrewPlot):
         self.envelopes = envelopes
 
         self.cases = list(self.envelopes.keys())
-        self.labels = ["Nodes", "Max Env", "Min Env"]
-        self.labels.extend(self.cases)
+        self.labels = ["Nodes", "Max Env", "Min Env", *self.cases]
         self.handles = []
 
         # Get data to plot

@@ -294,7 +294,7 @@ class Wall:
         pp = PdfPages(
             f'{os.path.join(out_folder, titles["JobTitle"])}_results.pdf'
         )
-        for stage in range(0, num_stages):
+        for stage in range(num_stages):
             frew_mpl = FrewMPL(
                 titles,
                 stage,
