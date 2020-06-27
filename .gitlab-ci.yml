@@ -1,0 +1,8 @@
+test:pytest:
+  stage: test
+  tags:
+    - frewpy
+  script:
+    - call pip install -r requirements.txt --quiet
+    - call pip install -r requirements-dev.txt --quiet
+    - call python -m pytest
