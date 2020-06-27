@@ -12,8 +12,8 @@ import json
 from typing import Dict, List, Union
 from uuid import uuid4
 
-from comtypes.client import CreateObject
-from _ctypes import COMError
+from comtypes.client import CreateObject  # type: ignore
+from _ctypes import COMError  # type: ignore
 
 from frewpy.models import Wall, Soil, Water, Calculation, Strut
 from frewpy.utils import (
@@ -72,13 +72,10 @@ class FrewModel:
 
     """
     def __init__(self, file_path: str) -> None:
+        check_json_path(file_path)
+
         self.file_path: str = file_path
         self.folder_path: str = os.path.dirname(self.file_path)
-
-        if not os.path.exists(self.file_path):
-            raise FrewError('Frew model file path does not exists.')
-        check_json_path(self.file_path)
-        
         self.json_data: Dict[str, list] = load_data(self.file_path)
         self.wall = Wall(self.json_data)
         self.soil = Soil(self.json_data)
