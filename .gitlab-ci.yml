@@ -23,5 +23,6 @@ test:pytest:
   tags:
     - frewpy
   script:
-    - pip install pytest --quiet
+    - pip install -r requirements.txt --quiet
+    - pip install -r requirements-dev.txt --quiet
     - python -m pytest
