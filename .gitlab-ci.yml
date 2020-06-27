@@ -1,5 +1,5 @@
-pages:
-  stage: deploy
+test:pages:
+  stage: test
   tags:
     - docs
   script:
