@@ -33,66 +33,6 @@ def test_check_extension():
         model = FrewModel(os.path.join(TEST_DATA, model_name))
 
 
-def test_titles_job_number(model):
-    assert model.titles['JobNumber'] == '261026'
-
-
-def test_titles_job_title(model):
-    assert model.titles['JobTitle'] == 'Elizabeth House '
-
-
-def test_titles_initials(model):
-    assert model.titles['Initials'] == 'FW'
-
-
-def test_file_history_first(model):
-    assert model.file_history[0] == {
-        "Date": "10-Jun-2020",
-        "Time": "08:01",
-        "Mode": "Edit",
-        "User": "Fred.White",
-        "Comments": "New"
-    }
-
-
-def test_file_history_third(model):
-    assert model.file_history[2] == {
-        "Date": "10-Jun-2020",
-        "Time": "09:06",
-        "Mode": "Edit",
-        "User": "Fred.White",
-        "Comments": "Open"
-    }
-
-
-def test_file_version(model):
-    assert model.file_version == '19.4.0.23'
-
-
-def test_model_version(model):
-    assert model.version == '19.4'
-
-
-def test_num_stages(model):
-    assert model.num_stages == 11
-
-
-def test_second_stage_name(model):
-    assert model.stage_names[1] == ' Install wall (900mm @ 1300mm C/C)'
-
-
-def test_fifth_stage_name(model):
-    assert model.stage_names[4] == (
-        ' Cast B02 floor slab (350mm thk @ -6.375mOD)'
-    )
-
-
-def test_ninth_stage_name(model):
-    assert model.stage_names[8] == (
-        '  Cast B03 floor slab (2000mm thk @ -12.7mOD) - prop'
-    )
-
-
 def test_num_nodes(model):
     assert model.num_nodes == 68
 

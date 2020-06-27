@@ -1,5 +1,6 @@
 import os
 
 ROOT_DIR = os.getcwd()
-TEST_DIR = os.path.join(ROOT_DIR, 'tests')
+FREWPY_DIR = os.path.join(ROOT_DIR, 'frewpy')
+TEST_DIR = os.path.join(FREWPY_DIR, 'tests')
 TEST_DATA = os.path.join(TEST_DIR, 'data')
