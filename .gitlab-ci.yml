@@ -7,8 +7,6 @@ pages:
   artifacts:
     paths:
       - docs/build/html
-  only:
-    - master
 
 test:pylint:
   image: python:3.6
