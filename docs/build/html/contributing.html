@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contributing &mdash; frewpy  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Core Modules" href="core-modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> frewpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frewmodel.html">FrewModel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core-modules.html">Core Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ground-rules">Ground Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#your-first-contribution">Your First Contribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-report-a-bug">How to report a bug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-suggest-a-feature-or-enhancement">How to suggest a feature or enhancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-review-process">Code review process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#community">Community</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bonus-code-commit-message-and-labeling-conventions">BONUS: Code, commit message and labeling conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">frewpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Contributing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/contributing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Firstly, thank you for considering to contribute towards frewpy, it is greatly appreciated and will definitely benefit both the wider community and also your own technical development. Please take your time when reading this contribution guide as it will make the overall experience much easier, and explain why things the way they are. It will also make it much more straight forward for the core developers to coordinate all the contributions to keep the project on the right tracks. In return, the core developers should reciprocate the care when addressing your issue, assessing changes and helping you finalize your merge requests.</p>
+<p>There are many ways to contribute, from submitting a feature request on the GitLab repository, to extending the core functionality of the library so that it comfortably enables engineers to do everything they require with Frew. This core functionality could be as simple as retrieving information from a Frew model, or as complex as enabling quicker design iterations or integration with other Oasys software. Other possible contributions could be providing examples of the library being used, and detailed reporting of any bugs to ensure it is a clean, reliable library for anyone to use.</p>
+<p>Please don’t submit issues for non-frewpy related problems. This is to ensure the issues are clear and helpful for the community to browse and for developers to use to progress the project. Feature requests where frewpy is suggested to be used to carry out the whole design process will be closed and asked to be broken down into smaller, feature-specific requests. The intention of frewpy is to enable engineers to carry out their design work as a tool in their arsenal, not simply output a finished detailed design (at the moment anyway!).</p>
+<p>TEMPLATE FROM HERE</p>
+</div>
+<div class="section" id="ground-rules">
+<h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="set-expectations-for-behavior-yours-and-theirs">
+<h3>Set expectations for behavior (yours, and theirs).<a class="headerlink" href="#set-expectations-for-behavior-yours-and-theirs" title="Permalink to this headline">¶</a></h3>
+<p>This includes not just how to communicate with others (being respectful, considerate, etc) but also technical responsibilities (importance of testing, project dependencies, etc). Mention and link to your code of conduct, if you have one.</p>
+<blockquote>
+<div><p>Responsibilities</p>
+<ul class="simple">
+<li><p>Ensure cross-platform compatibility for every change that’s accepted. Windows, Mac, Debian &amp; Ubuntu Linux.</p></li>
+<li><p>Ensure that code that goes into core meets all requirements in this checklist: <a class="reference external" href="https://gist.github.com/audreyr/4feef90445b9680475f2">https://gist.github.com/audreyr/4feef90445b9680475f2</a></p></li>
+<li><p>Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get community feedback.</p></li>
+<li><p>Don’t add any classes to the codebase unless absolutely needed. Err on the side of using functions.</p></li>
+<li><p>Keep feature versions as small as possible, preferably one new feature per version.</p></li>
+<li><p>Be welcoming to newcomers and encourage diverse new contributors from all backgrounds. See the <a class="reference external" href="https://www.python.org/psf/codeofconduct/">Python Community Code of Conduct</a>.</p></li>
+</ul>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/audreyr/cookiecutter/blob/master/CONTRIBUTING.rst">cookiecutter</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#community-code-of-conduct">celery</a> [2]<a class="reference external" href="https://github.com/alexreisner/geocoder#contributing">geocoder</a></p>
+</div>
+</div>
+<div class="section" id="your-first-contribution">
+<h2>Your First Contribution<a class="headerlink" href="#your-first-contribution" title="Permalink to this headline">¶</a></h2>
+<p>Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.</p>
+<blockquote>
+<div><p>Unsure where to begin contributing to Atom? You can start by looking through these beginner and help-wanted issues:
+Beginner issues - issues which should only require a few lines of code, and a test or two.
+Help wanted issues - issues which should be a bit more involved than beginner issues.
+Both issue lists are sorted by total number of comments. While not perfect, number of comments is a reasonable proxy for impact a given change will have.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/atom/atom/blob/master/CONTRIBUTING.md#your-first-code-contribution">Atom</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="http://docs.readthedocs.org/en/latest/contribute.html#contributing-to-development">read the docs</a> [2]<a class="reference external" href="https://docs.djangoproject.com/en/dev/internals/contributing/new-contributors/#first-steps">django</a> (scroll down to “Guidelines” as well)</p>
+<div class="section" id="bonus-points-add-a-link-to-a-resource-for-people-who-have-never-contributed-to-open-source-before">
+<h3>Bonus points: Add a link to a resource for people who have never contributed to open source before.<a class="headerlink" href="#bonus-points-add-a-link-to-a-resource-for-people-who-have-never-contributed-to-open-source-before" title="Permalink to this headline">¶</a></h3>
+<p>Here are a couple of friendly tutorials you can include: <a class="reference external" href="http://makeapullrequest.com/">http://makeapullrequest.com/</a> and <a class="reference external" href="http://www.firsttimersonly.com/">http://www.firsttimersonly.com/</a></p>
+<blockquote>
+<div><p>Working on your first Pull Request? You can learn how from this <em>free</em> series, <a class="reference external" href="https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github">How to Contribute to an Open Source Project on GitHub</a>.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/facebook/react/blob/master/CONTRIBUTING.md#pull-requests">React</a>]</p>
+<p>As a side note, it helps to use newcomer-friendly language throughout the rest of your document. Here are a couple of examples from <a class="reference external" href="https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md">Active Admin</a>:</p>
+<blockquote>
+<div><p>At this point, you’re ready to make your changes! Feel free to ask for help; everyone is a beginner at first :smile_cat:</p>
+<p>If a maintainer asks you to “rebase” your PR, they’re saying that a lot of code has changed, and that you need to update your branch so it’s easier to merge.</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="give-them-a-quick-walkthrough-of-how-to-submit-a-contribution">
+<h3>Give them a quick walkthrough of how to submit a contribution.<a class="headerlink" href="#give-them-a-quick-walkthrough-of-how-to-submit-a-contribution" title="Permalink to this headline">¶</a></h3>
+<p>How you write this is up to you, but some things you may want to include:</p>
+<ul class="simple">
+<li><p>Let them know if they need to sign a CLA, agree to a DCO, or get any other legal stuff out of the way</p></li>
+<li><p>If tests are required for contributions, let them know, and explain how to run the tests</p></li>
+<li><p>If you use anything other than GitHub to manage issues (ex. JIRA or Trac), let them know which tools they’ll need to contribute</p></li>
+</ul>
+<blockquote>
+<div><p>For something that is bigger than a one or two line fix:</p>
+<ol class="arabic simple">
+<li><p>Create your own fork of the code</p></li>
+<li><p>Do the changes in your fork</p></li>
+<li><p>If you like the change and think the project could use it:</p></li>
+</ol>
+</div></blockquote>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>* Be sure you have followed the code style for the project.
+* Sign the Contributor License Agreement, CLA, with the jQuery Foundation.
+* Note the jQuery Foundation Code of Conduct.
+* Send a pull request indicating that you have a CLA on file.
+</pre></div>
+</div>
+<p>[source: <a class="reference external" href="http://requirejs.org/docs/contributing.html">Requirejs</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md#1-where-do-i-go-from-here">active admin</a> [2]<a class="reference external" href="https://github.com/nodejs/node/blob/master/CONTRIBUTING.md#code-contributions">node.js</a> [3]<a class="reference external" href="https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#pull-requests">ember.js</a></p>
+</div>
+<div class="section" id="if-you-have-a-different-process-for-small-or-obvious-fixes-let-them-know">
+<h3>If you have a different process for small or “obvious” fixes, let them know.<a class="headerlink" href="#if-you-have-a-different-process-for-small-or-obvious-fixes-let-them-know" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Small contributions such as fixing spelling errors, where the content is small enough to not be considered intellectual property, can be submitted by a contributor as a patch, without a CLA.</p>
+<p>As a rule of thumb, changes are obvious fixes if they do not introduce any new functionality or creative thinking. As long as the change does not affect functionality, some likely examples include the following:</p>
+<ul class="simple">
+<li><p>Spelling / grammar fixes</p></li>
+<li><p>Typo correction, white space and formatting changes</p></li>
+<li><p>Comment clean up</p></li>
+<li><p>Bug fixes that change default return values or error codes stored in constants</p></li>
+<li><p>Adding logging messages or debugging output</p></li>
+<li><p>Changes to ‘metadata’ files like Gemfile, .gitignore, build scripts, etc.</p></li>
+<li><p>Moving source files from one directory or package to another</p></li>
+</ul>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/chef/chef/blob/master/CONTRIBUTING.md#chef-obvious-fix-policy">Chef</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md#making-trivial-changes">puppet</a></p>
+</div>
+</div>
+<div class="section" id="how-to-report-a-bug">
+<h2>How to report a bug<a class="headerlink" href="#how-to-report-a-bug" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="explain-security-disclosures-first">
+<h3>Explain security disclosures first!<a class="headerlink" href="#explain-security-disclosures-first" title="Permalink to this headline">¶</a></h3>
+<p>At bare minimum, include this sentence:</p>
+<blockquote>
+<div><p>If you find a security vulnerability, do NOT open an issue. Email XXXX instead.</p>
+</div></blockquote>
+<p>If you don’t want to use your personal contact information, set up a “security&#64;” email address. Larger projects might have more formal processes for disclosing security, including encrypted communication. (Disclosure: I am not a security expert.)</p>
+<blockquote>
+<div><p>Any security issues should be submitted directly to <a class="reference external" href="mailto:security&#37;&#52;&#48;travis-ci&#46;org">security<span>&#64;</span>travis-ci<span>&#46;</span>org</a>
+In order to determine whether you are dealing with a security issue, ask yourself these two questions:</p>
+<ul class="simple">
+<li><p>Can I access something that’s not mine, or something I shouldn’t have access to?</p></li>
+<li><p>Can I disable something for other people?</p></li>
+</ul>
+<p>If the answer to either of those two questions are “yes”, then you’re probably dealing with a security issue. Note that even if you answer “no” to both questions, you may still be dealing with a security issue, so if you’re unsure, just email us at <a class="reference external" href="mailto:security&#37;&#52;&#48;travis-ci&#46;org">security<span>&#64;</span>travis-ci<span>&#46;</span>org</a>.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/travis-ci/travis-ci/blob/master/CONTRIBUTING.md">Travis CI</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#security">celery</a> [2]<a class="reference external" href="https://github.com/expressjs/express/blob/master/Security.md">express.js</a></p>
+</div>
+<div class="section" id="tell-your-contributors-how-to-file-a-bug-report">
+<h3>Tell your contributors how to file a bug report.<a class="headerlink" href="#tell-your-contributors-how-to-file-a-bug-report" title="Permalink to this headline">¶</a></h3>
+<p>You can even include a template so people can just copy-paste (again, less work for you).</p>
+<blockquote>
+<div><p>When filing an issue, make sure to answer these five questions:</p>
+<ol class="arabic simple">
+<li><p>What version of Go are you using (go version)?</p></li>
+<li><p>What operating system and processor architecture are you using?</p></li>
+<li><p>What did you do?</p></li>
+<li><p>What did you expect to see?</p></li>
+<li><p>What did you see instead?
+General questions should go to the golang-nuts mailing list instead of the issue tracker. The gophers there will answer or ask you to file an issue if you’ve tripped over a bug.</p></li>
+</ol>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/golang/go/blob/master/CONTRIBUTING.md#filing-issues">Go</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#other-bugs">celery</a> [2]<a class="reference external" href="https://github.com/atom/atom/blob/master/CONTRIBUTING.md#reporting-bugs">atom</a> (includes template)</p>
+</div>
+</div>
+<div class="section" id="how-to-suggest-a-feature-or-enhancement">
+<h2>How to suggest a feature or enhancement<a class="headerlink" href="#how-to-suggest-a-feature-or-enhancement" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="if-you-have-a-particular-roadmap-goals-or-philosophy-for-development-share-it-here">
+<h3>If you have a particular roadmap, goals, or philosophy for development, share it here.<a class="headerlink" href="#if-you-have-a-particular-roadmap-goals-or-philosophy-for-development-share-it-here" title="Permalink to this headline">¶</a></h3>
+<p>This information will give contributors context before they make suggestions that may not align with the project’s needs.</p>
+<blockquote>
+<div><p>The Express philosophy is to provide small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs.</p>
+<p>Express does not force you to use any specific ORM or template engine. With support for over 14 template engines via Consolidate.js, you can quickly craft your perfect framework.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/expressjs/express#philosophy">Express</a>] <strong>Need more inspiration?</strong> <a class="reference external" href="https://github.com/activeadmin/activeadmin#goals">Active Admin</a></p>
+</div>
+<div class="section" id="explain-your-desired-process-for-suggesting-a-feature">
+<h3>Explain your desired process for suggesting a feature.<a class="headerlink" href="#explain-your-desired-process-for-suggesting-a-feature" title="Permalink to this headline">¶</a></h3>
+<p>If there is back-and-forth or signoff required, say so. Ask them to scope the feature, thinking through why it’s needed and how it might work.</p>
+<blockquote>
+<div><p>If you find yourself wishing for a feature that doesn’t exist in Elasticsearch, you are probably not alone. There are bound to be others out there with similar needs. Many of the features that Elasticsearch has today have been added because our users saw the need. Open an issue on our issues list on GitHub which describes the feature you would like to see, why you need it, and how it should work.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#feature-requests">Elasticsearch</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md#feature-requests">hoodie</a> [2]<a class="reference external" href="https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#requesting-a-feature">ember.js</a></p>
+</div>
+</div>
+<div class="section" id="code-review-process">
+<h2>Code review process<a class="headerlink" href="#code-review-process" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="explain-how-a-contribution-gets-accepted-after-its-been-submitted">
+<h3>Explain how a contribution gets accepted after it’s been submitted.<a class="headerlink" href="#explain-how-a-contribution-gets-accepted-after-its-been-submitted" title="Permalink to this headline">¶</a></h3>
+<p>Who reviews it? Who needs to sign off before it’s accepted? When should a contributor expect to hear from you? How can contributors get commit access, if at all?</p>
+<blockquote>
+<div><p>The core team looks at Pull Requests on a regular basis in a weekly triage meeting that we hold in a public Google Hangout. The hangout is announced in the weekly status updates that are sent to the puppet-dev list. Notes are posted to the Puppet Community community-triage repo and include a link to a YouTube recording of the hangout.
+After feedback has been given we expect responses within two weeks. After two weeks we may close the pull request if it isn’t showing any activity.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md#submitting-changes">Puppet</a>] <strong>Need more inspiration?</strong> [1]<a class="reference external" href="https://meteor.hackpad.com/Responding-to-GitHub-Issues-SKE2u3tkSiH">meteor</a> [2]<a class="reference external" href="https://github.com/expressjs/express/blob/master/Contributing.md#becoming-a-committer">express.js</a></p>
+</div>
+</div>
+<div class="section" id="community">
+<h2>Community<a class="headerlink" href="#community" title="Permalink to this headline">¶</a></h2>
+<p>If there are other channels you use besides GitHub to discuss contributions, mention them here. You can also list the author, maintainers, and/or contributors here, or set expectations for response time.</p>
+<blockquote>
+<div><p>You can chat with the core team on <a class="reference external" href="https://gitter.im/cucumber/cucumber">https://gitter.im/cucumber/cucumber</a>. We try to have office hours on Fridays.</p>
+</div></blockquote>
+<p>[source: <a class="reference external" href="https://github.com/cucumber/cucumber-ruby/blob/master/CONTRIBUTING.md#talking-with-other-devs">cucumber-ruby</a>] <strong>Need more inspiration?</strong>
+[1]<a class="reference external" href="https://github.com/chef/chef/blob/master/CONTRIBUTING.md#-developer-office-hours">chef</a> [2]<a class="reference external" href="https://github.com/audreyr/cookiecutter#community">cookiecutter</a></p>
+</div>
+<div class="section" id="bonus-code-commit-message-and-labeling-conventions">
+<h2>BONUS: Code, commit message and labeling conventions<a class="headerlink" href="#bonus-code-commit-message-and-labeling-conventions" title="Permalink to this headline">¶</a></h2>
+<p>These sections are not necessary, but can help streamline the contributions you receive.</p>
+<div class="section" id="explain-your-preferred-style-for-code-if-you-have-any">
+<h3>Explain your preferred style for code, if you have any.<a class="headerlink" href="#explain-your-preferred-style-for-code-if-you-have-any" title="Permalink to this headline">¶</a></h3>
+<p><strong>Need inspiration?</strong> [1]<a class="reference external" href="http://requirejs.org/docs/contributing.html#codestyle">requirejs</a> [2]<a class="reference external" href="https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#contributing-to-the-elasticsearch-codebase">elasticsearch</a></p>
+</div>
+<div class="section" id="explain-if-you-use-any-commit-message-conventions">
+<h3>Explain if you use any commit message conventions.<a class="headerlink" href="#explain-if-you-use-any-commit-message-conventions" title="Permalink to this headline">¶</a></h3>
+<p><strong>Need inspiration?</strong> [1]<a class="reference external" href="https://github.com/angular/material/blob/master/.github/CONTRIBUTING.md#submit">angular</a> [2]<a class="reference external" href="https://github.com/nodejs/node/blob/master/CONTRIBUTING.md#step-3-commit">node.js</a></p>
+</div>
+<div class="section" id="explain-if-you-use-any-labeling-conventions-for-issues">
+<h3>Explain if you use any labeling conventions for issues.<a class="headerlink" href="#explain-if-you-use-any-labeling-conventions-for-issues" title="Permalink to this headline">¶</a></h3>
+<p><strong>Need inspiration?</strong> [1]<a class="reference external" href="https://github.com/wagenet/StandardIssueLabels#standardissuelabels">standardissuelabels</a> [2]<a class="reference external" href="https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels">atom</a></p>
+<p><a class="reference external" href="https://github.com/nayafia/contributing-template">Source for the template of the contributions guide</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="core-modules.html" class="btn btn-neutral float-left" title="Core Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Fred White
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

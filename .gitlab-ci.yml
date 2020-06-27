@@ -1,11 +1,21 @@
-test:pylint:
-  image: python:3.6
-  script:
-    - pip install pylint --quiet
-    - pylint --ignored-classes=_socketobject frewpy
+# test:pylint:
+#   image: python:3.6
+#   script:
+#     - pip install pylint --quiet
+#     - pylint --ignored-classes=_socketobject frewpy
 
-test:pytest:
-  image: python:3.6
+# test:pytest:
+#   image: python:3.6
+#   script:
+#     - pip install pytest --quiet
+#     - pytest
+
+pages:
+  stage: deploy
   script:
-    - pip install pytest --quiet
-    - pytest
+    - echo makewebsite
+  artifacts:
+    paths:
+      - docs/build/html
+  only:
+    - develop

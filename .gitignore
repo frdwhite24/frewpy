@@ -5,7 +5,6 @@
 /venv/
 venv.bat
 /models/*.pdf
-/docs/build/*
 !/docs/build/.gitkeep
 /development_kit/models/*.xlsx
 .coverage
