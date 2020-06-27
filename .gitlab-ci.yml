@@ -6,9 +6,9 @@ pages:
     - echo makewebsite
   artifacts:
     paths:
-      - public
+      - docs/build/html
   only:
-    - master
+    - develop
 
 test:pylint:
   image: python:3.6
@@ -20,6 +20,8 @@ test:pylint:
 
 test:pytest:
   image: python:3.6
+  tags:
+    - frewpy
   script:
     - pip install pytest --quiet
     - pytest
