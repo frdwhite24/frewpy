@@ -12,8 +12,8 @@ import json
 from typing import Dict, List, Union
 from uuid import uuid4
 
-from comtypes.client import CreateObject
-from _ctypes import COMError
+from comtypes.client import CreateObject  # type: ignore
+from _ctypes import COMError  # type: ignore
 
 from frewpy.models import Wall, Soil, Water, Calculation, Strut
 from frewpy.utils import (
@@ -72,13 +72,9 @@ class FrewModel:
 
     """
     def __init__(self, file_path: str) -> None:
-        self.file_path: str = file_path
-        self.folder_path: str = os.path.dirname(self.file_path)
+        check_json_path(file_path)
 
-        if not os.path.exists(self.file_path):
-            raise FrewError('Frew model file path does not exists.')
-        check_json_path(self.file_path)
-        
+        self.file_path: str = file_path
         self.json_data: Dict[str, list] = load_data(self.file_path)
         self.wall = Wall(self.json_data)
         self.soil = Soil(self.json_data)
@@ -125,8 +121,9 @@ class FrewModel:
         the object.
 
         """
-        num_stages = get_num_stages(self.json_data)
-        temp_file_path = os.path.join(self.folder_path, f'{uuid4()}.json')
+        num_stages: int = get_num_stages(self.json_data)
+        folder_path: str = os.path.dirname(self.file_path)
+        temp_file_path: str = os.path.join(folder_path, f'{uuid4()}.json')
         self.save(temp_file_path)
         try:
             model = CreateObject('frewLib.FrewComAuto')
@@ -142,7 +139,7 @@ class FrewModel:
         model.Analyse(num_stages)
         model.SaveAs(temp_file_path)
         model.Close()
-        new_data = load_data(temp_file_path)
+        new_data: Dict[str, list] = load_data(temp_file_path)
         os.remove(temp_file_path)
         self._clear_json_data()
         self._refill_json_data(new_data)
@@ -160,8 +157,8 @@ class FrewModel:
         """
         if save_path:
             if (
-                type(save_path) == str
-                and save_path.lower().endswith('.json')
+                    type(save_path) == str
+                    and save_path.lower().endswith('.json')
             ):
                 try:
                     with open(save_path, 'w') as f:
@@ -180,7 +177,7 @@ class FrewModel:
                 f.write(json.dumps(self.json_data))
 
     def _clear_json_data(self):
-        keys = list(self.json_data.keys())
+        keys: List[str] = list(self.json_data.keys())
         for key in keys:
             del self.json_data[key]
 

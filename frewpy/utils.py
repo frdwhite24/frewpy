@@ -3,8 +3,8 @@ import os
 import numpy as np  # type: ignore
 from typing import Dict, List
 
-from comtypes.client import CreateObject
-from _ctypes import COMError
+from comtypes.client import CreateObject  # type: ignore
+from _ctypes import COMError  # type: ignore
 
 from frewpy.models.exceptions import (
     FrewError,
@@ -12,7 +12,7 @@ from frewpy.models.exceptions import (
 )
 
 
-def _check_frew_path(file_path) -> str:
+def _check_frew_path(file_path):
     if type(file_path) != str:
         raise FrewError('The path must be a string.')
     if not os.path.exists(file_path):
@@ -51,7 +51,7 @@ def model_to_json(file_path) -> str:
     return json_path
 
 
-def check_json_path(file_path: str) -> str:
+def check_json_path(file_path: str):
     """ Checks whether the file extension is a json.
 
     Parameters
@@ -64,19 +64,21 @@ def check_json_path(file_path: str) -> str:
     None
 
     """
-    file_extension: str = os.path.basename(
-        file_path
-    ).rsplit('.', 1)[1].lower()
-    if file_extension != 'json':
+    if type(file_path) != str:
+        raise FrewError(f'''
+            File path must be a string. Value {file_path} of type {type
+            (file_path)} given.
+        ''')
+    if not os.path.exists(file_path):
+        raise FrewError('Frew model file path does not exists.')
+    if not file_path.lower().endswith('.json'):
         raise FrewError('''
             File extension must be a .json. Please use model_to_json to
             convert it. Import this function from frewpy.utils.
         ''')
-    else:
-        return file_extension
 
 
-def load_data(file_path: str) -> dict:
+def load_data(file_path: str) -> Dict[str, list]:
     """ Loads the json file in as a Python dictionary.
 
     Parameters
@@ -86,7 +88,7 @@ def load_data(file_path: str) -> dict:
 
     Returns
     -------
-    json_data : dict
+    json_data : Dict[str, list]
         A Python dictionary of the data held within the json model file.
 
     """
@@ -221,7 +223,10 @@ def get_num_stages(json_data: dict) -> int:
         The number of stages in the Frew model.
 
     """
-    return len(json_data['Stages'])
+    try:
+        return len(json_data['Stages'])
+    except KeyError:
+        raise FrewError('Unable to retrieve the number of stages.')
 
 
 def get_stage_names(json_data: dict) -> List[str]:
@@ -238,7 +243,7 @@ def get_stage_names(json_data: dict) -> List[str]:
         A list of the names of stages within the Frew model.
 
     """
-    num_stages = get_num_stages(json_data)
+    num_stages: int = get_num_stages(json_data)
     return [json_data['Stages'][stage]['Name'] for stage in range(num_stages)]
 
 
@@ -253,7 +258,7 @@ def get_num_nodes(json_data: dict) -> int:
     Returns
     -------
     num_nodes : int
-        The number of nodes which are present in each stage. This will always
+        The number of nodes present in each stage. This will always
         just be 1 integer, and the function will raise an error if it is not
         the same for every stage.
 
@@ -292,7 +297,7 @@ def get_num_design_cases(json_data: dict) -> int:
     return len(json_data['Frew Results'])
 
 
-def get_design_case_names(json_data: dict) -> int:
+def get_design_case_names(json_data: dict) -> List[str]:
     """ Returns the names of the design cases present in the model.
 
     Parameters
