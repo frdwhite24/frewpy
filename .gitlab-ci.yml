@@ -1,6 +1,7 @@
 pages:
   stage: deploy
-  tags: frewpy
+  tags:
+    - frewpy
   script:
     - echo makewebsite
   artifacts:
@@ -11,7 +12,8 @@ pages:
 
 test:pylint:
   image: python:3.6
-  tags: frewpy
+  tags:
+    - frewpy
   script:
     - pip install pylint --quiet
     - pylint --ignored-classes=_socketobject frewpy
