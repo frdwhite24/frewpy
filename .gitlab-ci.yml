@@ -3,6 +3,8 @@ test:pytest:
   tags:
     - frewpy
   script:
-    - call pip install -r requirements.txt --quiet
-    - call pip install -r requirements-dev.txt --quiet
-    - call python -m pytest
+    - conda create --name gitlab-ci python=3.6
+    - conda activate gitlab-ci
+    - pip install -r requirements.txt --quiet
+    - pip install -r requirements-dev.txt --quiet
+    - python -m pytest
