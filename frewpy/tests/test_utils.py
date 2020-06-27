@@ -4,6 +4,7 @@ import json
 import pytest
 
 from test_config import TEST_DATA
+from test_fixtures import json_data
 from frewpy.utils import (
     _check_frew_path,
     check_json_path,
@@ -13,14 +14,9 @@ from frewpy.utils import (
     get_frew_version,
     get_num_stages,
     get_stage_names,
+    get_num_nodes,
 )
-from frewpy.models.exceptions import FrewError
-
-
-@pytest.fixture
-def json_data():
-    with open(os.path.join(TEST_DATA, 'test_model_1.json')) as file:
-        return json.loads(file.read())
+from frewpy.models.exceptions import FrewError, NodeError
 
 
 def test_check_frew_path_type():
@@ -153,3 +149,27 @@ def test_ninth_stage_name(json_data):
     assert get_stage_names(json_data)[8] == (
         '  Cast B03 floor slab (2000mm thk @ -12.7mOD) - prop'
     )
+
+
+def test_get_num_nodes(json_data):
+    assert get_num_nodes(json_data) == 68
+
+
+def test_get_num_nodes_none():
+    json_data = {
+        'Stages': [
+            {},
+        ]
+    }
+    assert get_num_nodes(json_data) == 0
+
+
+def test_get_num_nodes_different_per_stage():
+    with pytest.raises(NodeError):
+        json_data = {
+            'Stages': [
+                {'GeoFrewNodes': ['Node1', 'Node2']},
+                {'GeoFrewNodes': ['Node1', 'Node2', 'Node3']},
+            ]
+        }
+        get_num_nodes(json_data)
