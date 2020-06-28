@@ -11,3 +11,5 @@ venv.bat
 newcert.pem.txt
 banana.py
 TODO.md
+.coverage
+cov.xml
