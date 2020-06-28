@@ -2,10 +2,11 @@ sphinx~=2.4
 sphinx-autobuild~=0.7
 sphinx-rtd-theme~=0.5
 m2r~=0.2
-mypy
 rstcheck~=3.3
+mypy
 flake8~=3.8
 black==19.10b0
+pylint~=2.5
 pytest~=5.4
 pytest-randomly~=3.4
 pytest-cov~=2.10
