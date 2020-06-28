@@ -27,11 +27,7 @@ from frewpy.utils import (
     get_stage_names,
     get_num_nodes,
 )
-from frewpy.models.exceptions import (
-    FrewError,
-    NodeError,
-    FrewpyFileExtensionNotRecognised,
-)
+from frewpy.models.exceptions import FrewError
 
 
 class FrewModel:
@@ -71,6 +67,7 @@ class FrewModel:
         if provided to the method.
 
     """
+
     def __init__(self, file_path: str) -> None:
         check_json_path(file_path)
 
@@ -98,23 +95,23 @@ class FrewModel:
 
         """
         if type(request) != str:
-            raise FrewError('Request must be a string.')
-        if request == 'titles':
+            raise FrewError("Request must be a string.")
+        if request == "titles":
             return get_titles(self.json_data)
-        elif request == 'file history':
+        elif request == "file history":
             return get_file_history(self.json_data)
-        elif request == 'file version':
+        elif request == "file version":
             return get_file_version(self.json_data)
-        elif request == 'frew version':
+        elif request == "frew version":
             return get_frew_version(self.json_data)
-        elif request == 'num stages':
+        elif request == "num stages":
             return get_num_stages(self.json_data)
-        elif request == 'stage names':
+        elif request == "stage names":
             return get_stage_names(self.json_data)
-        elif request == 'num nodes':
+        elif request == "num nodes":
             return get_num_nodes(self.json_data)
         else:
-            raise FrewError('Please input a valid option.')
+            raise FrewError("Please input a valid option.")
 
     def analyse(self) -> None:
         """ Method to open the COM object, analyse it, save it, and close
@@ -123,18 +120,18 @@ class FrewModel:
         """
         num_stages: int = get_num_stages(self.json_data)
         folder_path: str = os.path.dirname(self.file_path)
-        temp_file_path: str = os.path.join(folder_path, f'{uuid4()}.json')
+        temp_file_path: str = os.path.join(folder_path, f"{uuid4()}.json")
         self.save(temp_file_path)
         try:
-            model = CreateObject('frewLib.FrewComAuto')
+            model = CreateObject("frewLib.FrewComAuto")
         except OSError:
             os.remove(temp_file_path)
-            raise FrewError('Failed to create a COM object.')
+            raise FrewError("Failed to create a COM object.")
         try:
             model.Open(temp_file_path)
         except COMError:
             os.remove(temp_file_path)
-            raise FrewError('Failed to open the Frew model.')
+            raise FrewError("Failed to open the Frew model.")
         model.DeleteResults()
         model.Analyse(num_stages)
         model.SaveAs(temp_file_path)
@@ -156,24 +153,25 @@ class FrewModel:
 
         """
         if save_path:
-            if (
-                    type(save_path) == str
-                    and save_path.lower().endswith('.json')
-            ):
+            if type(save_path) == str and save_path.lower().endswith(".json"):
                 try:
-                    with open(save_path, 'w') as f:
+                    with open(save_path, "w") as f:
                         f.write(json.dumps(self.json_data))
                 except FileNotFoundError:
-                    raise FileNotFoundError('''
+                    raise FileNotFoundError(
+                        """
                         Unable to save the model. File path is invalid.
-                    ''')
+                    """
+                    )
             else:
-                raise FrewError('''
+                raise FrewError(
+                    """
                     Unable to save the model. File path must be a valid string
                     and end with ".json".
-                ''')
+                """
+                )
         else:
-            with open(self.file_path, 'w') as f:
+            with open(self.file_path, "w") as f:
                 f.write(json.dumps(self.json_data))
 
     def _clear_json_data(self):

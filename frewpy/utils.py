@@ -6,19 +6,16 @@ from typing import Dict, List
 from comtypes.client import CreateObject  # type: ignore
 from _ctypes import COMError  # type: ignore
 
-from frewpy.models.exceptions import (
-    FrewError,
-    NodeError
-)
+from frewpy.models.exceptions import FrewError, NodeError
 
 
 def _check_frew_path(file_path):
     if type(file_path) != str:
-        raise FrewError('The path must be a string.')
+        raise FrewError("The path must be a string.")
     if not os.path.exists(file_path):
-        raise FrewError('Path to Frew model does not exist.')
-    if not file_path.lower().endswith('.fwd'):
-        raise FrewError('Path must be to a valid Frew model.')
+        raise FrewError("Path to Frew model does not exist.")
+    if not file_path.lower().endswith(".fwd"):
+        raise FrewError("Path must be to a valid Frew model.")
 
 
 def model_to_json(file_path) -> str:
@@ -38,14 +35,14 @@ def model_to_json(file_path) -> str:
     _check_frew_path(file_path)
     json_path: str = f'{file_path.rsplit(".", 1)[0]}.json'
     try:
-        model = CreateObject('frewLib.FrewComAuto')
+        model = CreateObject("frewLib.FrewComAuto")
     except OSError:
         os.remove(file_path)
-        raise FrewError('Failed to create a COM object.')
+        raise FrewError("Failed to create a COM object.")
     try:
         model.Open(file_path)
     except COMError:
-        raise FrewError('Failed to open the Frew model.')
+        raise FrewError("Failed to open the Frew model.")
     model.SaveAs(json_path)
     model.Close()
     return json_path
@@ -65,17 +62,21 @@ def check_json_path(file_path: str):
 
     """
     if type(file_path) != str:
-        raise FrewError(f'''
+        raise FrewError(
+            f"""
             File path must be a string. Value {file_path} of type {type
             (file_path)} given.
-        ''')
+        """
+        )
     if not os.path.exists(file_path):
-        raise FrewError('Frew model file path does not exists.')
-    if not file_path.lower().endswith('.json'):
-        raise FrewError('''
+        raise FrewError("Frew model file path does not exists.")
+    if not file_path.lower().endswith(".json"):
+        raise FrewError(
+            """
             File extension must be a .json. Please use model_to_json to
             convert it. Import this function from frewpy.utils.
-        ''')
+        """
+        )
 
 
 def load_data(file_path: str) -> Dict[str, list]:
@@ -112,8 +113,8 @@ def clear_results(json_data: dict) -> dict:
         the results.
 
     """
-    if json_data.get('Frew Results', False):
-        del json_data['Frew Results']
+    if json_data.get("Frew Results", False):
+        del json_data["Frew Results"]
     return json_data
 
 
@@ -133,11 +134,11 @@ def get_titles(json_data: dict) -> Dict[str, str]:
 
     """
     try:
-        return json_data['OasysHeader'][0]['Titles'][0]
+        return json_data["OasysHeader"][0]["Titles"][0]
     except KeyError:
-        raise FrewError('Unable to retreive title information.')
+        raise FrewError("Unable to retreive title information.")
     except IndexError:
-        raise FrewError('Unable to retreive title information.')
+        raise FrewError("Unable to retreive title information.")
 
 
 def get_file_history(json_data: dict) -> List[Dict[str, str]]:
@@ -155,9 +156,9 @@ def get_file_history(json_data: dict) -> List[Dict[str, str]]:
 
     """
     try:
-        return json_data['File history']
+        return json_data["File history"]
     except KeyError:
-        raise FrewError('Unable to retreive file history.')
+        raise FrewError("Unable to retreive file history.")
 
 
 def get_file_version(json_data: Dict[str, list]) -> str:
@@ -175,14 +176,11 @@ def get_file_version(json_data: Dict[str, list]) -> str:
 
     """
     try:
-        return (
-            json_data['OasysHeader'][0]['Program title'][0][
-                'FileVersion'
-            ])
+        return json_data["OasysHeader"][0]["Program title"][0]["FileVersion"]
     except KeyError:
-        raise FrewError('Unable to retreive file version.')
+        raise FrewError("Unable to retreive file version.")
     except IndexError:
-        raise FrewError('Unable to retreive file version.')
+        raise FrewError("Unable to retreive file version.")
 
 
 def get_frew_version(json_data: dict) -> str:
@@ -200,13 +198,11 @@ def get_frew_version(json_data: dict) -> str:
 
     """
     try:
-        return json_data[
-            'OasysHeader'
-        ][0]['Program title'][0]['Version']
+        return json_data["OasysHeader"][0]["Program title"][0]["Version"]
     except KeyError:
-        raise FrewError('Unable to retreive Frew model version.')
+        raise FrewError("Unable to retreive Frew model version.")
     except IndexError:
-        raise FrewError('Unable to retreive Frew model version.')
+        raise FrewError("Unable to retreive Frew model version.")
 
 
 def get_num_stages(json_data: dict) -> int:
@@ -224,9 +220,9 @@ def get_num_stages(json_data: dict) -> int:
 
     """
     try:
-        return len(json_data['Stages'])
+        return len(json_data["Stages"])
     except KeyError:
-        raise FrewError('Unable to retrieve the number of stages.')
+        raise FrewError("Unable to retrieve the number of stages.")
 
 
 def get_stage_names(json_data: dict) -> List[str]:
@@ -244,7 +240,7 @@ def get_stage_names(json_data: dict) -> List[str]:
 
     """
     num_stages: int = get_num_stages(json_data)
-    return [json_data['Stages'][stage]['Name'] for stage in range(num_stages)]
+    return [json_data["Stages"][stage]["Name"] for stage in range(num_stages)]
 
 
 def get_num_nodes(json_data: dict) -> int:
@@ -266,18 +262,14 @@ def get_num_nodes(json_data: dict) -> int:
     num_stages = get_num_stages(json_data)
     num_nodes: List[int] = []
     for stage in range(num_stages):
-        if not json_data['Stages'][stage].get('GeoFrewNodes', False):
+        if not json_data["Stages"][stage].get("GeoFrewNodes", False):
             return 0
-        num_nodes.append(
-            len(json_data['Stages'][stage]['GeoFrewNodes'])
-        )
+        num_nodes.append(len(json_data["Stages"][stage]["GeoFrewNodes"]))
         unique_num_nodes = np.unique(np.array(num_nodes))
     if len(unique_num_nodes) == 1:
         return unique_num_nodes[0]
     else:
-        raise NodeError(
-            'Number of nodes is not unique for every stage.'
-        )
+        raise NodeError("Number of nodes is not unique for every stage.")
 
 
 def get_num_design_cases(json_data: dict) -> int:
@@ -294,7 +286,7 @@ def get_num_design_cases(json_data: dict) -> int:
         The number of design cases in the Frew model.
 
     """
-    return len(json_data['Frew Results'])
+    return len(json_data["Frew Results"])
 
 
 def get_design_case_names(json_data: dict) -> List[str]:
@@ -312,7 +304,6 @@ def get_design_case_names(json_data: dict) -> List[str]:
 
     """
     return [
-        design_case[
-            'GeoPartialFactorSet'
-        ]['Name'] for design_case in json_data['Frew Results']
+        design_case["GeoPartialFactorSet"]["Name"]
+        for design_case in json_data["Frew Results"]
     ]
