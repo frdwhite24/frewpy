@@ -155,7 +155,7 @@ def test_get_num_nodes(json_data):
 
 
 def test_get_num_nodes_none():
-    json_data = {"Stages": [{},]}
+    json_data = {"Stages": [{}]}
     assert get_num_nodes(json_data) == 0
 
 

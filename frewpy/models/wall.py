@@ -122,8 +122,8 @@ class Wall:
 
         envelopes = {
             design_case: {
-                "maximum": {"shear": [], "bending": [], "disp": [],},
-                "minimum": {"shear": [], "bending": [], "disp": [],},
+                "maximum": {"shear": [], "bending": [], "disp": []},
+                "minimum": {"shear": [], "bending": [], "disp": []},
             }
             for design_case in design_cases
         }
