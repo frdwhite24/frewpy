@@ -19,7 +19,7 @@ from frewpy.utils import (
     get_titles,
     get_design_case_names,
 )
-from .plot import FrewMPL
+from .plot import FrewMPL, FrewBokeh
 from .exceptions import FrewError
 
 
@@ -131,7 +131,7 @@ class Wall:
         design_cases = get_design_case_names(self.json_data)
         wall_results = self.get_results()
 
-        envelopes = {
+        envelopes: Dict[str, dict] = {
             design_case: {
                 "maximum": {"shear": [], "bending": [], "disp": []},
                 "minimum": {"shear": [], "bending": [], "disp": []},
@@ -196,7 +196,7 @@ class Wall:
         file_name: str = f"{job_title}_{sub_title}_results.xlsx"
 
         export_data: Dict[str, dict] = {}
-        design_cases: List[str] = wall_results[0].keys()
+        design_cases: List[str] = list(wall_results[0].keys())
 
         for design_case in design_cases:
             export_data[design_case] = {
@@ -248,9 +248,21 @@ class Wall:
             """
             )
 
-    def plot_wall_results(self, out_folder: str):
+    def _get_plot_data(self):
+        plot_data_dict = {
+            "titles": get_titles(self.json_data),
+            "num_stages": get_num_stages(self.json_data),
+            "stage_names": get_stage_names(self.json_data),
+            "node_levels": self.get_node_levels(),
+            "wall_results": self.get_results(),
+            "envelopes": self.get_envelopes(),
+        }
+        return plot_data_dict
+
+    def plot_wall_results_pdf(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
-        wall for each stage.
+        wall for each stage. Output is a static pdf plot created using the
+        Matplotlib plotting library.
 
         Parameters
         ----------
@@ -262,27 +274,52 @@ class Wall:
         None
 
         """
-        titles: Dict[str, str] = get_titles(self.json_data)
-        num_stages: int = get_num_stages(self.json_data)
-        stage_names: List[str] = get_stage_names(self.json_data)
-        node_levels: List[float] = self.get_node_levels()
-        wall_results: Dict[int, dict] = self.get_results()
-        envelopes: Dict[str, dict] = self.get_envelopes()
+        plot_data_dict = self._get_plot_data()
+        out_pdf_name = f"{plot_data_dict['titles']['JobTitle']}_results.pdf"
+        pp = PdfPages(os.path.join(out_folder, out_pdf_name))
 
-        pp = PdfPages(
-            f'{os.path.join(out_folder, titles["JobTitle"])}_results.pdf'
-        )
-        for stage in range(num_stages):
+        for stage in range(0, plot_data_dict["num_stages"]):
             frew_mpl = FrewMPL(
-                titles,
+                plot_data_dict["titles"],
                 stage,
-                stage_names[stage],
-                wall_results,
-                node_levels,
-                envelopes,
+                plot_data_dict["stage_names"][stage],
+                plot_data_dict["wall_results"],
+                plot_data_dict["node_levels"],
+                plot_data_dict["envelopes"]
             )
             pp.savefig(frew_mpl.fig)
         pp.close()
+
+    def plot_wall_results_html(self, out_folder: str):
+        """ Method to plot the shear, bending moment and displacement of the
+        wall for each stage. Output is a interactive html plot created using
+        the Bokeh plotting library.
+
+        Parameters
+        ----------
+        out_folder : str
+            The folder path to save the results at.
+
+        Returns
+        -------
+        None
+
+        """
+        plot_data_dict = self._get_plot_data()
+
+        output_file = os.path.join(
+            out_folder, f"{plot_data_dict['titles']['JobTitle']}_results.html"
+        )
+
+        frew_bp = FrewBokeh(
+            output_file,
+            plot_data_dict["titles"],
+            plot_data_dict["num_stages"],
+            plot_data_dict["stage_names"],
+            plot_data_dict["wall_results"],
+            plot_data_dict["node_levels"],
+            plot_data_dict["envelopes"]
+        )
 
 
 # def get_wall_stiffness() -> dict:
