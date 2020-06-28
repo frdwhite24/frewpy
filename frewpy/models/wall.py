@@ -285,7 +285,7 @@ class Wall:
                 plot_data_dict["stage_names"][stage],
                 plot_data_dict["wall_results"],
                 plot_data_dict["node_levels"],
-                plot_data_dict["envelopes"]
+                plot_data_dict["envelopes"],
             )
             pp.savefig(frew_mpl.fig)
         pp.close()
@@ -318,7 +318,7 @@ class Wall:
             plot_data_dict["stage_names"],
             plot_data_dict["wall_results"],
             plot_data_dict["node_levels"],
-            plot_data_dict["envelopes"]
+            plot_data_dict["envelopes"],
         )
 
 

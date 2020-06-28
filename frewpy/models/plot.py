@@ -17,7 +17,11 @@ from bokeh.io import output_file, show, save  # type: ignore
 from bokeh.layouts import layout  # type: ignore
 from bokeh.plotting import figure  # type: ignore
 from bokeh.models import (
-    ColumnDataSource, CrosshairTool, HoverTool, Panel, Tabs
+    ColumnDataSource,
+    CrosshairTool,
+    HoverTool,
+    Panel,
+    Tabs,
 )  # type: ignore
 from bokeh.models.widgets.markups import Div  # type: ignore
 
@@ -166,9 +170,7 @@ class FrewMPL(FrewPlot):
         self.handles.append(
             mlines.Line2D([], [], color="gray", linestyle="--")
         )
-        self.handles.append(
-            mlines.Line2D([], [], color="gray", linestyle=":")
-        )
+        self.handles.append(mlines.Line2D([], [], color="gray", linestyle=":"))
         self.handles.extend(result_handles)
 
         self.fig.legend(
@@ -190,7 +192,7 @@ class FrewBokeh(FrewPlot):
         stage_names: List[str],
         wall_results: Dict[int, dict],
         node_levels: List[float],
-        envelopes: Dict[str, dict]
+        envelopes: Dict[str, dict],
     ):
         super().__init__(titles)
         self.file_name = file_name
@@ -218,7 +220,7 @@ class FrewBokeh(FrewPlot):
                     "width": f"{self.plot_wid*3}px",
                     "font-size": "10px",
                     "background-color": "#222222",
-                    "text-align": "center"
+                    "text-align": "center",
                 },
             )
 
@@ -236,7 +238,7 @@ class FrewBokeh(FrewPlot):
                         plot_width=self.plot_wid,
                         plot_height=self.plot_hgt,
                         title=None,
-                        output_backend="webgl"
+                        output_backend="webgl",
                     )
                 )
 
@@ -271,7 +273,7 @@ class FrewBokeh(FrewPlot):
                 {
                     "xs": [0] * len(self.node_levels),
                     "ys": self.node_levels,
-                    "node_num": node_list
+                    "node_num": node_list,
                 }
             )
             for fig, plot_list, plot_type in zip(
@@ -286,7 +288,7 @@ class FrewBokeh(FrewPlot):
                         color="gray",
                         alpha=0.1,
                         source=node_source,
-                        legend_label="Nodes"
+                        legend_label="Nodes",
                     )
 
                     # Plot results
@@ -294,7 +296,7 @@ class FrewBokeh(FrewPlot):
                         {
                             "xs": case_data,
                             "ys": self.node_levels,
-                            "node_num": node_list
+                            "node_num": node_list,
                         }
                     )
                     fig.line(
@@ -302,7 +304,7 @@ class FrewBokeh(FrewPlot):
                         y="ys",
                         color=color,
                         source=res_source,
-                        legend_label=self.cases[i]
+                        legend_label=self.cases[i],
                     )
                     fig.circle(
                         x="xs",
@@ -310,14 +312,12 @@ class FrewBokeh(FrewPlot):
                         size=3,
                         color=color,
                         source=res_source,
-                        legend_label=self.cases[i]
+                        legend_label=self.cases[i],
                     )
 
                 fig.legend.click_policy = "hide"
                 fig.legend.location = "bottom_right"
 
             lay = layout([[title_div], [[self.figs]]])
-            self.tabs.append(
-                Panel(child=lay, title=f"Stage {stage}")
-            )
+            self.tabs.append(Panel(child=lay, title=f"Stage {stage}"))
         show(Tabs(tabs=self.tabs))
