@@ -1,13 +1,9 @@
-image: python:3.6
-before_script:
-  - pip install --upgrade pip
-stages:
-  - lint
-
 black:
   stage: lint
+  image: python:3.6
   tags:
     - lint-python
-  image: milansuk/python-black:latest
   script:
-    - black --check frewpy
+    - pip install --upgrade pip
+    - pip install black
+    - black -l 79 --check frewpy
