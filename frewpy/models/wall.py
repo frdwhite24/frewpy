@@ -1,15 +1,23 @@
-import os
+"""
+wall
+====
 
-import pandas as pd  # type: ignore
+This module holds the class for the Wall object.
+
+"""
+
+import os
 from typing import Dict, List
 
-from .exceptions import FrewError
+import pandas as pd  # type: ignore
+
 from frewpy.utils import (
     get_num_nodes,
     get_num_stages,
     get_titles,
     get_design_case_names,
 )
+from .exceptions import FrewError
 
 
 class Wall:
@@ -197,7 +205,7 @@ class Wall:
                 "Displacement (mm)": [],
             }
             for stage in range(num_stages):
-                node_array = [node for node in range(1, num_nodes + 1)]
+                node_array = list(range(1, num_nodes + 1))
                 stage_array = [stage] * num_nodes
                 bending_results = wall_results[stage][design_case]["bending"]
                 shear_results = wall_results[stage][design_case]["shear"]
