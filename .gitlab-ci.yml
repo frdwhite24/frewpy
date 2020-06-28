@@ -1,6 +1,5 @@
 black:
   stage: lint
-  image: python:3.6
   tags:
     - lint-python
   script:
