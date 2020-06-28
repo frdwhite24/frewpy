@@ -143,7 +143,9 @@ class Wall:
                 disp = []
 
                 for stage in range(num_stages):
-                    shear.append(wall_results[stage][design_case]["shear"][node])
+                    shear.append(
+                        wall_results[stage][design_case]["shear"][node]
+                    )
                     bending.append(
                         wall_results[stage][design_case]["bending"][node]
                     )
