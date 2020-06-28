@@ -20,6 +20,7 @@ from bokeh.models import (
     ColumnDataSource,
     CrosshairTool,
     HoverTool,
+    Legend,
     Panel,
     Tabs,
 )  # type: ignore
@@ -130,29 +131,6 @@ class FrewMPL(FrewPlot):
         ):
             result_handles = []
             for i, (case_data, color) in enumerate(zip(plot_list, colors)):
-                # Plot results
-                (res_handle,) = axis.plot(
-                    case_data, self.node_levels, color=color
-                )
-
-                # Plot max envelope
-                axis.plot(
-                    envelopes[self.cases[i]]["maximum"][plot_type],
-                    self.node_levels,
-                    color=color,
-                    linestyle="--",
-                    linewidth=1,
-                )
-
-                # Plot min envelope
-                axis.plot(
-                    envelopes[self.cases[i]]["minimum"][plot_type],
-                    self.node_levels,
-                    color=color,
-                    linestyle=":",
-                    linewidth=1,
-                )
-
                 # Plot node geometry
                 (node_handle,) = axis.plot(
                     [0] * len(self.node_levels),
@@ -163,6 +141,30 @@ class FrewMPL(FrewPlot):
                     color="0.5",
                     rasterized=True,
                 )
+
+                # Plot results
+                (res_handle,) = axis.plot(
+                    case_data, self.node_levels, color=color
+                )
+
+                # Plot max envelope
+                axis.plot(
+                    self.envelopes[self.cases[i]]["maximum"][plot_type],
+                    self.node_levels,
+                    color=color,
+                    linestyle="--",
+                    linewidth=1,
+                )
+
+                # Plot min envelope
+                axis.plot(
+                    self.envelopes[self.cases[i]]["minimum"][plot_type],
+                    self.node_levels,
+                    color=color,
+                    linestyle=":",
+                    linewidth=1,
+                )
+
                 result_handles.append(res_handle)
 
         # Construct handle for legend.
@@ -207,10 +209,11 @@ class FrewBokeh(FrewPlot):
         self.plot_hgt = 750
         self.tabs = []
 
-        output_file(file_name)
-
+    def plot(self):
+        output_file(self.file_name)
         for stage in range(0, self.num_stages):
             stage_name = self.stage_names[stage]
+
             # Create the plot title
             fig_title = self.get_title(stage, stage_name, bokeh=True)
             title_div = Div(
@@ -262,6 +265,8 @@ class FrewBokeh(FrewPlot):
 
                 ht = HoverTool()
                 ht.tooltips = [
+                    ("Name", "$name"),
+                    ("Node", "@node_num"),
                     (f"{x_info}", "$x{0.2f} " + x_unit),
                     (f"{y_info}", "$y{0.2f} " + y_unit),
                 ]
@@ -289,6 +294,7 @@ class FrewBokeh(FrewPlot):
                         alpha=0.1,
                         source=node_source,
                         legend_label="Nodes",
+                        name="Nodes",
                     )
 
                     # Plot results
@@ -305,6 +311,7 @@ class FrewBokeh(FrewPlot):
                         color=color,
                         source=res_source,
                         legend_label=self.cases[i],
+                        name=self.cases[i],
                     )
                     fig.circle(
                         x="xs",
@@ -313,10 +320,53 @@ class FrewBokeh(FrewPlot):
                         color=color,
                         source=res_source,
                         legend_label=self.cases[i],
+                        name=self.cases[i],
+                    )
+
+                    # Plot max envelope
+                    max_evenlope_xs = self.envelopes[self.cases[i]]["maximum"][
+                        plot_type
+                    ]
+                    max_source = ColumnDataSource(
+                        {
+                            "xs": max_evenlope_xs,
+                            "ys": self.node_levels,
+                            "node_num": node_list,
+                        }
+                    )
+                    fig.line(
+                        x="xs",
+                        y="ys",
+                        color=color,
+                        line_dash="dashed",
+                        source=res_source,
+                        legend_label=f"{self.cases[i]} max env",
+                        name=f"{self.cases[i]} max env",
+                    )
+
+                    # Plot min envelope
+                    min_evenlope_xs = self.envelopes[self.cases[i]]["minimum"][
+                        plot_type
+                    ]
+                    min_source = ColumnDataSource(
+                        {
+                            "xs": min_evenlope_xs,
+                            "ys": self.node_levels,
+                            "node_num": node_list,
+                        }
+                    )
+                    fig.line(
+                        x="xs",
+                        y="ys",
+                        color=color,
+                        line_dash="dotted",
+                        source=min_source,
+                        legend_label=f"{self.cases[i]} min env",
+                        name=f"{self.cases[i]} min env",
                     )
 
                 fig.legend.click_policy = "hide"
-                fig.legend.location = "bottom_right"
+                fig.legend.location = "bottom_left"
 
             lay = layout([[title_div], [[self.figs]]])
             self.tabs.append(Panel(child=lay, title=f"Stage {stage}"))

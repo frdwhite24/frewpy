@@ -276,7 +276,13 @@ class Wall:
         """
         plot_data_dict = self._get_plot_data()
         out_pdf_name = f"{plot_data_dict['titles']['JobTitle']}_results.pdf"
-        pp = PdfPages(os.path.join(out_folder, out_pdf_name))
+
+        try:
+            pp = PdfPages(os.path.join(out_folder, out_pdf_name))
+        except PermissionError:
+            raise FrewError(
+                f"Please make sure {out_pdf_name} is closed first."
+            )
 
         for stage in range(0, plot_data_dict["num_stages"]):
             frew_mpl = FrewMPL(
@@ -320,6 +326,7 @@ class Wall:
             plot_data_dict["node_levels"],
             plot_data_dict["envelopes"],
         )
+        frew_bp.plot()
 
 
 # def get_wall_stiffness() -> dict:
