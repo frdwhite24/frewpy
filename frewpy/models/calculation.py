@@ -30,7 +30,6 @@ class Calculation:
     #                 )
     #     return total_pressures
 
-
     # def net_total_pressures(self) -> dict:
     #     """ Function to get the net total pressures for each stage and node.
 
