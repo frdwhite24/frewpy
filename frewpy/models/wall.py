@@ -119,7 +119,8 @@ class Wall:
         design_cases = get_design_case_names(self.json_data)
         wall_results = self.get_results()
 
-        envelopes = {design_case: {
+        envelopes = {
+            design_case: {
                 'maximum': {
                     'shear': [],
                     'bending': [],
@@ -130,7 +131,8 @@ class Wall:
                     'bending': [],
                     'disp': [],
                 }
-            } for design_case in design_cases}
+            } for design_case in design_cases
+        }
 
         for design_case in design_cases:
             for node in range(num_nodes):
