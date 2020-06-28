@@ -1,10 +1,14 @@
-test:pytest:
-  stage: test
+"python:3.6"
+before_script:
+  - pip install - upgrade pip
+stages:
+  - lint
+
+black:
+  stage: lint
   tags:
-    - frewpy
+    - lint-python
+  image: milansuk/python-black:latest
   script:
-    - conda create --name gitlab-ci python=3.6
-    - conda activate gitlab-ci
-    - pip install -r requirements.txt --quiet
-    - pip install -r requirements-dev.txt --quiet
-    - python -m pytest
+    - black --fast .
+  
