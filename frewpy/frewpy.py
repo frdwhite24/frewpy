@@ -9,178 +9,176 @@ engineering design software.
 
 import os
 import json
-
 from typing import Dict, List, Union
+from uuid import uuid4
 
-from frewpy.models import soil, core, wall
-from frewpy.models.exceptions import (
-    FrewError,
-    NodeError,
-    FrewpyFileExtensionNotRecognised,
+from comtypes.client import CreateObject  # type: ignore
+from _ctypes import COMError  # type: ignore
+
+from frewpy.models import Wall, Soil, Water, Calculation, Strut
+from frewpy.utils import (
+    check_json_path,
+    load_data,
+    get_titles,
+    get_file_history,
+    get_file_version,
+    get_frew_version,
+    get_num_stages,
+    get_stage_names,
+    get_num_nodes,
 )
+from frewpy.models.exceptions import FrewError
 
 
 class FrewModel:
     """ A class used to establish a connection to any Frew model and to
     manipulate it as required using simple pythonic object oriented syntax.
-
     ...
 
     Attributes
     ----------
-    file_extension : str
-        The file extension of the Frew model.
-    file_history : List[Dict[str, str]]
-        Records of when the file has been opened in Frew and by which user.
-    file_name : str
-        The file name of the Frew model including extension.
     file_path : str
         The absolute file path to the Frew model.
-    file_version : str
-        The version of the model file showing the exact build of Frew.
     folder_path : str
         The absolute folder path to the Frew model, not including the file
         name.
-    frew_version : str
-        The overall Frew version in which the model was created.
-    json_data : Dict[str, list]
-        The Frew model data loaded in as a Python dictionary.
-    num_nodes : int
-        The number of nodes in the Frew model. This is common across all stages
-        of the Frew model.
-    num_stages : int
-        The number of stages in the Frew model.
-    stage_names : List[str]
-        The names of all the stages in the Frew model.
-    titles : Dict[str, str]
-        The project titles including Job Number, Job Title, Sub Title,
-        Calculation Heading, Initials, and Notes.
+    wall : class
+        All wall related methods associated with a Frew model.
+    soil : class
+        All soil related methods associated with a Frew model.
+    water : class
+        All water related methods associated with a Frew model.
+    calculation : class
+        All calculation methods based on Frew results.
+    strut : class
+        All strut related methods associated with a Frew model.
 
     Methods
     -------
-    get_materials() -> List[str]
-        Get names of all the materials used within the Frew model.
-    get_material_properties(material: str) -> Dict[str, Union[float, int, dict, bool]]
-        Get the properties of a material in the Frew model.
-    get_node_levels() -> List[float]
-        Get the levels of each node in the Frew model.
-    get_results() -> Dict[int, dict]
-        Get the shear, bending moment and displacement of the wall for each
-        stage, node and design case.
-    results_to_excel() -> None
-        Export the wall results to an excel file where each worksheet is a
-        design case. The spreadsheet will be output to the same folder as the
-        models with the suffix '_results'.
+    get(request: str)
+        Method to get information about the model. Request can be: 'titles',
+        'file history', 'file version', 'frew version', 'num stages', 'stage
+        names', 'num nodes'.
+    analyse()
+        Analyse the model using the COM interface to open Frew. This method
+        requires greater than Frew 19.4 Build 24.
+    save(save_path: str = None)
+        Saves the current json Frew model to the original file or to a new path
+        if provided to the method.
 
     """
+
     def __init__(self, file_path: str) -> None:
+        check_json_path(file_path)
+
         self.file_path: str = file_path
+        self.json_data: Dict[str, list] = load_data(self.file_path)
+        self.wall = Wall(self.json_data)
+        self.soil = Soil(self.json_data)
+        self.water = Water(self.json_data)
+        self.calculation = Calculation(self.json_data)
+        self.strut = Strut(self.json_data)
 
-        path_exists: bool = core.check_path(self.file_path)
-        self.file_extension: str = core.check_extension(self.file_path)
-        self.json_data: Dict[str, list] = core.load_data(self.file_path)
-        # if self.file_extension == 'fwd':
-        #     self.file_path = self._model_to_json()
+    def get(self, request: str) -> Union[dict, str, int, list]:
+        """ Method to get information about the model.
 
-        self.file_name: str = os.path.basename(self.file_path)
-        self.folder_path: str = os.path.dirname(self.file_path)
-
-        # Get key information from json file
-        self.titles: Dict[str, str] = core.get_titles(self.json_data)
-        self.file_history: List[Dict[str, str]] = core.get_file_history(
-            self.json_data,
-        )
-        self.file_version: str = core.get_file_version(self.json_data)
-        self.frew_version: str = core.get_frew_version(self.json_data)
-        self.num_stages: int = core.get_num_stages(self.json_data)
-        self.stage_names: List[str] = core.get_stage_names(
-            self.json_data,
-            self.num_stages,
-        )
-        self.num_nodes: int = core.get_num_nodes(
-            self.json_data,
-            self.num_stages,
-        )
-
-    # Soil based methods
-    def get_materials(self) -> List[str]:
-        """ Get names of all the materials used within the Frew model.
+        Parameters
+        ----------
+        request : str
+            Options for request are: 'titles', 'file history', 'file version',
+            'frew version', 'num stages', 'stage names', 'num nodes'.
 
         Returns
         -------
-        materials : List[str]
-            The names of the materials in the Frew model.
+        return_value : Union[dict, str, int, list]
+            The information requested about the model.
 
         """
-        return soil.get_materials(self.json_data)
+        if type(request) != str:
+            raise FrewError("Request must be a string.")
+        if request == "titles":
+            return get_titles(self.json_data)
+        elif request == "file history":
+            return get_file_history(self.json_data)
+        elif request == "file version":
+            return get_file_version(self.json_data)
+        elif request == "frew version":
+            return get_frew_version(self.json_data)
+        elif request == "num stages":
+            return get_num_stages(self.json_data)
+        elif request == "stage names":
+            return get_stage_names(self.json_data)
+        elif request == "num nodes":
+            return get_num_nodes(self.json_data)
+        else:
+            raise FrewError("Please input a valid option.")
 
-    def get_material_properties(
-        self, material: str
-    ) -> Dict[str, Union[float, int, dict, bool]]:
-        """ Get the properties of a material in the Frew model.
-
-        Returns
-        -------
-        material_properties : Dict[str, Union[float, int, dict, bool]]
-            The properties of the input material.
-
-        """
-        return soil.get_material_properties(self.json_data, material)
-
-    # Wall based methods
-    def get_node_levels(self) -> List[float]:
-        """ Get the levels of each node in the Frew model.
-
-        Returns
-        -------
-        node_levels : List[float]
-            The levels of each node in the Frew model.
-
-        """
-        return wall.get_node_levels(
-            self.json_data,
-            self.num_nodes,
-        )
-
-    def get_results(self) -> Dict[int, dict]:
-        """ Get the shear, bending moment and displacement of the wall for each
-        stage, node and design case.
-
-        Returns
-        -------
-        wall_results : Dict[int, dict]
-            The shear, bending and displacement results of the wall.
+    def analyse(self) -> None:
+        """ Method to open the COM object, analyse it, save it, and close
+        the object.
 
         """
-        return wall.get_results(
-            self.json_data,
-            self.num_nodes,
-            self.num_stages,
-        )
+        num_stages: int = get_num_stages(self.json_data)
+        folder_path: str = os.path.dirname(self.file_path)
+        temp_file_path: str = os.path.join(folder_path, f"{uuid4()}.json")
+        self.save(temp_file_path)
+        try:
+            model = CreateObject("frewLib.FrewComAuto")
+        except OSError:
+            os.remove(temp_file_path)
+            raise FrewError("Failed to create a COM object.")
+        try:
+            model.Open(temp_file_path)
+        except COMError:
+            os.remove(temp_file_path)
+            raise FrewError("Failed to open the Frew model.")
+        model.DeleteResults()
+        model.Analyse(num_stages)
+        model.SaveAs(temp_file_path)
+        model.Close()
+        new_data: Dict[str, list] = load_data(temp_file_path)
+        os.remove(temp_file_path)
+        self._clear_json_data()
+        self._refill_json_data(new_data)
 
-    def results_to_excel(self) -> None:
-        """ Export the wall results to an excel file where each worksheet is a
-        design case. The spreadsheet will be output to the same folder as the
-        models with the suffix '_results'.
+    def save(self, save_path: str = None) -> None:
+        """ A method to save the current json data.
 
-        Returns
-        -------
-        None
+        Parameters
+        ----------
+        save_path : str, optional
+            The path including file name (.json) for the data to be saved to.
+            If this is not provided, the model at the original file path will
+            be overwritten.
 
         """
-        wall_results = wall.get_results(
-            self.json_data,
-            self.num_nodes,
-            self.num_stages,
-        )
-        node_levels = wall.get_node_levels(
-            self.json_data,
-            self.num_nodes,
-        )
-        return wall.results_to_excel(
-            self.file_path,
-            node_levels,
-            wall_results,
-            self.num_nodes,
-            self.num_stages,
-        )
+        if save_path:
+            if type(save_path) == str and save_path.lower().endswith(".json"):
+                try:
+                    with open(save_path, "w") as f:
+                        f.write(json.dumps(self.json_data))
+                except FileNotFoundError:
+                    raise FileNotFoundError(
+                        """
+                        Unable to save the model. File path is invalid.
+                    """
+                    )
+            else:
+                raise FrewError(
+                    """
+                    Unable to save the model. File path must be a valid string
+                    and end with ".json".
+                """
+                )
+        else:
+            with open(self.file_path, "w") as f:
+                f.write(json.dumps(self.json_data))
+
+    def _clear_json_data(self):
+        keys: List[str] = list(self.json_data.keys())
+        for key in keys:
+            del self.json_data[key]
+
+    def _refill_json_data(self, new_data):
+        for key in new_data.keys():
+            self.json_data[key] = new_data[key]
