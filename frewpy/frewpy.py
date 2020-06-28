@@ -16,13 +16,6 @@ from comtypes.client import CreateObject  # type: ignore
 from _ctypes import COMError  # type: ignore
 
 from frewpy.models import Wall, Soil, Water, Calculation, Strut
-<<<<<<< HEAD
-from frewpy.utils import check_extension, load_data
-from frewpy.models.exceptions import (
-    FrewError,
-    NodeError,
-    FrewpyFileExtensionNotRecognised,
-=======
 from frewpy.utils import (
     check_json_path,
     load_data,
@@ -33,7 +26,6 @@ from frewpy.utils import (
     get_num_stages,
     get_stage_names,
     get_num_nodes,
->>>>>>> 76a75507b920abec9cd3682859195a92c8f32636
 )
 from frewpy.models.exceptions import FrewError
 

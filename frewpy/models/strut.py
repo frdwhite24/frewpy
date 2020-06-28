@@ -1,6 +1,4 @@
-import json
-import os
-from typing import Dict, List, Union
+from typing import List, Union
 
 from .exceptions import FrewError
 
