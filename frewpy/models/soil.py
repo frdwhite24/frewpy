@@ -1,3 +1,13 @@
+"""
+Soil
+====
+
+This module holds the class `Soil` which aims to group all the soil related
+functionality of frewpy.
+
+"""
+
+
 from typing import List, Dict, Union
 
 from .exceptions import FrewError
@@ -5,24 +15,12 @@ from .exceptions import FrewError
 
 class Soil:
     """ A class used to contain any soil related functionality of frewpy.
-
-    ...
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    get_materials() -> List[str]
-        Get names of all the materials used within the Frew model.
-    get_material_properties(material: str) -> Dict[str, any]
-        Get the properties of a material in the Frew model.
+    Methods of this class will directly interact with the model data.
 
     """
 
-    def __init__(self, json_data):
-        self.json_data = json_data
+    def __init__(self, json_data: Dict[str, list]) -> None:
+        self.json_data: Dict[str, list] = json_data
 
     def get_materials(self) -> List[str]:
         """ Method to get names of all the materials used within the Frew
@@ -32,6 +30,11 @@ class Soil:
         -------
         materials : List[str]
             A list of the materials in the Frew model.
+
+        Raises
+        ------
+        FrewError
+            If there are no materials in the model.
 
         """
         if not self.json_data.get("Materials", False):
