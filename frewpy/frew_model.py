@@ -1,9 +1,10 @@
 """
-frewpy
-======
+Frew Model
+==========
 
-This module is a python wrapper for Oasys Frew, an embedded retaining wall
-engineering design software.
+This module holds the main class of FrewModel which is used to instantiate a
+single Frew model. The class incorporates all other child classes
+to make it easier for the user to interact with the frewpy library.
 
 """
 
@@ -32,7 +33,8 @@ from frewpy.models.exceptions import FrewError
 
 class FrewModel:
     """ A class used to establish a connection to any Frew model and to
-    manipulate it as required using simple pythonic object oriented syntax.
+    manipulate it using the core methods or a child class's methods.
+
     ...
 
     Attributes
@@ -52,19 +54,6 @@ class FrewModel:
         All calculation methods based on Frew results.
     strut : class
         All strut related methods associated with a Frew model.
-
-    Methods
-    -------
-    get(request: str)
-        Method to get information about the model. Request can be: 'titles',
-        'file history', 'file version', 'frew version', 'num stages', 'stage
-        names', 'num nodes'.
-    analyse()
-        Analyse the model using the COM interface to open Frew. This method
-        requires greater than Frew 19.4 Build 24.
-    save(save_path: str = None)
-        Saves the current json Frew model to the original file or to a new path
-        if provided to the method.
 
     """
 
@@ -93,6 +82,11 @@ class FrewModel:
         return_value : Union[dict, str, int, list]
             The information requested about the model.
 
+        Raises
+        ------
+        FrewError
+            If `request` input is not a string or is not one of the options.
+
         """
         if type(request) != str:
             raise FrewError("Request must be a string.")
@@ -114,8 +108,8 @@ class FrewModel:
             raise FrewError("Please input a valid option.")
 
     def analyse(self) -> None:
-        """ Method to open the COM object, analyse it, save it, and close
-        the object.
+        """ Analyse the model using the COM interface to open Frew. This method
+        requires greater than Frew 19.4 Build 24.
 
         """
         num_stages: int = get_num_stages(self.json_data)
@@ -142,7 +136,8 @@ class FrewModel:
         self._refill_json_data(new_data)
 
     def save(self, save_path: str = None) -> None:
-        """ A method to save the current json data.
+        """ Saves the current json Frew model to the original file or to a new
+        path if provided to the method.
 
         Parameters
         ----------
