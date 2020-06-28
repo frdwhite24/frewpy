@@ -1,8 +1,5 @@
-import os
-
 import pytest
 
-from test_config import TEST_DATA
 from test_fixtures import model, empty_model
 from frewpy import FrewModel
 from frewpy.models.exceptions import FrewError
