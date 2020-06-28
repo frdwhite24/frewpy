@@ -3,7 +3,7 @@ from typing import List, Union
 from .exceptions import FrewError
 
 
-class StrutObj():
+class StrutObj:
     def __init__(
         self,
         id: int,
@@ -18,7 +18,7 @@ class StrutObj():
         level_strut: float = 0,
         horz_force: float = 0,
         is_iba_generated: bool = False,
-        is_seismic: bool = False
+        is_seismic: bool = False,
     ):
         self.id = id
         self.flags = flags
@@ -67,9 +67,7 @@ class Strut:
             struts.append(StrutObj(*args))
         return struts
 
-    def get_strut_by_node(
-        self, node: int
-    ) -> StrutObj:
+    def get_strut_by_node(self, node: int) -> StrutObj:
         """ Get a strut object at the specified node location within the Frew
         model. If more than one strut is found, the first strut occurence is
         returned.
