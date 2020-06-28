@@ -10,4 +10,4 @@ black:
     - lint-python
   image: milansuk/python-black:latest
   script:
-    - black --fast .
+    - black --check frewpy
