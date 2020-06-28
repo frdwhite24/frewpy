@@ -16,7 +16,7 @@ class Soil:
     -------
     get_materials() -> List[str]
         Get names of all the materials used within the Frew model.
-    get_material_properties(material: str) -> Dict[str, Union[float, int, dict, bool]]
+    get_material_properties(material: str) -> Dict[str, any]
         Get the properties of a material in the Frew model.
 
     """

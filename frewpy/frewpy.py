@@ -29,8 +29,6 @@ from frewpy.utils import (
 )
 from frewpy.models.exceptions import (
     FrewError,
-    NodeError,
-    FrewpyFileExtensionNotRecognised,
 )
 
 

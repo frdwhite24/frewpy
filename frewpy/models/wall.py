@@ -1,7 +1,5 @@
 import os
 
-import matplotlib.pyplot as plt  # type: ignore
-import matplotlib.backends.backend_pdf as pltexp  # type: ignore
 import pandas as pd  # type: ignore
 from typing import Dict, List
 
@@ -10,7 +8,6 @@ from frewpy.utils import (
     get_num_nodes,
     get_num_stages,
     get_titles,
-    get_num_design_cases,
     get_design_case_names,
 )
 
@@ -126,12 +123,12 @@ class Wall:
                 'maximum': {
                     'shear': [],
                     'bending': [],
-                    'disp': []
+                    'disp': [],
                 },
                 'minimum': {
                     'shear': [],
                     'bending': [],
-                    'disp': []
+                    'disp': [],
                 }
             } for design_case in design_cases}
 
@@ -212,7 +209,7 @@ class Wall:
                 'Displacement (mm)': [],
             }
             for stage in range(num_stages):
-                node_array = [node for node in range(1, num_nodes+1)]
+                node_array = [node for node in range(1, num_nodes + 1)]
                 stage_array = [stage] * num_nodes
                 bending_results = wall_results[stage][design_case]['bending']
                 shear_results = wall_results[stage][design_case]['shear']
@@ -250,7 +247,6 @@ class Wall:
                 No results in the model, please analyse the model first.
             ''')
 
-
 # def get_wall_stiffness() -> dict:
 #     """ Function to get the stiffness of the wall for each stage and node.
 
@@ -268,9 +264,6 @@ class Wall:
 #                 stage
 #             )
 #     return wall_stiffness
-
-
-
 
 # def plot_results() -> None:
 #     """ Function to plot the shear, bending moment and displacement of the

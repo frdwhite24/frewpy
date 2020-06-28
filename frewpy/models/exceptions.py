@@ -13,5 +13,6 @@ class FrewError(Exception):
 class FrewpyFileExtensionNotRecognised(Exception):
     pass
 
+
 class NodeError(Exception):
     pass
