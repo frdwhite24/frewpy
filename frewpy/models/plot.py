@@ -5,17 +5,15 @@ plot
 This module contains the plotting classes that are used throughout Frewpy.
 
 """
-import os
 from datetime import datetime
 from typing import Dict, List
 
 import matplotlib.pyplot as plt  # type: ignore
-import matplotlib.backends.backend_pdf as pltexp  # type: ignore
 import matplotlib.lines as mlines  # type: ignore
 import colorcet as cc  # type: ignore
 
 
-class FrewPlot():
+class FrewPlot:
     def __init__(self, titles: dict):
         self.fig_size = (11.69, 8.27)
         self.titles = titles
@@ -59,7 +57,7 @@ class FrewMPL(FrewPlot):
         stage_name: str,
         wall_results: Dict[int, dict],
         node_levels: List[float],
-        envelopes: list
+        envelopes: list,
     ):
         super().__init__(titles)
         self.stage = stage
@@ -111,26 +109,24 @@ class FrewMPL(FrewPlot):
             for i, (case_data, color) in enumerate(zip(plot_list, colors)):
                 # Plot results
                 (res_handle,) = axis.plot(
-                    case_data,
-                    self.node_levels,
-                    color=color
+                    case_data, self.node_levels, color=color
                 )
 
                 # Plot max envelope
                 axis.plot(
-                    envelopes[self.cases[i]]['maximum'][plot_type],
+                    envelopes[self.cases[i]]["maximum"][plot_type],
                     self.node_levels,
                     color=color,
-                    linestyle='--',
+                    linestyle="--",
                     linewidth=1,
                 )
 
                 # Plot min envelope
                 axis.plot(
-                    envelopes[self.cases[i]]['minimum'][plot_type],
+                    envelopes[self.cases[i]]["minimum"][plot_type],
                     self.node_levels,
                     color=color,
-                    linestyle=':',
+                    linestyle=":",
                     linewidth=1,
                 )
 
@@ -149,11 +145,9 @@ class FrewMPL(FrewPlot):
         # Construct handle for legend.
         self.handles = [node_handle]
         self.handles.append(
-            mlines.Line2D([], [], color='gray', linestyle='--')
+            mlines.Line2D([], [], color="gray", linestyle="--")
         )
-        self.handles.append(
-            mlines.Line2D([], [], color='gray', linestyle=':')
-        )
+        self.handles.append(mlines.Line2D([], [], color="gray", linestyle=":"))
         self.handles.extend(result_handles)
 
         self.fig.legend(

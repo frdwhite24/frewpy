@@ -248,25 +248,6 @@ class Wall:
             """
             )
 
-
-# def get_wall_stiffness() -> dict:
-#     """ Function to get the stiffness of the wall for each stage and node.
-
-#     Returns
-#     -------#     wall_stiffness : dict
-#         The stiffness of the wall.
-
-#     """
-#     wall_stiffness = {}
-#     for stage in range(0, num_stages):
-#         wall_stiffness[stage] = {}
-#         for node in range(0, num_nodes):
-#             wall_stiffness[stage][node+1] = model.GetWallEI(
-#                 node,
-#                 stage
-#             )
-#     return wall_stiffness
-
     def plot_wall_results(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
         wall for each stage.
@@ -298,7 +279,26 @@ class Wall:
                 stage_names[stage],
                 wall_results,
                 node_levels,
-                envelopes
+                envelopes,
             )
             pp.savefig(frew_mpl.fig)
         pp.close()
+
+
+# def get_wall_stiffness() -> dict:
+#     """ Function to get the stiffness of the wall for each stage and node.
+
+#     Returns
+#     -------#     wall_stiffness : dict
+#         The stiffness of the wall.
+
+#     """
+#     wall_stiffness = {}
+#     for stage in range(0, num_stages):
+#         wall_stiffness[stage] = {}
+#         for node in range(0, num_nodes):
+#             wall_stiffness[stage][node+1] = model.GetWallEI(
+#                 node,
+#                 stage
+#             )
+#     return wall_stiffness
