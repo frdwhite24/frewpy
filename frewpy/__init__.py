@@ -1,1 +1,1 @@
-from .frewpy import FrewModel
+from .frew_model import FrewModel

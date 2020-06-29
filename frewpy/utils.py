@@ -1,15 +1,25 @@
+"""
+Utililities
+===========
+
+This module holds all the core utility functions used throughout the library.
+They are not intended to be called separately unless the user is extending the
+functionality of frewpy and plans to contribute towards the code base.
+
+"""
+
 import json
 import os
-import numpy as np  # type: ignore
 from typing import Dict, List
 
+import numpy as np  # type: ignore
 from comtypes.client import CreateObject  # type: ignore
 from _ctypes import COMError  # type: ignore
 
 from frewpy.models.exceptions import FrewError, NodeError
 
 
-def _check_frew_path(file_path):
+def _check_frew_path(file_path) -> None:
     if type(file_path) != str:
         raise FrewError("The path must be a string.")
     if not os.path.exists(file_path):
@@ -48,17 +58,18 @@ def model_to_json(file_path) -> str:
     return json_path
 
 
-def check_json_path(file_path: str):
-    """ Checks whether the file extension is a json.
+def check_json_path(file_path: str) -> None:
+    """ Checks whether the path is a valid json path.
 
     Parameters
     ----------
     file_path : str
         Absolute file path to the Frew model.
 
-    Returns
-    -------
-    None
+    Raises
+    ------
+    FrewError
+        If the path is not a string, doesn't exists or is not to a json file.
 
     """
     if type(file_path) != str:

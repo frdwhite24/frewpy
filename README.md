@@ -39,7 +39,9 @@ model.results_to_excel()
 
 > Currently if you try to return the results of a model without any results in, you will be asked to analyse the model first.
 
-The `examples` directory held within the repository will provide you more examples of how you may use `frewpy`. You may also [visit the documentation](http://www.frewpy-docs.s3-website-eu-west-1.amazonaws.com/) or read the source code to understand what is possible with the library.
+The `examples` directory held within the repository will provide you more examples of how you may use `frewpy`.
+
+You may also [visit the documentation](http://www.frewpy-docs.s3-website-eu-west-1.amazonaws.com/) or read the source code to understand what is possible with the library.
 
 ## Support and contributing
 
