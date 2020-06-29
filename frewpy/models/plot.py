@@ -7,7 +7,7 @@ This module contains the plotting classes that are used throughout Frewpy.
 """
 import os
 from datetime import datetime
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 import re
 
 import matplotlib.pyplot as plt  # type: ignore
@@ -39,7 +39,7 @@ class FrewPlot:
             "Bending Moment (kNm/m)",
             "Shear (kN/m)",
         ]
-        self.y_labels = ["Level (m)", None, None]
+        self.y_labels: List[Union[str, None]] = ["Level (m)", None, None]
 
         self.grid_colour = "#c5c5c5"
         self.grid_wid = 0.5
@@ -58,9 +58,9 @@ class FrewPlot:
         if self.titles.get("Subtitle", False):
             fig_title += f" , {self.titles['Subtitle']}"
         if self.titles.get("CalculationHeading", False):
-            fig_title += f"\n{self.titles['CalculationHeading']}"
+            fig_title += f"{sep}{self.titles['CalculationHeading']}"
         if self.titles.get("JobNumber", False):
-            fig_title += f"\n Job num: {self.titles['JobNumber']}"
+            fig_title += f"{sep} Job num: {self.titles['JobNumber']}"
         if self.titles.get("Initials", False):
             fig_title += f", Designed by: {self.titles['Initials']}"
 
@@ -98,13 +98,13 @@ class FrewMPL(FrewPlot):
         self.envelopes = envelopes
 
         self.cases = list(self.envelopes.keys())
-        self.labels = ["Nodes", "Max Env", "Min Env", *self.cases]
+        self.labels = ["Nodes", "Envelope", *self.cases]
         self.handles = []
 
         # Get data to plot
         plot_lists = self.get_data(self.wall_results, self.stage)
         num_cases = len(self.cases)
-        colors = cc.glasbey_category10[0:num_cases]
+        colors = cc.glasbey_bw[0:num_cases]
 
         # Create figure with subplots
         self.fig, (self.ax1, self.ax2, self.ax3) = plt.subplots(
@@ -136,10 +136,8 @@ class FrewMPL(FrewPlot):
                     [0] * len(self.node_levels),
                     self.node_levels,
                     marker=".",
-                    ls="",
-                    alpha=0.1,
-                    color="0.5",
-                    rasterized=True,
+                    color="black",
+                    alpha=0.5,
                 )
 
                 # Plot results
@@ -161,7 +159,7 @@ class FrewMPL(FrewPlot):
                     self.envelopes[self.cases[i]]["minimum"][plot_type],
                     self.node_levels,
                     color=color,
-                    linestyle=":",
+                    linestyle="--",
                     linewidth=1,
                 )
 
@@ -172,7 +170,6 @@ class FrewMPL(FrewPlot):
         self.handles.append(
             mlines.Line2D([], [], color="gray", linestyle="--")
         )
-        self.handles.append(mlines.Line2D([], [], color="gray", linestyle=":"))
         self.handles.extend(result_handles)
 
         self.fig.legend(
@@ -210,7 +207,7 @@ class FrewBokeh(FrewPlot):
         self.tabs = []
 
     def plot(self):
-        output_file(self.file_name)
+        output_file(self.file_name, title=self.titles["JobTitle"])
         for stage in range(0, self.num_stages):
             stage_name = self.stage_names[stage]
 

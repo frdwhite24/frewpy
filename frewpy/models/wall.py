@@ -8,6 +8,7 @@ This module holds the class for the Wall object.
 
 import os
 from typing import Dict, List
+from uuid import uuid4
 
 from matplotlib.backends.backend_pdf import PdfPages  # type: ignore
 import pandas as pd  # type: ignore
@@ -192,8 +193,8 @@ class Wall:
         titles: Dict[str, str] = get_titles(self.json_data)
 
         job_title: str = titles["JobTitle"]
-        sub_title: str = titles["Subtitle"][:20]
-        file_name: str = f"{job_title}_{sub_title}_results.xlsx"
+        uuid_str: str = str(uuid4()).split("-")[0]
+        file_name: str = f"{job_title}_{uuid_str}_results.xlsx"
 
         export_data: Dict[str, dict] = {}
         design_cases: List[str] = list(wall_results[0].keys())
@@ -275,7 +276,9 @@ class Wall:
 
         """
         plot_data_dict = self._get_plot_data()
-        out_pdf_name = f"{plot_data_dict['titles']['JobTitle']}_results.pdf"
+        job_title: str = plot_data_dict["titles"]["JobTitle"]
+        uuid_str: str = str(uuid4()).split("-")[0]
+        out_pdf_name: str = f"{job_title}_{uuid_str}_results.pdf"
 
         try:
             pp = PdfPages(os.path.join(out_folder, out_pdf_name))
@@ -313,9 +316,11 @@ class Wall:
         """
         plot_data_dict = self._get_plot_data()
 
-        output_file = os.path.join(
-            out_folder, f"{plot_data_dict['titles']['JobTitle']}_results.html"
-        )
+        job_title: str = plot_data_dict["titles"]["JobTitle"]
+        uuid_str: str = str(uuid4()).split("-")[0]
+        out_html_name: str = f"{job_title}_{uuid_str}_results.html"
+
+        output_file = os.path.join(out_folder, out_html_name)
 
         frew_bp = FrewBokeh(
             output_file,
