@@ -1,5 +1,5 @@
 """
-plot
+Plot
 ====
 
 This module contains the plotting classes that are used throughout Frewpy.
@@ -7,7 +7,7 @@ This module contains the plotting classes that are used throughout Frewpy.
 """
 import os
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import re
 
 import matplotlib.pyplot as plt  # type: ignore
@@ -29,15 +29,15 @@ from bokeh.models.widgets.markups import Div  # type: ignore
 
 class FrewPlot:
     def __init__(self, titles: dict):
-        self.fig_size = (11.69, 8.27)
-        self.titles = titles
+        self.fig_size: Tuple[float] = (11.69, 8.27)
+        self.titles: Dict[str, str] = titles
 
         self.title_size = 10
         self.label_size = 7
         self.x_labels = [
+            "Displacements (mm)",
             "Bending Moment (kNm/m)",
             "Shear (kN/m)",
-            "Displacements (mm)",
         ]
         self.y_labels = ["Level (m)", None, None]
 
@@ -45,7 +45,7 @@ class FrewPlot:
         self.grid_wid = 0.5
         self.line_wid = 1
 
-        self.plot_types = ["bending", "shear", "disp"]
+        self.plot_types = ["disp", "bending", "shear"]
 
     def get_title(self, stage: int, stage_name: str, bokeh: bool = False):
         if bokeh:
@@ -77,7 +77,7 @@ class FrewPlot:
             bending.append(val["bending"])
             shear.append(val["shear"])
             disp.append(val["displacement"])
-        return [bending, shear, disp]
+        return [disp, bending, shear]
 
 
 class FrewMPL(FrewPlot):
@@ -104,7 +104,7 @@ class FrewMPL(FrewPlot):
         # Get data to plot
         plot_lists = self.get_data(self.wall_results, self.stage)
         num_cases = len(self.cases)
-        colors = cc.glasbey[0:num_cases]
+        colors = cc.glasbey_category10[0:num_cases]
 
         # Create figure with subplots
         self.fig, (self.ax1, self.ax2, self.ax3) = plt.subplots(
@@ -231,7 +231,7 @@ class FrewBokeh(FrewPlot):
             plot_lists = self.get_data(self.wall_results, stage)
             num_cases = len(self.cases)
             node_list = [i for i in range(1, len(self.node_levels) + 1)]
-            colors = cc.glasbey[0:num_cases]
+            colors = cc.palette["glasbey_bw"][0:num_cases]
 
             # Create a list of 3 Bokeh figures
             self.figs = []
@@ -240,8 +240,6 @@ class FrewBokeh(FrewPlot):
                     figure(
                         plot_width=self.plot_wid,
                         plot_height=self.plot_hgt,
-                        title=None,
-                        output_backend="webgl",
                     )
                 )
 
@@ -289,12 +287,21 @@ class FrewBokeh(FrewPlot):
                     fig.circle(
                         x="xs",
                         y="ys",
-                        size=7.5,
-                        color="gray",
-                        alpha=0.1,
+                        size=3.5,
+                        color="black",
+                        alpha=0.5,
                         source=node_source,
-                        legend_label="Nodes",
-                        name="Nodes",
+                        legend_label="Wall",
+                        name="Wall",
+                    )
+                    fig.line(
+                        x="xs",
+                        y="ys",
+                        color="black",
+                        source=node_source,
+                        legend_label="Wall",
+                        name="Wall",
+                        line_width=2,
                     )
 
                     # Plot results
@@ -312,15 +319,7 @@ class FrewBokeh(FrewPlot):
                         source=res_source,
                         legend_label=self.cases[i],
                         name=self.cases[i],
-                    )
-                    fig.circle(
-                        x="xs",
-                        y="ys",
-                        size=3,
-                        color=color,
-                        source=res_source,
-                        legend_label=self.cases[i],
-                        name=self.cases[i],
+                        line_width=2,
                     )
 
                     # Plot max envelope
@@ -339,9 +338,10 @@ class FrewBokeh(FrewPlot):
                         y="ys",
                         color=color,
                         line_dash="dashed",
-                        source=res_source,
-                        legend_label=f"{self.cases[i]} max env",
-                        name=f"{self.cases[i]} max env",
+                        source=max_source,
+                        legend_label=f"{self.cases[i]} envelope",
+                        name=f"{self.cases[i]} envelope",
+                        line_width=2,
                     )
 
                     # Plot min envelope
@@ -359,10 +359,11 @@ class FrewBokeh(FrewPlot):
                         x="xs",
                         y="ys",
                         color=color,
-                        line_dash="dotted",
+                        line_dash="dashed",
                         source=min_source,
-                        legend_label=f"{self.cases[i]} min env",
-                        name=f"{self.cases[i]} min env",
+                        legend_label=f"{self.cases[i]} envelope",
+                        name=f"{self.cases[i]} envelope",
+                        line_width=2,
                     )
 
                 fig.legend.click_policy = "hide"

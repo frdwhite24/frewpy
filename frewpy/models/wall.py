@@ -104,10 +104,10 @@ class Wall:
                         "Noderesults"
                     ]
                     wall_results[stage][result_set_name]["shear"].append(
-                        stage_results[node]["Shear"]
+                        stage_results[node]["Shear"] / 1000
                     )
                     wall_results[stage][result_set_name]["bending"].append(
-                        stage_results[node]["Bending"]
+                        stage_results[node]["Bending"] / 1000
                     )
                     wall_results[stage][result_set_name][
                         "displacement"
@@ -259,7 +259,7 @@ class Wall:
         }
         return plot_data_dict
 
-    def plot_wall_results_pdf(self, out_folder: str):
+    def plot_results_pdf(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
         wall for each stage. Output is a static pdf plot created using the
         Matplotlib plotting library.
@@ -296,7 +296,7 @@ class Wall:
             pp.savefig(frew_mpl.fig)
         pp.close()
 
-    def plot_wall_results_html(self, out_folder: str):
+    def plot_results_html(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
         wall for each stage. Output is a interactive html plot created using
         the Bokeh plotting library.
