@@ -88,7 +88,7 @@ class FrewModel:
             If `request` input is not a string or is not one of the options.
 
         """
-        if type(request) != str:
+        if not isinstance(request, str):
             raise FrewError("Request must be a string.")
         if request == "titles":
             return get_titles(self.json_data)
@@ -148,10 +148,12 @@ class FrewModel:
 
         """
         if save_path:
-            if type(save_path) == str and save_path.lower().endswith(".json"):
+            if isinstance(save_path, str) and save_path.lower().endswith(
+                ".json"
+            ):
                 try:
-                    with open(save_path, "w") as f:
-                        f.write(json.dumps(self.json_data))
+                    with open(save_path, "w") as file:
+                        file.write(json.dumps(self.json_data))
                 except FileNotFoundError:
                     raise FileNotFoundError(
                         """
@@ -166,8 +168,8 @@ class FrewModel:
                 """
                 )
         else:
-            with open(self.file_path, "w") as f:
-                f.write(json.dumps(self.json_data))
+            with open(self.file_path, "w") as file:
+                file.write(json.dumps(self.json_data))
 
     def _clear_json_data(self):
         keys: List[str] = list(self.json_data.keys())

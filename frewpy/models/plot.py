@@ -5,7 +5,7 @@ Plot
 This module contains the plotting classes that are used throughout Frewpy.
 
 """
-import os
+
 from datetime import datetime
 from typing import Dict, List, Tuple, Union
 import re
@@ -13,47 +13,44 @@ import re
 import matplotlib.pyplot as plt  # type: ignore
 import matplotlib.lines as mlines  # type: ignore
 import colorcet as cc  # type: ignore
-from bokeh.io import output_file, show, save  # type: ignore
+from bokeh.io import output_file, show  # type: ignore
 from bokeh.layouts import layout  # type: ignore
 from bokeh.plotting import figure  # type: ignore
-from bokeh.models import (
+from bokeh.models import (  # type: ignore
     ColumnDataSource,
     CrosshairTool,
     HoverTool,
-    Legend,
     Panel,
     Tabs,
-)  # type: ignore
+)
 from bokeh.models.widgets.markups import Div  # type: ignore
 
 
 class FrewPlot:
-    def __init__(self, titles: dict):
-        self.fig_size: Tuple[float] = (11.69, 8.27)
+    def __init__(self, titles: Dict[str, str]) -> None:
+        self.fig_size: Tuple[float, float] = (11.69, 8.27)
         self.titles: Dict[str, str] = titles
 
-        self.title_size = 10
-        self.label_size = 7
-        self.x_labels = [
+        self.title_size: int = 10
+        self.label_size: int = 7
+        self.x_labels: List[str] = [
             "Displacements (mm)",
             "Bending Moment (kNm/m)",
             "Shear (kN/m)",
         ]
         self.y_labels: List[Union[str, None]] = ["Level (m)", None, None]
 
-        self.grid_colour = "#c5c5c5"
-        self.grid_wid = 0.5
-        self.line_wid = 1
+        self.grid_colour: str = "#c5c5c5"
+        self.grid_wid: float = 0.5
+        self.line_wid: int = 1
 
-        self.plot_types = ["disp", "bending", "shear"]
+        self.plot_types: List[str] = ["disp", "bending", "shear"]
 
-    def get_title(self, stage: int, stage_name: str, bokeh: bool = False):
-        if bokeh:
-            sep = "<br>"
-        else:
-            sep = "\n"
-
-        fig_title = self.titles["JobTitle"]
+    def get_title(
+        self, stage: int, stage_name: str, bokeh: bool = False
+    ) -> str:
+        sep: str = "<br>" if bokeh else "\n"
+        fig_title: str = self.titles["JobTitle"]
 
         if self.titles.get("Subtitle", False):
             fig_title += f" , {self.titles['Subtitle']}"
@@ -69,7 +66,9 @@ class FrewPlot:
 
         return fig_title
 
-    def get_data(self, wall_results: Dict[int, dict], stage) -> List[List]:
+    def get_data(
+        self, wall_results: Dict[int, dict], stage: int
+    ) -> List[List[float]]:
         bending = []
         shear = []
         disp = []
@@ -83,13 +82,13 @@ class FrewPlot:
 class FrewMPL(FrewPlot):
     def __init__(
         self,
-        titles: dict,
+        titles: Dict[str, str],
         stage: int,
         stage_name: str,
         wall_results: Dict[int, dict],
         node_levels: List[float],
         envelopes: Dict[str, dict],
-    ):
+    ) -> None:
         super().__init__(titles)
         self.stage = stage
         self.stage_name = stage_name
@@ -97,7 +96,7 @@ class FrewMPL(FrewPlot):
         self.node_levels = node_levels
         self.envelopes = envelopes
 
-        self.cases = list(self.envelopes.keys())
+        self.cases: List[str] = list(self.envelopes.keys())
         self.labels = ["Nodes", "Envelope", *self.cases]
         self.handles = []
 
@@ -202,13 +201,13 @@ class FrewBokeh(FrewPlot):
         self.envelopes = envelopes
 
         self.cases = list(self.envelopes.keys())
-        self.plot_wid = 500
-        self.plot_hgt = 750
-        self.tabs = []
+        self.plot_wid: int = 500
+        self.plot_hgt: int = 750
+        self.tabs: list = []
 
     def plot(self):
         output_file(self.file_name, title=self.titles["JobTitle"])
-        for stage in range(0, self.num_stages):
+        for stage in range(self.num_stages):
             stage_name = self.stage_names[stage]
 
             # Create the plot title
@@ -226,17 +225,16 @@ class FrewBokeh(FrewPlot):
 
             # Get data to plot
             plot_lists = self.get_data(self.wall_results, stage)
-            num_cases = len(self.cases)
-            node_list = [i for i in range(1, len(self.node_levels) + 1)]
+            num_cases: int = len(self.cases)
+            node_list: List[int] = list(range(1, len(self.node_levels) + 1))
             colors = cc.palette["glasbey_bw"][0:num_cases]
 
             # Create a list of 3 Bokeh figures
             self.figs = []
-            for i in range(3):
+            for _ in range(3):
                 self.figs.append(
                     figure(
-                        plot_width=self.plot_wid,
-                        plot_height=self.plot_hgt,
+                        plot_width=self.plot_wid, plot_height=self.plot_hgt,
                     )
                 )
 
@@ -363,8 +361,8 @@ class FrewBokeh(FrewPlot):
                         line_width=2,
                     )
 
-                fig.legend.click_policy = "hide"
-                fig.legend.location = "bottom_left"
+                fig.legend.click_policy: str = "hide"
+                fig.legend.location: str = "bottom_left"
 
             lay = layout([[title_div], [[self.figs]]])
             self.tabs.append(Panel(child=lay, title=f"Stage {stage}"))

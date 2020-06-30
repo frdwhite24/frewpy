@@ -281,13 +281,13 @@ class Wall:
         out_pdf_name: str = f"{job_title}_{uuid_str}_results.pdf"
 
         try:
-            pp = PdfPages(os.path.join(out_folder, out_pdf_name))
+            out_file = PdfPages(os.path.join(out_folder, out_pdf_name))
         except PermissionError:
             raise FrewError(
                 f"Please make sure {out_pdf_name} is closed first."
             )
 
-        for stage in range(0, plot_data_dict["num_stages"]):
+        for stage in range(plot_data_dict["num_stages"]):
             frew_mpl = FrewMPL(
                 plot_data_dict["titles"],
                 stage,
@@ -296,8 +296,8 @@ class Wall:
                 plot_data_dict["node_levels"],
                 plot_data_dict["envelopes"],
             )
-            pp.savefig(frew_mpl.fig)
-        pp.close()
+            out_file.savefig(frew_mpl.fig)
+        out_file.close()
 
     def plot_results_html(self, out_folder: str):
         """ Method to plot the shear, bending moment and displacement of the
