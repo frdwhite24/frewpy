@@ -15,5 +15,5 @@ for file in os.listdir(models_folder):
         model.analyse()
 
         # Extract and plot the results all in one go
-        model.wall.results_to_excel(folder_path)
-        model.wall.plot_wall_results_pdf(folder_path)
+        model.wall.results_to_excel(models_folder)
+        model.wall.plot_wall_results_pdf(models_folder)
