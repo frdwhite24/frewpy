@@ -7,7 +7,7 @@ This module holds the class for the Wall object.
 """
 
 import os
-from typing import Dict, List
+from typing import Dict, List, Union
 from uuid import uuid4
 
 from matplotlib.backends.backend_pdf import PdfPages  # type: ignore
@@ -249,8 +249,8 @@ class Wall:
             """
             )
 
-    def _get_plot_data(self):
-        plot_data_dict = {
+    def _get_plot_data(self) -> Dict[str, Union[dict, int, list]]:
+        return {
             "titles": get_titles(self.json_data),
             "num_stages": get_num_stages(self.json_data),
             "stage_names": get_stage_names(self.json_data),
@@ -258,9 +258,8 @@ class Wall:
             "wall_results": self.get_results(),
             "envelopes": self.get_envelopes(),
         }
-        return plot_data_dict
 
-    def plot_results_pdf(self, out_folder: str):
+    def plot_results_pdf(self, out_folder: str) -> None:
         """ Method to plot the shear, bending moment and displacement of the
         wall for each stage. Output is a static pdf plot created using the
         Matplotlib plotting library.
@@ -314,13 +313,15 @@ class Wall:
         None
 
         """
-        plot_data_dict = self._get_plot_data()
+        plot_data_dict: Dict[str, Union[dict, int, list]] = (
+            self._get_plot_data()
+        )
 
         job_title: str = plot_data_dict["titles"]["JobTitle"]
         uuid_str: str = str(uuid4()).split("-")[0]
         out_html_name: str = f"{job_title}_{uuid_str}_results.html"
 
-        output_file = os.path.join(out_folder, out_html_name)
+        output_file: str = os.path.join(out_folder, out_html_name)
 
         frew_bp = FrewBokeh(
             output_file,
