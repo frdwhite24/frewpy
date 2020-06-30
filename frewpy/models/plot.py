@@ -112,7 +112,7 @@ class FrewMPL(FrewPlot):
         axes = [self.ax1, self.ax2, self.ax3]
 
         # Create and set the plot title
-        fig_title = self.get_title(self.stage, self.stage_name)
+        fig_title: str = self.get_title(self.stage, self.stage_name)
         self.fig.suptitle(fig_title, fontsize=self.title_size)
 
         # Set up the plot properties
@@ -208,10 +208,10 @@ class FrewBokeh(FrewPlot):
     def plot(self):
         output_file(self.file_name, title=self.titles["JobTitle"])
         for stage in range(self.num_stages):
-            stage_name = self.stage_names[stage]
+            stage_name: str = self.stage_names[stage]
 
             # Create the plot title
-            fig_title = self.get_title(stage, stage_name, bokeh=True)
+            fig_title: str = self.get_title(stage, stage_name, bokeh=True)
             title_div = Div(
                 text=f"<h1>{fig_title}</h1>",
                 style={
