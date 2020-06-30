@@ -7,16 +7,20 @@ This module holds the class for the Wall object.
 """
 
 import os
-from typing import Dict, List
+from typing import Dict, List, Union
+from uuid import uuid4
 
+from matplotlib.backends.backend_pdf import PdfPages  # type: ignore
 import pandas as pd  # type: ignore
 
 from frewpy.utils import (
     get_num_nodes,
     get_num_stages,
+    get_stage_names,
     get_titles,
     get_design_case_names,
 )
+from .plot import FrewMPL, FrewBokeh
 from .exceptions import FrewError
 
 
@@ -101,10 +105,10 @@ class Wall:
                         "Noderesults"
                     ]
                     wall_results[stage][result_set_name]["shear"].append(
-                        stage_results[node]["Shear"]
+                        stage_results[node]["Shear"] / 1000
                     )
                     wall_results[stage][result_set_name]["bending"].append(
-                        stage_results[node]["Bending"]
+                        stage_results[node]["Bending"] / 1000
                     )
                     wall_results[stage][result_set_name][
                         "displacement"
@@ -128,7 +132,7 @@ class Wall:
         design_cases = get_design_case_names(self.json_data)
         wall_results = self.get_results()
 
-        envelopes = {
+        envelopes: Dict[str, dict] = {
             design_case: {
                 "maximum": {"shear": [], "bending": [], "disp": []},
                 "minimum": {"shear": [], "bending": [], "disp": []},
@@ -189,11 +193,11 @@ class Wall:
         titles: Dict[str, str] = get_titles(self.json_data)
 
         job_title: str = titles["JobTitle"]
-        sub_title: str = titles["Subtitle"][:20]
-        file_name: str = f"{job_title}_{sub_title}_results.xlsx"
+        uuid_str: str = str(uuid4()).split("-")[0]
+        file_name: str = f"{job_title}_{uuid_str}_results.xlsx"
 
         export_data: Dict[str, dict] = {}
-        design_cases: List[str] = wall_results[0].keys()
+        design_cases: List[str] = list(wall_results[0].keys())
 
         for design_case in design_cases:
             export_data[design_case] = {
@@ -245,6 +249,91 @@ class Wall:
             """
             )
 
+    def _get_plot_data(self) -> Dict[str, Union[dict, int, list]]:
+        return {
+            "titles": get_titles(self.json_data),
+            "num_stages": get_num_stages(self.json_data),
+            "stage_names": get_stage_names(self.json_data),
+            "node_levels": self.get_node_levels(),
+            "wall_results": self.get_results(),
+            "envelopes": self.get_envelopes(),
+        }
+
+    def plot_results_pdf(self, out_folder: str) -> None:
+        """ Method to plot the shear, bending moment and displacement of the
+        wall for each stage. Output is a static pdf plot created using the
+        Matplotlib plotting library.
+
+        Parameters
+        ----------
+        out_folder : str
+            The folder path to save the results at.
+
+        Returns
+        -------
+        None
+
+        """
+        plot_data_dict = self._get_plot_data()
+        job_title: str = plot_data_dict["titles"]["JobTitle"]
+        uuid_str: str = str(uuid4()).split("-")[0]
+        out_pdf_name: str = f"{job_title}_{uuid_str}_results.pdf"
+
+        try:
+            out_file = PdfPages(os.path.join(out_folder, out_pdf_name))
+        except PermissionError:
+            raise FrewError(
+                f"Please make sure {out_pdf_name} is closed first."
+            )
+
+        for stage in range(plot_data_dict["num_stages"]):
+            frew_mpl = FrewMPL(
+                plot_data_dict["titles"],
+                stage,
+                plot_data_dict["stage_names"][stage],
+                plot_data_dict["wall_results"],
+                plot_data_dict["node_levels"],
+                plot_data_dict["envelopes"],
+            )
+            out_file.savefig(frew_mpl.fig)
+        out_file.close()
+
+    def plot_results_html(self, out_folder: str):
+        """ Method to plot the shear, bending moment and displacement of the
+        wall for each stage. Output is a interactive html plot created using
+        the Bokeh plotting library.
+
+        Parameters
+        ----------
+        out_folder : str
+            The folder path to save the results at.
+
+        Returns
+        -------
+        None
+
+        """
+        plot_data_dict: Dict[str, Union[dict, int, list]] = (
+            self._get_plot_data()
+        )
+
+        job_title: str = plot_data_dict["titles"]["JobTitle"]
+        uuid_str: str = str(uuid4()).split("-")[0]
+        out_html_name: str = f"{job_title}_{uuid_str}_results.html"
+
+        output_file: str = os.path.join(out_folder, out_html_name)
+
+        frew_bp = FrewBokeh(
+            output_file,
+            plot_data_dict["titles"],
+            plot_data_dict["num_stages"],
+            plot_data_dict["stage_names"],
+            plot_data_dict["wall_results"],
+            plot_data_dict["node_levels"],
+            plot_data_dict["envelopes"],
+        )
+        frew_bp.plot()
+
 
 # def get_wall_stiffness() -> dict:
 #     """ Function to get the stiffness of the wall for each stage and node.
@@ -263,102 +352,3 @@ class Wall:
 #                 stage
 #             )
 #     return wall_stiffness
-
-# def plot_results() -> None:
-#     """ Function to plot the shear, bending moment and displacement of the
-#     wall for each stage.
-
-#     """
-
-#     file_name = os.path.basename(file_path.rsplit('.', 1)[0])
-#     wall_results = get_results()
-#     node_levels = get_node_levels()
-#     envelopes = get_envelopes()
-
-#     # Set defaults for plot styling
-#     plt.rcParams.update({'axes.titlesize': 10})
-#     plt.rcParams.update({'axes.labelsize': 7})
-#     plt.rcParams.update({'xtick.labelsize': 7})
-#     plt.rcParams.update({'ytick.labelsize': 7})
-
-#     pdf = pltexp.PdfPages(
-#         f'{os.path.join(folder_path, file_name)}_results.pdf'
-#     )
-#     for stage in range(0, num_stages):
-#         figure_title = f'{file_name} - Stage {stage}'
-
-#         plt.close('all')
-#         fig, (ax1, ax2, ax3) = plt.subplots(
-#             1,
-#             3,
-#             sharey=True)
-
-#         # Figure information
-#         fig.suptitle(figure_title)
-
-#         # Data to plot
-#         levels = []
-#         shear = []
-#         bending = []
-#         disp = []
-#         for level in node_levels.values():
-#             levels.append(level)
-#         for val in wall_results[stage].values():
-#             shear.append(val[0])
-#             bending.append(val[1])
-#             disp.append(val[2])
-
-#         # Plot for displacements
-#         ax1.set_xlabel('Displacements (mm/m)')
-#         ax1.set_ylabel('Level (m)')
-#         ax1.grid(color='#c5c5c5', linewidth=0.5)
-#         ax1.plot(
-#             envelopes['maximum']['disp'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax1.plot(
-#             envelopes['minimum']['disp'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax1.plot(disp, levels, 'b')
-
-#         # Plot for bending
-#         ax2.set_xlabel('Bending Moment (kNm/m)')
-#         ax2.grid(color='#c5c5c5', linewidth=0.5)
-#         ax2.plot(
-#             envelopes['maximum']['bending'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax2.plot(
-#             envelopes['minimum']['bending'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax2.plot(bending, levels, 'r')
-
-#         # Plot for shear
-#         ax3.set_xlabel('Shear (kN/m)')
-#         ax3.grid(color='#c5c5c5', linewidth=0.5)
-#         ax3.plot(
-#             envelopes['maximum']['shear'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax3.plot(
-#             envelopes['minimum']['shear'],
-#             levels,
-#             'k--',
-#             linewidth=1
-#         )
-#         ax3.plot(shear, levels, 'g')
-
-#         pdf.savefig(fig)
-#     pdf.close()
