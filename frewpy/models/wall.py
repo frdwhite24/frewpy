@@ -9,6 +9,8 @@ This module holds the class for the Wall object.
 import os
 from typing import Dict, List, Union
 from uuid import uuid4
+from datetime import datetime
+import re
 
 from matplotlib.backends.backend_pdf import PdfPages  # type: ignore
 import pandas as pd  # type: ignore
@@ -191,19 +193,25 @@ class Wall:
         num_stages: int = get_num_stages(self.json_data)
         node_levels: List[float] = self.get_node_levels()
         wall_results: Dict[int, dict] = self.get_results()
+        design_cases: List[str] = get_design_case_names(self.json_data)
+        envelopes: Dict[str, dict] = self.get_envelopes()
+        export_envelopes = pd.DataFrame(
+            self._format_envelope_data(
+                num_nodes, node_levels, envelopes, design_cases
+            )
+        )
         titles: Dict[str, str] = get_titles(self.json_data)
+        export_titles = pd.DataFrame(self._format_titles_data(titles))
 
         job_title: str = titles["JobTitle"]
         uuid_str: str = str(uuid4()).split("-")[0]
         file_name: str = f"{job_title}_{uuid_str}_results.xlsx"
 
         export_data: Dict[str, dict] = {}
-        design_cases: List[str] = list(wall_results[0].keys())
-
         for design_case in design_cases:
             export_data[design_case] = {
                 "Node #": [],
-                "Node levels": [],
+                "Node levels (m)": [],
                 "Stage": [],
                 "Bending (kNm/m)": [],
                 "Shear (kN/m)": [],
@@ -219,7 +227,7 @@ class Wall:
                 ]
 
                 export_data[design_case]["Node #"].extend(node_array)
-                export_data[design_case]["Node levels"].extend(node_levels)
+                export_data[design_case]["Node levels (m)"].extend(node_levels)
                 export_data[design_case]["Stage"].extend(stage_array)
                 export_data[design_case]["Bending (kNm/m)"].extend(
                     bending_results
@@ -230,6 +238,12 @@ class Wall:
                 )
         try:
             with pd.ExcelWriter(os.path.join(out_folder, file_name)) as writer:
+                export_titles.to_excel(
+                    writer, sheet_name="Titles", index=False, header=False
+                )
+                export_envelopes.to_excel(
+                    writer, sheet_name="Envelopes", index=False,
+                )
                 for design_case in design_cases:
                     export_data_df = pd.DataFrame(export_data[design_case])
                     export_data_df.to_excel(
@@ -241,6 +255,73 @@ class Wall:
                 Please make sure you have closed the results spreadsheet.
             """
             )
+
+    def _format_titles_data(
+        self, titles: Dict[str, str]
+    ) -> Dict[str, List[str]]:
+        format_titles: Dict[str, List[str]] = {
+            "title": [],
+            "value": [],
+        }
+        [format_titles["title"].append(item) for item in titles.keys()]
+        [format_titles["value"].append(item) for item in titles.values()]
+        format_titles["title"].append("DateExported")
+        format_titles["value"].append(datetime.now().strftime(r"%d/%m/%Y"))
+
+        for index, title in enumerate(format_titles["title"]):
+            # Regex: finds all upper case letters within the string, not at the
+            # start of the string and then prefixes them with a space.
+            matches = re.findall(r"\B[A-Z]", title)
+            if matches:
+                for match in matches:
+                    title = title.replace(match, f" {match}").strip()
+                format_titles["title"][index] = title
+        return format_titles
+
+    def _format_envelope_data(
+        self,
+        num_nodes: int,
+        node_levels: List[float],
+        envelopes: Dict[str, dict],
+        design_cases: List[str],
+    ) -> Dict[str, list]:
+        format_envelopes: Dict[str, list] = {
+            "Design case": [],
+            "Node #": [],
+            "Node levels (m)": [],
+            "Max Bending (kNm/m)": [],
+            "Min Bending (kNm/m)": [],
+            "Max Shear (kN/m)": [],
+            "Min Shear (kN/m)": [],
+            "Max Displacement (mm)": [],
+            "Min Displacement (mm)": [],
+        }
+        [
+            format_envelopes["Design case"].extend([design_case] * num_nodes)
+            for design_case in design_cases
+        ]
+        for design_case in design_cases:
+            format_envelopes["Node #"].extend(list(range(1, num_nodes + 1)))
+            format_envelopes["Node levels (m)"].extend(node_levels)
+            format_envelopes["Max Bending (kNm/m)"].extend(
+                envelopes[design_case]["maximum"]["bending"]
+            )
+            format_envelopes["Min Bending (kNm/m)"].extend(
+                envelopes[design_case]["minimum"]["bending"]
+            )
+            format_envelopes["Max Shear (kN/m)"].extend(
+                envelopes[design_case]["maximum"]["shear"]
+            )
+            format_envelopes["Min Shear (kN/m)"].extend(
+                envelopes[design_case]["minimum"]["shear"]
+            )
+            format_envelopes["Max Displacement (mm)"].extend(
+                envelopes[design_case]["maximum"]["disp"]
+            )
+            format_envelopes["Min Displacement (mm)"].extend(
+                envelopes[design_case]["minimum"]["disp"]
+            )
+        return format_envelopes
 
     def _get_plot_data(self) -> Dict[str, Union[dict, int, list]]:
         return {
