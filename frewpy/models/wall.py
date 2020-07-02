@@ -239,10 +239,10 @@ class Wall:
         try:
             with pd.ExcelWriter(os.path.join(out_folder, file_name)) as writer:
                 export_titles.to_excel(
-                    writer, sheet_name='Titles', index=False, header=False
+                    writer, sheet_name="Titles", index=False, header=False
                 )
                 export_envelopes.to_excel(
-                    writer, sheet_name='Envelopes', index=False,
+                    writer, sheet_name="Envelopes", index=False,
                 )
                 for design_case in design_cases:
                     export_data_df = pd.DataFrame(export_data[design_case])
@@ -257,26 +257,25 @@ class Wall:
             )
 
     def _format_titles_data(
-        self,
-        titles: Dict[str, str]
+        self, titles: Dict[str, str]
     ) -> Dict[str, List[str]]:
         format_titles: Dict[str, List[str]] = {
-            'title': [],
-            'value': [],
+            "title": [],
+            "value": [],
         }
-        [format_titles['title'].append(item) for item in titles.keys()]
-        [format_titles['value'].append(item) for item in titles.values()]
-        format_titles['title'].append('DateExported')
-        format_titles['value'].append(datetime.now().strftime(r'%d/%m/%Y'))
+        [format_titles["title"].append(item) for item in titles.keys()]
+        [format_titles["value"].append(item) for item in titles.values()]
+        format_titles["title"].append("DateExported")
+        format_titles["value"].append(datetime.now().strftime(r"%d/%m/%Y"))
 
-        for index, title in enumerate(format_titles['title']):
+        for index, title in enumerate(format_titles["title"]):
             # Regex: finds all upper case letters within the string, not at the
             # start of the string and then prefixes them with a space.
-            matches = re.findall(r'\B[A-Z]', title)
+            matches = re.findall(r"\B[A-Z]", title)
             if matches:
                 for match in matches:
-                    title = title.replace(match, f' {match}').strip()
-                format_titles['title'][index] = title
+                    title = title.replace(match, f" {match}").strip()
+                format_titles["title"][index] = title
         return format_titles
 
     def _format_envelope_data(
@@ -287,9 +286,9 @@ class Wall:
         design_cases: List[str],
     ) -> Dict[str, list]:
         format_envelopes: Dict[str, list] = {
-            'Design case': [],
-            'Node #': [],
-            'Node levels (m)': [],
+            "Design case": [],
+            "Node #": [],
+            "Node levels (m)": [],
             "Max Bending (kNm/m)": [],
             "Min Bending (kNm/m)": [],
             "Max Shear (kN/m)": [],
@@ -298,29 +297,29 @@ class Wall:
             "Min Displacement (mm)": [],
         }
         [
-            format_envelopes['Design case'].extend([design_case] * num_nodes)
+            format_envelopes["Design case"].extend([design_case] * num_nodes)
             for design_case in design_cases
         ]
         for design_case in design_cases:
-            format_envelopes['Node #'].extend(list(range(1, num_nodes + 1)))
-            format_envelopes['Node levels (m)'].extend(node_levels)
-            format_envelopes['Max Bending (kNm/m)'].extend(
-                envelopes[design_case]['maximum']['bending']
+            format_envelopes["Node #"].extend(list(range(1, num_nodes + 1)))
+            format_envelopes["Node levels (m)"].extend(node_levels)
+            format_envelopes["Max Bending (kNm/m)"].extend(
+                envelopes[design_case]["maximum"]["bending"]
             )
-            format_envelopes['Min Bending (kNm/m)'].extend(
-                envelopes[design_case]['minimum']['bending']
+            format_envelopes["Min Bending (kNm/m)"].extend(
+                envelopes[design_case]["minimum"]["bending"]
             )
-            format_envelopes['Max Shear (kN/m)'].extend(
-                envelopes[design_case]['maximum']['shear']
+            format_envelopes["Max Shear (kN/m)"].extend(
+                envelopes[design_case]["maximum"]["shear"]
             )
-            format_envelopes['Min Shear (kN/m)'].extend(
-                envelopes[design_case]['minimum']['shear']
+            format_envelopes["Min Shear (kN/m)"].extend(
+                envelopes[design_case]["minimum"]["shear"]
             )
-            format_envelopes['Max Displacement (mm)'].extend(
-                envelopes[design_case]['maximum']['disp']
+            format_envelopes["Max Displacement (mm)"].extend(
+                envelopes[design_case]["maximum"]["disp"]
             )
-            format_envelopes['Min Displacement (mm)'].extend(
-                envelopes[design_case]['minimum']['disp']
+            format_envelopes["Min Displacement (mm)"].extend(
+                envelopes[design_case]["minimum"]["disp"]
             )
         return format_envelopes
 
