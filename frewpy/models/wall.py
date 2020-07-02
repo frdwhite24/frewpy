@@ -327,21 +327,21 @@ class Wall:
         )
         frew_bp.plot()
 
+    def get_wall_stiffness(self) -> Dict[int, List[float]]:
+        """ Function to get the stiffness of the wall for each stage and node.
 
-# def get_wall_stiffness() -> dict:
-#     """ Function to get the stiffness of the wall for each stage and node.
+        Returns
+        -------
+        wall_stiffness : Dict[int, List[float]]
+            The stiffness of the wall in kNm2/m for each stage.
 
-#     Returns
-#     -------#     wall_stiffness : dict
-#         The stiffness of the wall.
+        """
+        num_stages = get_num_stages(self.json_data)
+        wall_stiffness: Dict[int, List[float]] = {}
 
-#     """
-#     wall_stiffness = {}
-#     for stage in range(0, num_stages):
-#         wall_stiffness[stage] = {}
-#         for node in range(0, num_nodes):
-#             wall_stiffness[stage][node+1] = model.GetWallEI(
-#                 node,
-#                 stage
-#             )
-#     return wall_stiffness
+        for stage in range(num_stages):
+            wall_stiffness[stage] = [
+                item['Eival'] / 1000
+                for item in self.json_data['Stages'][stage]['GeoFrewNodes']
+            ]
+        return wall_stiffness

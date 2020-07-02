@@ -90,22 +90,21 @@ class FrewModel:
         """
         if not isinstance(request, str):
             raise FrewError("Request must be a string.")
-        if request == "titles":
+        while request == "titles":
             return get_titles(self.json_data)
-        elif request == "file history":
+        while request == "file history":
             return get_file_history(self.json_data)
-        elif request == "file version":
+        while request == "file version":
             return get_file_version(self.json_data)
-        elif request == "frew version":
+        while request == "frew version":
             return get_frew_version(self.json_data)
-        elif request == "num stages":
+        while request == "num stages":
             return get_num_stages(self.json_data)
-        elif request == "stage names":
+        while request == "stage names":
             return get_stage_names(self.json_data)
-        elif request == "num nodes":
+        while request == "num nodes":
             return get_num_nodes(self.json_data)
-        else:
-            raise FrewError("Please input a valid option.")
+        raise FrewError("Please input a valid option.")
 
     def analyse(self) -> None:
         """ Analyse the model using the COM interface to open Frew. This method
