@@ -341,7 +341,7 @@ class Wall:
 
         for stage in range(num_stages):
             wall_stiffness[stage] = [
-                item['Eival'] / 1000
-                for item in self.json_data['Stages'][stage]['GeoFrewNodes']
+                item["Eival"] / 1000
+                for item in self.json_data["Stages"][stage]["GeoFrewNodes"]
             ]
         return wall_stiffness
