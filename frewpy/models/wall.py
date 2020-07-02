@@ -239,7 +239,6 @@ class Wall:
             )
 
 
-
 # def get_wall_stiffness() -> dict:
 #     """ Function to get the stiffness of the wall for each stage and node.
 

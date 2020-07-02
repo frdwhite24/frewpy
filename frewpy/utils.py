@@ -318,3 +318,12 @@ def get_design_case_names(json_data: dict) -> List[str]:
         design_case["GeoPartialFactorSet"]["Name"]
         for design_case in json_data["Frew Results"]
     ]
+
+
+def check_results_present(json_data: dict):
+    if not json_data.get("Frew Results", False):
+        raise FrewError(
+            """
+            No results in the model, please analyse the model first.
+        """
+        )
