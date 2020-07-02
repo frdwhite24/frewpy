@@ -2,3 +2,5 @@ pandas~=1.0
 openpyxl~=3.0
 matplotlib~=3.2
 comtypes~=1.1
+colorcet~=2.0
+bokeh~=2.1

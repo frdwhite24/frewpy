@@ -20,7 +20,7 @@ from frewpy.models.exceptions import FrewError, NodeError
 
 
 def _check_frew_path(file_path) -> None:
-    if type(file_path) != str:
+    if not isinstance(file_path, str):
         raise FrewError("The path must be a string.")
     if not os.path.exists(file_path):
         raise FrewError("Path to Frew model does not exist.")
@@ -72,7 +72,7 @@ def check_json_path(file_path: str) -> None:
         If the path is not a string, doesn't exists or is not to a json file.
 
     """
-    if type(file_path) != str:
+    if not isinstance(file_path, str):
         raise FrewError(
             f"""
             File path must be a string. Value {file_path} of type {type
@@ -279,8 +279,7 @@ def get_num_nodes(json_data: dict) -> int:
         unique_num_nodes = np.unique(np.array(num_nodes))
     if len(unique_num_nodes) == 1:
         return unique_num_nodes[0]
-    else:
-        raise NodeError("Number of nodes is not unique for every stage.")
+    raise NodeError("Number of nodes is not unique for every stage.")
 
 
 def get_num_design_cases(json_data: dict) -> int:
