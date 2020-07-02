@@ -1,5 +1,5 @@
 """
-wall
+Wall
 ====
 
 This module holds the class for the Wall object.
@@ -19,6 +19,7 @@ from frewpy.utils import (
     get_stage_names,
     get_titles,
     get_design_case_names,
+    check_results_present,
 )
 from .plot import FrewMPL, FrewBokeh
 from .exceptions import FrewError
@@ -88,7 +89,7 @@ class Wall:
         """
         num_nodes = get_num_nodes(self.json_data)
         num_stages = get_num_stages(self.json_data)
-        self._check_results_present()
+        check_results_present(self.json_data)
 
         wall_results: Dict[int, dict] = {}
         for stage in range(num_stages):
@@ -126,7 +127,7 @@ class Wall:
             design case for all stages.
 
         """
-        self._check_results_present()
+        check_results_present(self.json_data)
         num_stages = get_num_stages(self.json_data)
         num_nodes = get_num_nodes(self.json_data)
         design_cases = get_design_case_names(self.json_data)
@@ -238,14 +239,6 @@ class Wall:
             raise FrewError(
                 """
                 Please make sure you have closed the results spreadsheet.
-            """
-            )
-
-    def _check_results_present(self):
-        if not self.json_data.get("Frew Results", False):
-            raise FrewError(
-                """
-                No results in the model, please analyse the model first.
             """
             )
 
