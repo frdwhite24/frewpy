@@ -1,8 +1,10 @@
 # Developer Guide
 
+:construction: :construction: :construction: CURRENTLY WIP :construction: :construction: :construction:
+
 ## Introduction
 
-Firstly, thank you for considering to contribute towards frewpy, it is greatly appreciated and will definitely benefit both the wider community and also your own technical development. Please take your time when reading this contribution guide as it will make the overall experience much easier, and explain why things the way they are. It will also make it much more straight forward for the core developers to coordinate all the contributions to keep the project on the right tracks. In return, the core developers should reciprocate the care when addressing your issue, assessing changes and helping you finalize your merge requests.
+Firstly, thank you for considering contributing towards frewpy, it is greatly appreciated and will definitely benefit both the wider community and also your own technical development. Please take your time when reading this contribution guide as it will make the overall experience much easier, and explain why things the way they are. It will also make it much more straight forward for the core developers to coordinate all the contributions to keep the project on the right tracks. In return, the core developers should reciprocate the care when addressing your issue, assessing changes and helping you finalize your merge requests.
 
 There are many ways to contribute, from submitting a feature request on the GitLab repository, to extending the core functionality of the library so that it comfortably enables engineers to do everything they require with Frew. This core functionality could be as simple as retrieving information from a Frew model, or as complex as enabling quicker design iterations or integration with other Oasys software. Other possible contributions could be providing examples of the library being used, and detailed reporting of any bugs to ensure it is a clean, reliable library for anyone to use.
 
@@ -10,15 +12,16 @@ Please don't submit issues for non-frewpy related problems. This is to ensure th
 
 ## Responsibilities
 
+1. Follow the [basic programming principles](https://www.c-sharpcorner.com/article/software-design-principles-dry-kiss-yagni/) at all times (in particular: Don't Repeat Yourself, and Keep It Simple, Stupid). Single responsibility functions/methods and descriptive naming are key to this.
 1. Ensure all code is fully tested and passing with `pytest` before merging in the branch.
-2. Ensure all code is without linting issues (using `pycodestyle`) and is fully statically typed and checked with `mypy`.
-3. Ensure that where functionality is changed or extended, the documentation is changed to reflect the work that was done.
-4. Keep the development going in the right direction by following the roadmap and associated issues.
-5. Where possible, use existing functions to extend the functionality before writing new functions.
-6. Report bugs when found using the bug template so that all important information is logged.
-7. Create issues for any major changes and enhancements that you wish to make so that it can be discussed transparently and receive appropriate community feedback before being implemented.
-8. Keep feature-specific development small and incremental, preferably not one whole workflow but pieces of that workflow.
-9. Encourage others to contribute and benefit from frewpy to help expand the user base and community.
+1. Ensure all code is without linting issues using black formatter (or the pipeline will fail and your commit will not be accepted) and is statically typed and checked with `mypy`.
+1. Ensure that where functionality is changed or extended, the documentation is changed to reflect the work that was done.
+1. Keep the development going in the right direction by following the roadmap and associated issues.
+1. Where possible, use existing functions to extend the functionality before writing new functions.
+1. Report bugs when found using the bug template so that all important information is logged.
+1. Create issues for any major changes and enhancements that you wish to make so that it can be discussed transparently and receive appropriate community feedback before being implemented.
+1. Keep feature-specific development small and incremental, preferably not one whole workflow but pieces of that workflow.
+1. Encourage others to contribute and benefit from frewpy to help expand the user base and community.
 
 ## Your First Contribution
 
