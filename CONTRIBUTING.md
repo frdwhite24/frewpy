@@ -99,7 +99,7 @@ If you have a feature idea which would be applicable and helpful across many pro
 
 Please also check the project roadmap to see if the feature you are suggesting is planned for future releases.
 
-## Code review process
+## Code Review Process
 
 The merge request will be reviewed in many ways, including: code quality, code styling, static typing, applicability, unit testing. Comments will be provided on the merge request which should then help the contributor to improve their contribution. Once all comments have been addressed, the feature will be merged into the core frewpy code base.
 
