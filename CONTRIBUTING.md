@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Firstly, thank you for considering to contribute towards frewpy, it is greatly appreciated and will definitely benefit both the wider community and also your own technical development. Please take your time when reading this contribution guide as it will make the overall experience much easier, and explain why things the way they are. It will also make it much more straight forward for the core developers to coordinate all the contributions to keep the project on the right tracks. In return, the core developers should reciprocate the care when addressing your issue, assessing changes and helping you finalize your merge requests.
+Firstly, thank you for considering contributing towards frewpy, it is greatly appreciated and will definitely benefit both the wider community and also your own technical development. Please take your time when reading this contribution guide as it will make the overall experience much easier, and explain why things the way they are. It will also make it much more straight forward for the core developers to coordinate all the contributions to keep the project on the right tracks. In return, the core developers should reciprocate the care when addressing your issue, assessing changes and helping you finalize your merge requests.
 
 There are many ways to contribute, from submitting a feature request on the GitLab repository, to extending the core functionality of the library so that it comfortably enables engineers to do everything they require with Frew. This core functionality could be as simple as retrieving information from a Frew model, or as complex as enabling quicker design iterations or integration with other Oasys software. Other possible contributions could be providing examples of the library being used, and detailed reporting of any bugs to ensure it is a clean, reliable library for anyone to use.
 
@@ -10,173 +10,99 @@ Please don't submit issues for non-frewpy related problems. This is to ensure th
 
 ## Responsibilities
 
+1. Follow the [basic programming principles](https://www.c-sharpcorner.com/article/software-design-principles-dry-kiss-yagni/) at all times (in particular: Don't Repeat Yourself, and Keep It Simple, Stupid). Single responsibility functions/methods and descriptive naming are key to this.
 1. Ensure all code is fully tested and passing with `pytest` before merging in the branch.
-2. Ensure all code is without linting issues (using `pycodestyle`) and is fully statically typed and checked with `mypy`.
-3. Ensure that where functionality is changed or extended, the documentation is changed to reflect the work that was done.
-4. Keep the development going in the right direction by following the roadmap and associated issues.
-5. Where possible, use existing functions to extend the functionality before writing new functions.
-6. Report bugs when found using the bug template so that all important information is logged.
-7. Create issues for any major changes and enhancements that you wish to make so that it can be discussed transparently and receive appropriate community feedback before being implemented.
-8. Keep feature-specific development small and incremental, preferably not one whole workflow but pieces of that workflow.
-9. Encourage others to contribute and benefit from frewpy to help expand the user base and community.
+1. Ensure all code is without linting issues using black formatter (or the pipeline will fail and your commit will not be accepted) and is statically typed and checked with `mypy`.
+1. Ensure that where functionality is changed or extended, the documentation is changed to reflect the work that was done.
+1. Keep the development going in the right direction by following the roadmap and associated issues.
+1. Where possible, use existing functions to extend the functionality before writing new functions.
+1. Report bugs when found using the bug template so that all important information is logged.
+1. Create issues for any major changes and enhancements that you wish to make so that it can be discussed transparently and receive appropriate community feedback before being implemented.
+1. Keep feature-specific development small and incremental, preferably not one whole workflow but pieces of that workflow.
+1. Encourage others to contribute and benefit from frewpy to help expand the user base and community.
 
 ## Your First Contribution
 
-Unsure where to begin with contributing to frewpy? You'll probably want to pick up one of the issues marked _"good first commit"_. Issues aren't necessarily just problems with the library, issues are GitLab's approach to an all encompassing item list, where labels define the nature of the item.
+Unsure where to begin with contributing to frewpy? You'll probably want to pick up one of the issues marked _"good first issue"_ or _"needs help"_. Issues aren't necessarily just problems with the library, issues are GitLab's approach to an all encompassing item list, where labels define the nature of the item. The following issue labels are used on this project:
 
-TEMPLATE FROM HERE
+- good first issue: an easy to pick up, small issue that could be tackled by beginners.
+- needs help: specifically required for the next version release.
+- support: specific support required for users or developers of frewpy, the intention is to allow others to query it as an FAQ area if they encounter issues.
+- suggestion: a suggestion for the library which is not yet agreed as a feature but something that might improve the library.
+- enhancement: an agreed feature due to be developed which will enhance the functionality of the library
+- discussion: a point which requires discussion from the community relating to the library.
+- documentation: issues relating to improvements or modifications to the documentation.
+- bug: something encountered when using or developing frewpy that needs fixing.
 
-Help people who are new to your project understand where they can be most helpful. This is also a good time to let people know if you follow a label convention for flagging beginner issues.
+## Getting Started
 
-> Unsure where to begin contributing to Atom? You can start by looking through these beginner and help-wanted issues:
-> Beginner issues - issues which should only require a few lines of code, and a test or two.
-> Help wanted issues - issues which should be a bit more involved than beginner issues.
-> Both issue lists are sorted by total number of comments. While not perfect, number of comments is a reasonable proxy for impact a given change will have.
+### Setup
 
-[source: [Atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#your-first-code-contribution)] **Need more inspiration?** [1][read the docs](http://docs.readthedocs.org/en/latest/contribute.html#contributing-to-development) [2][django](https://docs.djangoproject.com/en/dev/internals/contributing/new-contributors/#first-steps) (scroll down to "Guidelines" as well)
+You'll need to have a [text editor](https://gitlab.arup.com/ait/how-to-wiki/-/wikis/Programming/Getting-Started), [python](https://gitlab.arup.com/ait/how-to-wiki/-/wikis/Python/Getting-Started), [Git for Windows](https://gitlab.arup.com/ait/how-to-wiki/-/wikis/Version-Control/Git) and greater than Oasys Frew version 19.4 build 24 installed on your PC.
 
-### Bonus points: Add a link to a resource for people who have never contributed to open source before.
+> Please note: you might need Developer access to the repository before you're able to do anything. If this is the case then please contact the development team and we can help you out.
 
-Here are a couple of friendly tutorials you can include: http://makeapullrequest.com/ and http://www.firsttimersonly.com/
+Next you'll need to clone the repository to somewhere local using your Git for Windows Bash. Once cloned, you'll need to pip install both the `requirements.txt` and the `requirements-dev.txt` into your project virtual environment. This will provide you with the correct libraries required to contribute towards frewpy.
 
-> Working on your first Pull Request? You can learn how from this _free_ series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
+### Branching
 
-[source: [React](https://github.com/facebook/react/blob/master/CONTRIBUTING.md#pull-requests)]
+This repository functions using the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) which means if you want to contribute, you'll need to pull your own branch off `develop` as this and the `master` branch are protected and **noone** has the permissions to push to them. In practice this is very simple to do and means anything you change to the code base in your branch will not break the rest of the library. This provides you with a great sandbox to play around with!
 
-As a side note, it helps to use newcomer-friendly language throughout the rest of your document. Here are a couple of examples from [Active Admin](https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md):
+To branch off develop simply use the command `git checkout -b {branch name} develop`. Branch names must follow the naming convention of `type-short-description` where `type` can be: "feature", "admin", "bugfix", or "hotfix", and the `short-description` is a 1 to 3 word description of what you're doing on the branch. For example `feature-soil-pressures` or `admin-contribution-guide` are valid branch names.
 
-> At this point, you're ready to make your changes! Feel free to ask for help; everyone is a beginner at first :smile_cat:
->
-> If a maintainer asks you to "rebase" your PR, they're saying that a lot of code has changed, and that you need to update your branch so it's easier to merge.
+### Testing
 
-## Getting started
+Once you've written code, you'll need to write some unit tests using the `pytest` library. You can look at other tests for inspiration in the tests directory or the [documentation](https://docs.pytest.org/en/stable/getting-started.html), but they're pretty basic to get going with and very quick to do. You can run the `coverage_report.bat` file and the VS Code extension [Coverage Gutters](https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters) to have in-line coverage markings which help with writing unit tests that cover all aspects of your code. To run the tests, use the `test_project.bat` file for ease.
 
-### Give them a quick walkthrough of how to submit a contribution.
+### Committing code
 
-How you write this is up to you, but some things you may want to include:
+Every time you commit to the repository, a [Continuous Integration (CI) pipeline](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/) will run the [Black formatter](https://github.com/psf/black) check with a line length of 79 characters and fail if it recognises that any files need formatting changes. It is intended to extend this CI pipeline to include type checking and running the any tests but currently that has not been implemented. When writing your commit messages, please use the format:
 
-- Let them know if they need to sign a CLA, agree to a DCO, or get any other legal stuff out of the way
-- If tests are required for contributions, let them know, and explain how to run the tests
-- If you use anything other than GitHub to manage issues (ex. JIRA or Trac), let them know which tools they’ll need to contribute
+```
+Short Header
+<blank line>
+Explanation and reasoning for what was done.
+<blank line>
+Related or resolved issues
+```
 
-> For something that is bigger than a one or two line fix:
+For example:
 
-> 1.  Create your own fork of the code
-> 2.  Do the changes in your fork
-> 3.  If you like the change and think the project could use it:
+```
+Refactoring soil module
 
-    * Be sure you have followed the code style for the project.
-    * Sign the Contributor License Agreement, CLA, with the jQuery Foundation.
-    * Note the jQuery Foundation Code of Conduct.
-    * Send a pull request indicating that you have a CLA on file.
+This module had a profiler run through it and it was found to be very inefficient. Threading has been added to make it run faster and the number of local variables has been reduced to make it more human readable.
 
-[source: [Requirejs](http://requirejs.org/docs/contributing.html)] **Need more inspiration?** [1][active admin](https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md#1-where-do-i-go-from-here) [2][node.js](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md#code-contributions) [3][ember.js](https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#pull-requests)
+Related #13 #4
+Resolves #14
+```
 
-### If you have a different process for small or "obvious" fixes, let them know.
+If you have written something that you feel the library would benefit from having in the core code base, you can put in a merge request from your branch to the develop branch. Communicating what you have done and why, and that you'd like it to be reviewed. You don't need to explicitly say everything you have written in code as this is obvious from the diffs when comparing the branches, the main point to get across is why you've done what you've done. For example:
 
-> Small contributions such as fixing spelling errors, where the content is small enough to not be considered intellectual property, can be submitted by a contributor as a patch, without a CLA.
->
-> As a rule of thumb, changes are obvious fixes if they do not introduce any new functionality or creative thinking. As long as the change does not affect functionality, some likely examples include the following:
->
-> - Spelling / grammar fixes
-> - Typo correction, white space and formatting changes
-> - Comment clean up
-> - Bug fixes that change default return values or error codes stored in constants
-> - Adding logging messages or debugging output
-> - Changes to ‘metadata’ files like Gemfile, .gitignore, build scripts, etc.
-> - Moving source files from one directory or package to another
+> "Allow users to set and get the water table levels so sensitivity analysis can be carried out"
 
-[source: [Chef](https://github.com/chef/chef/blob/master/CONTRIBUTING.md#chef-obvious-fix-policy)] **Need more inspiration?** [1][puppet](https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md#making-trivial-changes)
+rather than
 
-## How to report a bug
+> "Written methods get_water_table and set_water_table with the variables water_level and node_num"
 
-### Explain security disclosures first!
+## Reporting Bugs
 
-At bare minimum, include this sentence:
+To report a bug, simply create an issue in the repository and select the 'Bug' template in the drop down. This'll prompt you to fill in key information about the bug such as the exact situation in which the bug occurs, and how to replicate that environment.
 
-> If you find a security vulnerability, do NOT open an issue. Email XXXX instead.
+## Submitting Feature Ideas
 
-If you don’t want to use your personal contact information, set up a “security@” email address. Larger projects might have more formal processes for disclosing security, including encrypted communication. (Disclosure: I am not a security expert.)
+If you find yourself wishing frewpy did something in particular that it doesn't do already, you're probably not alone. Submitting a feature idea will let others know that this functionality is needed by many, and will make it more likely that it gets added to the library. Do this by creating an issue and using the appropriate labels to mark the issue for discussion/ suggestion and enhancement, noting the points in the below text. Make sure to fully scope the feature, thinking through why it's needed and how it might work.
 
-> Any security issues should be submitted directly to security@travis-ci.org
-> In order to determine whether you are dealing with a security issue, ask yourself these two questions:
->
-> - Can I access something that's not mine, or something I shouldn't have access to?
-> - Can I disable something for other people?
->
-> If the answer to either of those two questions are "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to both questions, you may still be dealing with a security issue, so if you're unsure, just email us at security@travis-ci.org.
+The idea behind frewpy is to get Arup engineers into using python, or just programming logic, when approaching their designs. It's core aim is to make interacting with engineering software quicker, easier and more reliable than alternative methods. It is not intended that the core frewpy library solves specific engineering problems but rather enables engineers to solve their problems. This distinction is key and is what separates the core code base with the project examples in the examples directory. If you have a feature idea which is specific to the project you are on, it is probably better placed in the examples directory for others to use. If scripts in the examples directory become very popular, it might be worth converting it into the core code base in which case the feature idea can be submitted.
 
-[source: [Travis CI](https://github.com/travis-ci/travis-ci/blob/master/CONTRIBUTING.md)] **Need more inspiration?** [1][celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#security) [2][express.js](https://github.com/expressjs/express/blob/master/Security.md)
+If you have a feature idea which would be applicable and helpful across many projects, it could be good to include it in the core frewpy code base and so it is worth submitting it or contacting the development team.
 
-### Tell your contributors how to file a bug report.
-
-You can even include a template so people can just copy-paste (again, less work for you).
-
-> When filing an issue, make sure to answer these five questions:
->
-> 1. What version of Go are you using (go version)?
-> 2. What operating system and processor architecture are you using?
-> 3. What did you do?
-> 4. What did you expect to see?
-> 5. What did you see instead?
->    General questions should go to the golang-nuts mailing list instead of the issue tracker. The gophers there will answer or ask you to file an issue if you've tripped over a bug.
-
-[source: [Go](https://github.com/golang/go/blob/master/CONTRIBUTING.md#filing-issues)] **Need more inspiration?** [1][celery](https://github.com/celery/celery/blob/master/CONTRIBUTING.rst#other-bugs ) [2][atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#reporting-bugs) (includes template)
-
-## How to suggest a feature or enhancement
-
-### If you have a particular roadmap, goals, or philosophy for development, share it here.
-
-This information will give contributors context before they make suggestions that may not align with the project’s needs.
-
-> The Express philosophy is to provide small, robust tooling for HTTP servers, making it a great solution for single page applications, web sites, hybrids, or public HTTP APIs.
->
-> Express does not force you to use any specific ORM or template engine. With support for over 14 template engines via Consolidate.js, you can quickly craft your perfect framework.
-
-[source: [Express](https://github.com/expressjs/express#philosophy)] **Need more inspiration?** [Active Admin](https://github.com/activeadmin/activeadmin#goals)
-
-### Explain your desired process for suggesting a feature.
-
-If there is back-and-forth or signoff required, say so. Ask them to scope the feature, thinking through why it’s needed and how it might work.
-
-> If you find yourself wishing for a feature that doesn't exist in Elasticsearch, you are probably not alone. There are bound to be others out there with similar needs. Many of the features that Elasticsearch has today have been added because our users saw the need. Open an issue on our issues list on GitHub which describes the feature you would like to see, why you need it, and how it should work.
-
-[source: [Elasticsearch](https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#feature-requests)] **Need more inspiration?** [1][hoodie](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md#feature-requests) [2][ember.js](https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md#requesting-a-feature)
+Please also check the project roadmap to see if the feature you are suggesting is planned for future releases.
 
 ## Code review process
 
-### Explain how a contribution gets accepted after it’s been submitted.
+The merge request will be reviewed in many ways, including: code quality, code styling, static typing, applicability, unit testing. Comments will be provided on the merge request which should then help the contributor to improve their contribution. Once all comments have been addressed, the feature will be merged into the core frewpy code base.
 
-Who reviews it? Who needs to sign off before it’s accepted? When should a contributor expect to hear from you? How can contributors get commit access, if at all?
+If you get a comment to 'rebase' your merge request, it means that a lot of the code base has changed since you branched off develop, and that you need to update your branch so it's easier to merge. To do this, simply type `git pull origin develop` when checked out in your branch. You can then fix any of the conflicts that might surface, and double check your contribution still operates as intended.
 
-> The core team looks at Pull Requests on a regular basis in a weekly triage meeting that we hold in a public Google Hangout. The hangout is announced in the weekly status updates that are sent to the puppet-dev list. Notes are posted to the Puppet Community community-triage repo and include a link to a YouTube recording of the hangout.
-> After feedback has been given we expect responses within two weeks. After two weeks we may close the pull request if it isn't showing any activity.
-
-[source: [Puppet](https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md#submitting-changes)] **Need more inspiration?** [1][meteor](https://meteor.hackpad.com/Responding-to-GitHub-Issues-SKE2u3tkSiH ) [2][express.js](https://github.com/expressjs/express/blob/master/Contributing.md#becoming-a-committer)
-
-## Community
-
-If there are other channels you use besides GitHub to discuss contributions, mention them here. You can also list the author, maintainers, and/or contributors here, or set expectations for response time.
-
-> You can chat with the core team on https://gitter.im/cucumber/cucumber. We try to have office hours on Fridays.
-
-[source: [cucumber-ruby](https://github.com/cucumber/cucumber-ruby/blob/master/CONTRIBUTING.md#talking-with-other-devs)] **Need more inspiration?**
-[1][chef](https://github.com/chef/chef/blob/master/CONTRIBUTING.md#-developer-office-hours) [2][cookiecutter](https://github.com/audreyr/cookiecutter#community)
-
-## BONUS: Code, commit message and labeling conventions
-
-These sections are not necessary, but can help streamline the contributions you receive.
-
-### Explain your preferred style for code, if you have any.
-
-**Need inspiration?** [1][requirejs](http://requirejs.org/docs/contributing.html#codestyle) [2][elasticsearch](https://github.com/elastic/elasticsearch/blob/master/CONTRIBUTING.md#contributing-to-the-elasticsearch-codebase)
-
-### Explain if you use any commit message conventions.
-
-**Need inspiration?** [1][angular](https://github.com/angular/material/blob/master/.github/CONTRIBUTING.md#submit) [2][node.js](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md#step-3-commit)
-
-### Explain if you use any labeling conventions for issues.
-
-**Need inspiration?** [1][standardissuelabels](https://github.com/wagenet/StandardIssueLabels#standardissuelabels) [2][atom](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#issue-and-pull-request-labels)
-
-[Source for the template of the contributions guide](https://github.com/nayafia/contributing-template)
+[Source for the template of this contributions guide](https://github.com/nayafia/contributing-template)
