@@ -8,11 +8,11 @@ This roadmap is intended to outline a 6-12 month forecast of development work fo
 
 ❌ [2] convert all initial release functionality into new core structure so that users do not lose out by updating versions. This includes: outputting envelopes, plotting results (comparing design cases at each stage), analysing a model, saving a model, calculating soil pressures, getting water pressures.
 
-❌ [3] make the workflow clear with error handling so that if users load in a Frew .fwd model file that they need to convert it to a json with the function. Write this module.
+✅ [3] make the workflow clear with error handling so that if users load in a Frew .fwd model file that they need to convert it to a json with the function. Write this module.
 
 ❌ [4] establish 100% unit-testing coverage on the functionality of the library.
 
-❌ [5] complete the documentation to a good quality so that it allows people to, at a minimum, know how to contribute, understand what's changed between versions, know how to get started with the library, and can search all the source code in a plain text manner. This includes linking the key markdown files with the restructured text.
+✅ [5] complete the documentation to a good quality so that it allows people to, at a minimum, know how to contribute, understand what's changed between versions, know how to get started with the library, and can search all the source code in a plain text manner. This includes linking the key markdown files with the restructured text.
 
 👇
 
