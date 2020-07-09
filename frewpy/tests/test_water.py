@@ -17,5 +17,5 @@ def water_model():
 def test_get_water_pressures(water_model):
     water_pressure = water_model.get_water_pressures()
     assert len(list(water_pressure.keys())) == 11
-    assert water_pressure[10]['SLS']['left'][9] == pytest.approx(2.207249)
-    assert water_pressure[9]['SLS']['right'][-1] == pytest.approx(282.131010)
+    assert water_pressure[10]["SLS"]["left"][9] == pytest.approx(2.207249)
+    assert water_pressure[9]["SLS"]["right"][-1] == pytest.approx(282.131010)

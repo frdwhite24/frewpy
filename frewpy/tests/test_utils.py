@@ -46,7 +46,7 @@ def test_check_json_path_type():
 
 def test_model_to_json():
     json_path = model_to_json(
-        os.path.join(TEST_DATA, 'convert_model_test.fwd')
+        os.path.join(TEST_DATA, "convert_model_test.fwd")
     )
     path_exists = os.path.exists(json_path)
     os.remove(json_path)
@@ -54,20 +54,20 @@ def test_model_to_json():
 
 
 def test_load_data():
-    loaded_data = load_data(os.path.join(TEST_DATA, 'test_model_1.json'))
+    loaded_data = load_data(os.path.join(TEST_DATA, "test_model_1.json"))
     assert list(loaded_data.keys()) == [
-        'OasysHeader',
-        'JsonSchema',
-        'File history',
-        'Version',
-        'Units',
-        'Materials',
-        'Struts',
-        'Loads',
-        'Stages',
-        'Partial Factor Sets',
-        'Node Generation',
-        'Integral Bridge Data',
+        "OasysHeader",
+        "JsonSchema",
+        "File history",
+        "Version",
+        "Units",
+        "Materials",
+        "Struts",
+        "Loads",
+        "Stages",
+        "Partial Factor Sets",
+        "Node Generation",
+        "Integral Bridge Data",
     ]
 
 
@@ -83,7 +83,7 @@ def test_check_json_path_extension():
 
 def test_clear_results(json_data_with_results):
     json_data_without_results = clear_results(json_data_with_results)
-    assert not json_data_without_results.get('Frew Results', False)
+    assert not json_data_without_results.get("Frew Results", False)
 
 
 def test_titles_job_number(json_data):
@@ -218,7 +218,7 @@ def test_get_num_design_cases_none(json_data):
 
 
 def test_get_design_case_names(json_data_with_results):
-    assert get_design_case_names(json_data_with_results) == ['SLS']
+    assert get_design_case_names(json_data_with_results) == ["SLS"]
 
 
 def test_get_design_case_names_none(json_data):
@@ -229,6 +229,7 @@ def test_get_design_case_names_none(json_data):
 def test_check_results_present_none(json_data):
     with pytest.raises(FrewError):
         check_results_present(json_data)
+
 
 def test_check_results_present(json_data_with_results):
     check_results_present(json_data_with_results)
