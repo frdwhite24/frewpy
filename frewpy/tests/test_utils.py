@@ -3,10 +3,12 @@ import os
 import pytest
 
 from test_config import TEST_DATA
-from test_fixtures import json_data
+from test_fixtures import json_data, json_data_with_results
 from frewpy.utils import (
     _check_frew_path,
     check_json_path,
+    load_data,
+    model_to_json,
     get_titles,
     get_file_history,
     get_file_version,
@@ -14,6 +16,10 @@ from frewpy.utils import (
     get_num_stages,
     get_stage_names,
     get_num_nodes,
+    clear_results,
+    get_num_design_cases,
+    get_design_case_names,
+    check_results_present,
 )
 from frewpy.models.exceptions import FrewError, NodeError
 
@@ -38,6 +44,33 @@ def test_check_json_path_type():
         check_json_path(5)
 
 
+def test_model_to_json():
+    json_path = model_to_json(
+        os.path.join(TEST_DATA, 'convert_model_test.fwd')
+    )
+    path_exists = os.path.exists(json_path)
+    os.remove(json_path)
+    assert path_exists
+
+
+def test_load_data():
+    loaded_data = load_data(os.path.join(TEST_DATA, 'test_model_1.json'))
+    assert list(loaded_data.keys()) == [
+        'OasysHeader',
+        'JsonSchema',
+        'File history',
+        'Version',
+        'Units',
+        'Materials',
+        'Struts',
+        'Loads',
+        'Stages',
+        'Partial Factor Sets',
+        'Node Generation',
+        'Integral Bridge Data',
+    ]
+
+
 def test_check_json_path_exists():
     with pytest.raises(FrewError):
         check_json_path("path_does_not_exists.json")
@@ -46,6 +79,11 @@ def test_check_json_path_exists():
 def test_check_json_path_extension():
     with pytest.raises(FrewError):
         check_json_path(os.path.join(TEST_DATA, "test_model_1.fwd"))
+
+
+def test_clear_results(json_data_with_results):
+    json_data_without_results = clear_results(json_data_with_results)
+    assert not json_data_without_results.get('Frew Results', False)
 
 
 def test_titles_job_number(json_data):
@@ -155,16 +193,43 @@ def test_get_num_nodes(json_data):
 
 
 def test_get_num_nodes_none():
-    json_data = {"Stages": [{}]}
-    assert get_num_nodes(json_data) == 0
+    example_dict = {"Stages": [{}]}
+    assert get_num_nodes(example_dict) == 0
 
 
 def test_get_num_nodes_different_per_stage():
     with pytest.raises(NodeError):
-        json_data = {
+        example_dict = {
             "Stages": [
                 {"GeoFrewNodes": ["Node1", "Node2"]},
                 {"GeoFrewNodes": ["Node1", "Node2", "Node3"]},
             ]
         }
-        get_num_nodes(json_data)
+        get_num_nodes(example_dict)
+
+
+def test_get_num_design_cases(json_data_with_results):
+    assert get_num_design_cases(json_data_with_results) == 1
+
+
+def test_get_num_design_cases_none(json_data):
+    with pytest.raises(FrewError):
+        get_num_design_cases(json_data)
+
+
+def test_get_design_case_names(json_data_with_results):
+    assert get_design_case_names(json_data_with_results) == ['SLS']
+
+
+def test_get_design_case_names_none(json_data):
+    with pytest.raises(FrewError):
+        get_design_case_names(json_data)
+
+
+def test_check_results_present_none(json_data):
+    with pytest.raises(FrewError):
+        check_results_present(json_data)
+
+def test_check_results_present(json_data_with_results):
+    check_results_present(json_data_with_results)
+    assert True

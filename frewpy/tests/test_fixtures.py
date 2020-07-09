@@ -14,6 +14,12 @@ def json_data():
 
 
 @pytest.fixture
+def json_data_with_results():
+    with open(os.path.join(TEST_DATA, "test_model_with_results.json")) as file:
+        return json.loads(file.read())
+
+
+@pytest.fixture
 def model():
     return FrewModel(os.path.join(TEST_DATA, "test_model_1.json"))
 

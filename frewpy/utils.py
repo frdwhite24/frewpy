@@ -296,6 +296,7 @@ def get_num_design_cases(json_data: dict) -> int:
         The number of design cases in the Frew model.
 
     """
+    check_results_present(json_data)
     return len(json_data["Frew Results"])
 
 
@@ -313,6 +314,7 @@ def get_design_case_names(json_data: dict) -> List[str]:
         The names of the design cases in the Frew model.
 
     """
+    check_results_present(json_data)
     return [
         design_case["GeoPartialFactorSet"]["Name"]
         for design_case in json_data["Frew Results"]
