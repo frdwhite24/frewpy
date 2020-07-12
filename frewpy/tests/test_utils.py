@@ -24,6 +24,10 @@ from frewpy.utils import (
 from frewpy.models.exceptions import FrewError, NodeError
 
 
+json_data = json_data
+json_data_with_results = json_data_with_results
+
+
 def test_check_frew_path_type():
     with pytest.raises(FrewError):
         _check_frew_path(5)

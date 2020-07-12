@@ -1,4 +1,5 @@
 import os
+import time
 
 import pytest
 
@@ -60,3 +61,37 @@ def test_get_num_nodes(frew_model):
 def test_get_wrong_entry(frew_model):
     with pytest.raises(FrewError):
         frew_model.get("hello")
+
+
+def test_analyse(frew_model):
+    frew_model.analyse()
+    assert frew_model.json_data.get('Frew Results', False)
+
+
+def test_save():
+    file_path = os.path.join(TEST_DATA, "test_save_model.json")
+    model = FrewModel(file_path)
+    model.save()
+    assert os.path.getmtime(file_path) == pytest.approx(time.time(), 0.001)
+
+
+def test_save_as_not_string(frew_model):
+    with pytest.raises(FrewError):
+        frew_model.save(123)
+
+
+def test_save_as_not_json(frew_model):
+    with pytest.raises(FrewError):
+        frew_model.save(os.path.join(TEST_DATA, 'no_model.abc'))
+
+
+def test_save_as_not_valid(frew_model):
+    with pytest.raises(FileNotFoundError):
+        not_valid_path = os.path.join(TEST_DATA, 'not_valid_path')
+        frew_model.save(os.path.join(not_valid_path, 'test.json'))
+
+
+def test_save_as(frew_model, tmp_path):
+    model_path = os.path.join(tmp_path, 'test_model.json')
+    frew_model.save(model_path)
+    assert os.path.exists(model_path)
