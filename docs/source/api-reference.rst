@@ -2,7 +2,7 @@
 API Reference
 *************
 
-The frewpy library is made up of multiple core modules. These core modules are brought together in the `FrewModel` object from `frewpy` if the user wishes to use the recommended Object Oriented Programming structure of the library. If users wish to extend the usage of frewpy, they can import core modules and use the functions as building blocks for their purpose. If the result is significant then it could be added to the core library source code for others to use.
+The frewpy library is made up of 5 core modules. These core modules are brought together in the `FrewModel` object from the `frew_model` module . If users wish to extend the functionality of frewpy, they can import the utils module and write their own functions or write into the source code of one of the core models which will automatically get pulled into the 'FrewModel' object. If the extended functionality is useful, it would be good to contribute towards the library so the others can benefit om the work as well. Remember, the functionality you're using may have been added to the library in the same scenario.
 
 ---------
 
@@ -21,7 +21,7 @@ The frewpy library is made up of multiple core modules. These core modules are b
 
 ---------
 
-.. automodule:: frewpy.models.strut.Strut
+.. automodule:: frewpy.models.water
    :members:
 
 ---------

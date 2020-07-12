@@ -30,30 +30,12 @@ from .exceptions import FrewError
 class Wall:
     """ A class used to contain any wall related functionality of frewpy.
 
-    ...
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    get_node_levels() -> List[float]
-        Get the levels of each node in the Frew model.
-    get_results() -> Dict[int, dict]
-        Get the shear, bending moment and displacement of the wall for each
-        stage, node and design case.
-    get_envelopes() -> Dict[]
-    results_to_excel(out_folder: str) -> None
-        Export the wall results to an excel file where each worksheet is a
-        design case. The spreadsheet will be output to the folder given.
-
     """
 
     def __init__(self, json_data):
         self.json_data = json_data
 
-    def get_node_levels(self):
+    def get_node_levels(self) -> List[float]:
         """ Method to get the levels of the nodes in a Frew model.
 
         Returns
@@ -174,7 +156,8 @@ class Wall:
 
     def results_to_excel(self, out_folder: str) -> None:
         """ Method to exports the wall results to an excel file where each
-        sheet in the spreadsheet is a design case.
+        sheet in the spreadsheet is a design case. The spreadsheet also
+        a title sheet and the envelopes.
 
         Parameters
         ----------

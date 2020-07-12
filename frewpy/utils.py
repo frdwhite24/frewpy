@@ -3,8 +3,8 @@ Utililities
 ===========
 
 This module holds all the core utility functions used throughout the library.
-They are not intended to be called separately unless the user is extending the
-functionality of frewpy and plans to contribute towards the code base.
+These functions are intended to simplify common tasks and to make their
+output and functionality consistent where needed.
 
 """
 
