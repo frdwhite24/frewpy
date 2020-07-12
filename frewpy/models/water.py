@@ -19,8 +19,6 @@ from frewpy.utils import (
 class Water:
     """ A class used to contain any water related functionality of frewpy.
 
-    ...
-
     """
 
     def __init__(self, json_data):
