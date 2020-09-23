@@ -1,9 +1,0 @@
-black:
-  stage: test
-  tags:
-    - lint-python
-  image: python:3.6
-  script:
-    - pip install --upgrade pip
-    - pip install black
-    - black -l 79 --check frewpy
