@@ -2,7 +2,7 @@
 
 Frewpy is a python library aimed at making interaction with Oasys Frew simple, quick and reliable. Parts of the library use the COM interface to interract with Frew, but most of the library is simple JSON manipulation which allows designs to be automated and will play a part in larger automation efforts down the line. Frewpy requires at least Oasys Frew 19.4 Build 24 as this is the first build that has JSON input/output functionality.
 
-[Insert link to docs here]() to read the Documentation for Frewpy.
+[Insert link to docs here](www.google.com) to read the Documentation for Frewpy.
 
 ## Installation
 
@@ -16,7 +16,7 @@ If you'd like the latest unreleased features, you can install the development ve
 | -------------------------------------- | -------------------------------------------------------------- |
 | _(Default)_ Latest Stable Build v0.0.0 | `https://github.com/frdwhite24/frewpy/archive/v0.0.0.tar.gz`   |
 | Development version (SSH)              | `pip install git@github.com:frdwhite24/frewpy.git@develop`     |
-| Development version (HTTPs)            | `pip install `https://github.com/frdwhite24/frewpy.git@develop |
+| Development version (HTTPs)            | `pip install https://github.com/frdwhite24/frewpy.git@develop` |
 
 ## Getting Started
 
@@ -39,7 +39,7 @@ model.wall.results_to_excel(out_path)
 
 > Note: if you try to return the results of a model without any results in, you will be asked to analyse the model first.
 
-The `examples` directory held within the repository will provide you more examples of how you may use `frewpy`. These examples, and the rest of the available methods are also shown in the [Insert link to docs here](). Alternatively you can read the source code to understand what is possible with the library.
+The `examples` directory held within the repository will provide you more examples of how you may use `frewpy`. These examples, and the rest of the available methods are also shown in the [Insert link to docs here](www.google.com). Alternatively you can read the source code to understand what is possible with the library.
 
 ## Support and contributing
 
