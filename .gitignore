@@ -13,3 +13,5 @@ banana.py
 TODO.md
 .coverage
 cov.xml
+/development_kit/docs/*
+/development_kit/models/*
