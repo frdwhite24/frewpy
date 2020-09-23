@@ -1,0 +1,805 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference &mdash; frewpy  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer Guide" href="developer-guide.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> frewpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#frew-model">Frew Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#soil">Soil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wall">Wall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#water">Water</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utililities">Utililities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer-guide.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">frewpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api-reference.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="developer-guide.html" class="btn btn-neutral float-right" title="Developer Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<p>The frewpy library is made up of 5 core modules. These core modules are brought together in the <cite>FrewModel</cite> object from the <cite>frew_model</cite> module . If users wish to extend the functionality of frewpy, they can import the utils module and write their own functions or write into the source code of one of the core models which will automatically get pulled into the ‘FrewModel’ object. If the extended functionality is useful, it would be good to contribute towards the library so the others can benefit om the work as well. Remember, the functionality you’re using may have been added to the library in the same scenario.</p>
+<hr class="docutils" />
+<span class="target" id="module-frewpy.frew_model"></span><div class="section" id="frew-model">
+<h2>Frew Model<a class="headerlink" href="#frew-model" title="Permalink to this headline">¶</a></h2>
+<p>This module holds the main class of FrewModel which is used to instantiate a
+single Frew model. The class incorporates all other child classes
+to make it easier for the user to interact with the frewpy library.</p>
+<dl class="class">
+<dt id="frewpy.frew_model.FrewModel">
+<em class="property">class </em><code class="sig-prename descclassname">frewpy.frew_model.</code><code class="sig-name descname">FrewModel</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em><span class="sig-paren">)</span><a class="headerlink" href="#frewpy.frew_model.FrewModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to establish a connection to any Frew model and to
+manipulate it using the core methods or a child class’s methods.</p>
+<p>…</p>
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.file_path">
+<code class="sig-name descname">file_path</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>The absolute file path to the Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.folder_path">
+<code class="sig-name descname">folder_path</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.folder_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>The absolute folder path to the Frew model, not including the file
+name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.wall">
+<code class="sig-name descname">wall</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.wall" title="Permalink to this definition">¶</a></dt>
+<dd><p>All wall related methods associated with a Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.soil">
+<code class="sig-name descname">soil</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.soil" title="Permalink to this definition">¶</a></dt>
+<dd><p>All soil related methods associated with a Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.water">
+<code class="sig-name descname">water</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.water" title="Permalink to this definition">¶</a></dt>
+<dd><p>All water related methods associated with a Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.calculation">
+<code class="sig-name descname">calculation</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.calculation" title="Permalink to this definition">¶</a></dt>
+<dd><p>All calculation methods based on Frew results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="frewpy.frew_model.FrewModel.strut">
+<code class="sig-name descname">strut</code><a class="headerlink" href="#frewpy.frew_model.FrewModel.strut" title="Permalink to this definition">¶</a></dt>
+<dd><p>All strut related methods associated with a Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.frew_model.FrewModel.analyse">
+<code class="sig-name descname">analyse</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#frewpy.frew_model.FrewModel.analyse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyse the model using the COM interface to open Frew. This method
+requires greater than Frew 19.4 Build 24.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.frew_model.FrewModel.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">request: str</em><span class="sig-paren">)</span> &#x2192; Union[dict, str, int, list]<a class="headerlink" href="#frewpy.frew_model.FrewModel.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get information about the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>str</em>) – Options for request are: ‘titles’, ‘file history’, ‘file version’,
+‘frew version’, ‘num stages’, ‘stage names’, ‘num nodes’.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>return_value</strong> – The information requested about the model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[dict, str, int, list]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>FrewError</strong> – If <cite>request</cite> input is not a string or is not one of the options.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.frew_model.FrewModel.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">save_path: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#frewpy.frew_model.FrewModel.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current json Frew model to the original file or to a new
+path if provided to the method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>save_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path including file name (.json) for the data to be saved to.
+If this is not provided, the model at the original file path will
+be overwritten.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<span class="target" id="module-frewpy.models.soil"></span><div class="section" id="soil">
+<h2>Soil<a class="headerlink" href="#soil" title="Permalink to this headline">¶</a></h2>
+<p>This module holds the class <cite>Soil</cite> which aims to group all the soil related
+functionality of frewpy.</p>
+<dl class="class">
+<dt id="frewpy.models.soil.Soil">
+<em class="property">class </em><code class="sig-prename descclassname">frewpy.models.soil.</code><code class="sig-name descname">Soil</code><span class="sig-paren">(</span><em class="sig-param">json_data: Dict[str, list]</em><span class="sig-paren">)</span><a class="headerlink" href="#frewpy.models.soil.Soil" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to contain any soil related functionality of frewpy.
+Methods of this class will directly interact with the model data.</p>
+<dl class="method">
+<dt id="frewpy.models.soil.Soil.get_material_properties">
+<code class="sig-name descname">get_material_properties</code><span class="sig-paren">(</span><em class="sig-param">material: str</em><span class="sig-paren">)</span> &#x2192; Dict[str, Union[float, int, dict]]<a class="headerlink" href="#frewpy.models.soil.Soil.get_material_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get all the properties of a specific material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>material</strong> (<em>str</em>) – The name of the material to return the properties for.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>material_properties</strong> – The properties of the input material.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Union[float, int, dict, bool]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.soil.Soil.get_materials">
+<code class="sig-name descname">get_materials</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#frewpy.models.soil.Soil.get_materials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get names of all the materials used within the Frew
+model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>materials</strong> – A list of the materials in the Frew model.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>FrewError</strong> – If there are no materials in the model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<span class="target" id="module-frewpy.models.wall"></span><div class="section" id="wall">
+<h2>Wall<a class="headerlink" href="#wall" title="Permalink to this headline">¶</a></h2>
+<p>This module holds the class for the Wall object.</p>
+<dl class="class">
+<dt id="frewpy.models.wall.Wall">
+<em class="property">class </em><code class="sig-prename descclassname">frewpy.models.wall.</code><code class="sig-name descname">Wall</code><span class="sig-paren">(</span><em class="sig-param">json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#frewpy.models.wall.Wall" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to contain any wall related functionality of frewpy.</p>
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.get_envelopes">
+<code class="sig-name descname">get_envelopes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[str, dict]<a class="headerlink" href="#frewpy.models.wall.Wall.get_envelopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to return the envelopes of max and min shear, bending and
+displacements for each design case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>envelopes</strong> – The maximum and minimum shear, bending and displacement for each
+design case for all stages.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.get_node_levels">
+<code class="sig-name descname">get_node_levels</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[float]<a class="headerlink" href="#frewpy.models.wall.Wall.get_node_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get the levels of the nodes in a Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>node_levels</strong> – The levels of each node in a Frew model.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.get_results">
+<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[int, dict]<a class="headerlink" href="#frewpy.models.wall.Wall.get_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get the shear, bending moment and displacement of the
+wall for each stage, node, and design case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>wall_results</strong> – The shear, bending and displacement of the wall.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[int, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.get_wall_stiffness">
+<code class="sig-name descname">get_wall_stiffness</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[int, List[float]]<a class="headerlink" href="#frewpy.models.wall.Wall.get_wall_stiffness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get the stiffness of the wall for each stage and node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>wall_stiffness</strong> – The stiffness of the wall in kNm2/m for each stage.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[int, List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.plot_results_html">
+<code class="sig-name descname">plot_results_html</code><span class="sig-paren">(</span><em class="sig-param">out_folder: str</em><span class="sig-paren">)</span><a class="headerlink" href="#frewpy.models.wall.Wall.plot_results_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot the shear, bending moment and displacement of the
+wall for each stage. Output is a interactive html plot created using
+the Bokeh plotting library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>out_folder</strong> (<em>str</em>) – The folder path to save the results at.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.plot_results_pdf">
+<code class="sig-name descname">plot_results_pdf</code><span class="sig-paren">(</span><em class="sig-param">out_folder: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#frewpy.models.wall.Wall.plot_results_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot the shear, bending moment and displacement of the
+wall for each stage. Output is a static pdf plot created using the
+Matplotlib plotting library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>out_folder</strong> (<em>str</em>) – The folder path to save the results at.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="frewpy.models.wall.Wall.results_to_excel">
+<code class="sig-name descname">results_to_excel</code><span class="sig-paren">(</span><em class="sig-param">out_folder: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#frewpy.models.wall.Wall.results_to_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to exports the wall results to an excel file where each
+sheet in the spreadsheet is a design case. The spreadsheet also
+a title sheet and the envelopes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>out_folder</strong> (<em>str</em>) – The folder path to save the results at.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<span class="target" id="module-frewpy.models.water"></span><div class="section" id="water">
+<h2>Water<a class="headerlink" href="#water" title="Permalink to this headline">¶</a></h2>
+<p>This module holds the class for the Water object.</p>
+<dl class="class">
+<dt id="frewpy.models.water.Water">
+<em class="property">class </em><code class="sig-prename descclassname">frewpy.models.water.</code><code class="sig-name descname">Water</code><span class="sig-paren">(</span><em class="sig-param">json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#frewpy.models.water.Water" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to contain any water related functionality of frewpy.</p>
+<dl class="method">
+<dt id="frewpy.models.water.Water.get_water_pressures">
+<code class="sig-name descname">get_water_pressures</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[int, Dict[str, dict]]<a class="headerlink" href="#frewpy.models.water.Water.get_water_pressures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get the pore water pressure for each stage and node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>water_pressures</strong> – The pore water pressures along the wall.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[int, Dict[str, dict]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<span class="target" id="module-frewpy.utils"></span><div class="section" id="utililities">
+<h2>Utililities<a class="headerlink" href="#utililities" title="Permalink to this headline">¶</a></h2>
+<p>This module holds all the core utility functions used throughout the library.
+These functions are intended to simplify common tasks and to make their
+output and functionality consistent where needed.</p>
+<dl class="function">
+<dt id="frewpy.utils.check_json_path">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">check_json_path</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#frewpy.utils.check_json_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether the path is a valid json path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Absolute file path to the Frew model.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>FrewError</strong> – If the path is not a string, doesn’t exists or is not to a json file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.clear_results">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">clear_results</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#frewpy.utils.clear_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the results in the json file so that it can be analysed using
+the COM interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>json_data</strong> – A Python dictionary of the data held within the json model file without
+the results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_design_case_names">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_design_case_names</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#frewpy.utils.get_design_case_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of the design cases present in the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>design_case_names</strong> – The names of the design cases in the Frew model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_file_history">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_file_history</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, str]]<a class="headerlink" href="#frewpy.utils.get_file_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the file history of the Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>file_history</strong> – Records of when the file has been opened in Frew and by which user.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Dict[str, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_file_version">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_file_version</code><span class="sig-paren">(</span><em class="sig-param">json_data: Dict[str, list]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#frewpy.utils.get_file_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the file version of the Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>file_version</strong> – The version of the model file showing the exact build of Frew.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_frew_version">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_frew_version</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#frewpy.utils.get_frew_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the frew version required for the Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>frew_version</strong> – The overall Frew version in which the model was created.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_num_design_cases">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_num_design_cases</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#frewpy.utils.get_num_design_cases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of design cases present in the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>num_design_cases</strong> – The number of design cases in the Frew model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_num_nodes">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_num_nodes</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#frewpy.utils.get_num_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of nodes in the Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>num_nodes</strong> – The number of nodes present in each stage. This will always
+just be 1 integer, and the function will raise an error if it is not
+the same for every stage.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_num_stages">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_num_stages</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#frewpy.utils.get_num_stages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of stages in the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>num_stages</strong> – The number of stages in the Frew model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_stage_names">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_stage_names</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#frewpy.utils.get_stage_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of the stages within the Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>stage_names</strong> – A list of the names of stages within the Frew model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.get_titles">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">get_titles</code><span class="sig-paren">(</span><em class="sig-param">json_data: dict</em><span class="sig-paren">)</span> &#x2192; Dict[str, str]<a class="headerlink" href="#frewpy.utils.get_titles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the titles within the json model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>titles</strong> – The project titles including Job Number, Job Title, Sub Title,
+Calculation Heading, Initials, and Notes.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.load_data">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">load_data</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em><span class="sig-paren">)</span> &#x2192; Dict[str, list]<a class="headerlink" href="#frewpy.utils.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the json file in as a Python dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Absolute file path to the Frew model.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>json_data</strong> – A Python dictionary of the data held within the json model file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="frewpy.utils.model_to_json">
+<code class="sig-prename descclassname">frewpy.utils.</code><code class="sig-name descname">model_to_json</code><span class="sig-paren">(</span><em class="sig-param">file_path</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#frewpy.utils.model_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a <cite>.fwd</cite> Frew model to a <cite>.json</cite> Frew model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Absolute file path to the ‘.fwd’ Frew model.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>json_path</strong> – The new file path of the json file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="developer-guide.html" class="btn btn-neutral float-right" title="Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Fred White
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

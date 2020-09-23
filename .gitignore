@@ -5,9 +5,6 @@
 /venv/
 venv.bat
 /models/*.pdf
-/docs/build/*
-!/docs/build/.gitkeep
-/development_kit/models/*.xlsx
 newcert.pem.txt
 banana.py
 TODO.md
@@ -15,3 +12,5 @@ TODO.md
 cov.xml
 /development_kit/docs/*
 /development_kit/models/*
+!/development_kit/docs/.gitkeep
+!/development_kit/models/.gitkeep
