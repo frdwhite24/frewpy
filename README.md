@@ -12,23 +12,10 @@ Documentation for Frewpy.
 
 ## Installation
 
-This installation guide assumes you already have the correct version of Oasys
-Frew installed, with a version greater than Python 3.6 also installed.
-
-To install frewpy into your chosen virtual environment, use one of the commands
-below. If you are not sure which command to go with, use the one marked
-_Default_.
-
-If you'd like the latest unreleased features, you can install the development
-version. Note that features may not be covered by tests and strong checking.
-You'll require Git for Windows to be installed on your PC, if you haven't done
-so you can [download it here](https://gitforwindows.org/). If you have
-knowingly set up an SSH key then use that command over the HTTPs one.
-
-| Type                                   | Command                                                      |
-| -------------------------------------- | ------------------------------------------------------------ |
-| _(Default)_ Latest Stable Build v0.0.0 | `https://github.com/frdwhite24/frewpy/archive/v0.0.0.tar.gz` |
-| Latest Development Build               | `https://github.com/frdwhite24/frewpy/archive/develop.zip`   |
+The library is distributed using the
+[Python Package Index](https://pypi.org/project/frewpy/). Therefore, users can
+simply use `pip` to install `frewpy` using `pip install`. For more guidance,
+see the [pip docs](https://pip.pypa.io/en/stable/quickstart/).
 
 ## Getting Started
 
@@ -39,7 +26,7 @@ object.
 
 ```python
 from frewpy import FrewModel
-file_path = r'C:\Users\fred.white\Documents\windows-work\frewpy\models\test_model.json'
+file_path = r'path/to/frew/json'
 model = FrewModel(file_path)
 ```
 
@@ -50,7 +37,7 @@ results to excel, for example, type one of the following lines of code:
 ```python
 wall_results = model.wall.get_results()
 
-out_path = r'C:\Users\fred.white\Desktop'
+out_path = r'path/to/output/folder'
 model.wall.results_to_excel(out_path)
 ```
 
@@ -92,8 +79,9 @@ has come from engineers in the Arup London Geotechnics team.
 
 ## Technologies
 
-This platform was developed in a Windows environment with `python 3.6`. Support
-for other `python 3` versions is assumed possible but has not been tested.
+This platform was developed in a Windows environment with `python 3.7`. Using
+other `python 3` versions is assumed possible but has not been tested and so
+is not officially supported.
 
 ## License
 

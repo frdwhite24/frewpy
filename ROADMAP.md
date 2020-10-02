@@ -2,7 +2,7 @@
 
 This roadmap is intended to outline a 6-12 month forecast of development work for frewpy. Each stage holds core development targets which will be broken down into issues to be completed. Each issue will refer directly to the numbered core target and all information to complete that issue will be contained within the description of it. Once all issues and therefore core targets are completed for the stage, there will be a version release and development will progress onto the next stage.
 
-## Stage 1 [v0.1.0]
+## Stage 1 [v1.0.0]
 
 ✅ [1] establish a scalable and extendable structure for the core library
 
@@ -16,7 +16,7 @@ This roadmap is intended to outline a 6-12 month forecast of development work fo
 
 👇
 
-## Stage 2 [v0.2.0]
+## Stage 2 [v1.1.0]
 
 ❌ [6] Extend the functionality to set soil properties, allowing iteration through ranges.
 

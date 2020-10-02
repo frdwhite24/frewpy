@@ -3,5 +3,5 @@ Getting Started
 ***************
 
 .. mdinclude:: ../../README.md
-   :start-line: 34
-   :end-line: 66
+   :start-line: 21
+   :end-line: 53
