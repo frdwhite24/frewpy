@@ -3,5 +3,5 @@ Installation
 ************
 
 .. mdinclude:: ../../README.md
-   :start-line: 8
-   :end-line: 20
+   :start-line: 14
+   :end-line: 32
