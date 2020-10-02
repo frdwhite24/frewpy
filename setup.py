@@ -9,19 +9,18 @@ dependencies = req.splitlines()
 
 setup(
     name="frewpy",
-    version="0.1.0",
+    version="0.1.1",
     author="Fred White",
-    author_email="fred.white@arup.com",
     description="A python wrapper for the Oasys Frew geotechnical software package",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://gitlab.arup.com/ait/frewpy",
-    packages=setuptools.find_packages(),
+    url="https://github.com/frdwhite24/frewpy",
+    packages=find_packages(),
     install_requires=dependencies,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Windows",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )
