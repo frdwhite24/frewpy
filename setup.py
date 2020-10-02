@@ -9,7 +9,7 @@ dependencies = req.splitlines()
 
 setup(
     name="frewpy",
-    version="0.0.0",
+    version="0.1.0",
     author="Fred White",
     author_email="fred.white@arup.com",
     description="A python wrapper for the Oasys Frew geotechnical software package",
@@ -23,5 +23,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: Windows",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.6",
 )
