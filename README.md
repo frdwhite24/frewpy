@@ -1,6 +1,6 @@
 # frewpy
 
-Frewpy is a python library aimed at making interaction with Oasys Frew simple, quick and reliable. Parts of the library use the COM interface to interract with Frew, but most of the library is simple JSON manipulation which allows designs to be automated and will play a part in larger automation efforts down the line. Frewpy requires at least Oasys Frew 19.4 Build 24 as this is the first build that has JSON input/output functionality.
+Frewpy is a python library aimed at making interaction with Oasys Frew simple, quick and reliable. Parts of the library use the COM interface to interract with Frew, but most of the library is simple JSON manipulation which allows designs to be automated and will play a part in larger automation efforts down the line. Frewpy requires at least Oasys Frew 19.4 Build 24 as this is the first build that has JSON I/O functionality.
 
 [Insert link to docs here](www.google.com) to read the Documentation for Frewpy.
 
@@ -12,11 +12,10 @@ To install frewpy into your chosen virtual environment, use one of the commands 
 
 If you'd like the latest unreleased features, you can install the development version. Note that features may not be covered by tests and strong checking. You'll require Git for Windows to be installed on your PC, if you haven't done so you can [download it here](https://gitforwindows.org/). If you have knowingly set up an SSH key then use that command over the HTTPs one.
 
-| Type                                   | Command                                                        |
-| -------------------------------------- | -------------------------------------------------------------- |
-| _(Default)_ Latest Stable Build v0.0.0 | `https://github.com/frdwhite24/frewpy/archive/v0.0.0.tar.gz`   |
-| Development version (SSH)              | `pip install git@github.com:frdwhite24/frewpy.git@develop`     |
-| Development version (HTTPs)            | `pip install https://github.com/frdwhite24/frewpy.git@develop` |
+| Type                                   | Command                                                      |
+| -------------------------------------- | ------------------------------------------------------------ |
+| _(Default)_ Latest Stable Build v0.0.0 | `https://github.com/frdwhite24/frewpy/archive/v0.0.0.tar.gz` |
+| Latest Development Build               | `https://github.com/frdwhite24/frewpy/archive/develop.zip`   |
 
 ## Getting Started
 
