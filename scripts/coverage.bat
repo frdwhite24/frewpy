@@ -1,0 +1,1 @@
+python -m pytest --cov frewpy tests/ --cov-report xml
